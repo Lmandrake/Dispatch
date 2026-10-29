@@ -1,0 +1,581 @@
+#!/usr/bin/env python3
+"""Where should this work go, on this machine, right now -- the single source of truth.
+
+    bin/delegate where                      what this machine can reach, and why each
+                                            line says what it does
+    bin/delegate route KIND [options]       the decision, with the evidence behind it
+    bin/delegate tier KIND [--check CMD]    which Claude tier a subagent spawn gets
+    bin/delegate harness CLASS              which harness (Claude Code, Pi, OMP) runs it
+    bin/delegate second-opinion [--independence]
+                                            which second pass a review gets
+    bin/delegate attempt ID --status S      what was actually tried, operationally
+    bin/delegate record ID --disposition D  what the caller did with the output
+    bin/delegate ledger                     the record, and where prior and reality
+                                            disagree
+
+🔴 THIS FILE IS THE LADDER. Nothing else may restate it. Delegation ladders
+restated in several files drift apart and name models a gateway does not serve.
+Prose restated in N places becomes N ladders. Every instruction file now points here instead.
+
+🔴 WHAT THIS CANNOT DO, stated up front because the alternative is implying otherwise:
+
+  * It does not intercept a spawn. The PreToolUse hook
+    (a spawn-guard hook) blocks a model the gateway
+    does not serve; it does NOT require that a spawn was routed. An agent that
+    ignores this command is still allowed to spawn.
+  * It does not promise a completion time. The only speed evidence is one short warm
+    prompt per model, so `--within` filters on an estimate whose assumptions are
+    printed.
+  * It cannot reserve capacity. oMLX runs serially, so five concurrent routes each
+    predict the single-job duration.
+
+Stdlib only. `where` probes; everything else reads.
+"""
+import argparse
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from dispatchlib import capability as cap
+from dispatchlib import delegate as D
+from dispatchlib import ledger as L
+from dispatchlib import prior as P
+from dispatchlib import tiers as T
+from dispatchlib import harness as H
+from dispatchlib import second_opinion as S2
+
+
+def _tri(v):
+    return {True: "yes", False: "no", None: "unknown"}.get(v, str(v))
+
+
+def _where(args) -> int:
+    snap = cap.snapshot(probe=not args.no_probe)
+    if args.json:
+        print(json.dumps(snap, indent=2, sort_keys=True))
+        return 0
+
+    print(f"# Capability — {snap['machine']}")
+    print(f"  subscription        {snap['subscription']}")
+    print(f"  local models POSSIBLE here?  {_tri(snap['can_have_local_models'])}"
+          f"   (DECLARED, not probed: only "
+          f"{', '.join(sorted(cap.local_model_machines())) or 'no declared machine'} runs oMLX, so no other "
+          f"machine pays a timeout to learn it)")
+    collapse = snap.get("alias_collapse") or {}
+    if collapse:
+        print("\n  ⚠️  ALIASES THAT ARE THE SAME MODEL — escalation ladders are "
+              "often\n      written in aliases and retry one rung up, so a "
+              "collapsed rung re-runs the\n      same weights and will usually fail "
+              "the same way:")
+        for wire, aliases in sorted(collapse.items()):
+            print(f"        {' = '.join(aliases):28} -> {wire}")
+
+    rebind = snap.get("proxy_rebind")
+    if rebind:
+        print(f"\n  ⚠️  MODEL ALIASES ARE REBOUND — {rebind['base_url']}\n"
+              f"      {rebind['why']}")
+
+    if not snap["probed"]:
+        print("\n  nothing probed (--no-probe): every reachability fact is unknown, "
+              "which is\n  different from unreachable.")
+        return 0
+
+    enterprise = cap.observation(snap, "enterprise")
+    print(f"\n  enterprise network  {_tri(enterprise)}"
+          f"   (one 443 connect to {', '.join(sorted(cap._enterprise_hosts()))}; reach is not "
+          f"authorisation)")
+
+    loc = cap.observation(snap, "local") or {}
+    if not loc.get("possible"):
+        print("  oMLX                not on this machine (declared)")
+    elif not loc.get("listening"):
+        print(f"  oMLX                not listening — {loc.get('error')}")
+    elif not loc.get("known"):
+        print(f"  oMLX                LISTENING BUT WOULD NOT LIST — "
+              f"{loc.get('error')}\n"
+              f"                      This is unknown, NOT an empty fleet. A masked "
+              f"401 reading as\n                      zero models is how "
+              f"the routing roster lost every remote-endpoint row.")
+    else:
+        print(f"  oMLX                serving {len(loc['models'])}:")
+        for m in loc["models"]:
+            print(f"                        {m}")
+
+    gw = cap.observation(snap, "gateway") or {}
+    if gw.get("known"):
+        fam = [g for g in (gw.get("models") or []) if P.gateway_family_for(g)]
+        print(f"  sanctioned gateway  {len(gw['models'])} ids served, "
+              f"{len(fam)} Anthropic families we hold figures for")
+    else:
+        print(f"  sanctioned gateway  UNKNOWN — {gw.get('error')}"
+              + (f"\n                      (showing a CACHE of "
+                 f"{len(gw.get('models') or [])} ids; a cache is never 'known')"
+                 if gw.get("models") else ""))
+
+    con = cap.observation(snap, "consults") or {}
+    if con:
+        print("\n  by name, never ranked — each line is that repo's own probe; "
+              "exposure is where the material goes:")
+    for name in sorted(con):
+        c = con[name]
+        print(f"  {name:<10} {_tri(c['ready']):<8} {c.get('exposure') or '?':<13} "
+              f"{c['why']}")
+        if c["ready"] is not True and c.get("remedy"):
+            print(f"  {'':<10} {'':<8} {'':<13} -> {c['remedy']}"
+                  + (f"  ({c['fixable_by']})" if c.get("fixable_by") else ""))
+
+    print("\n  Snapshot cached for the hook. It is refused later if it is stale, "
+          "dated in the\n  future, or describes a different machine or "
+          "subscription — expired evidence\n  becomes unknown, and unknown never "
+          "blocks a spawn.")
+    return 0
+
+
+def _route(args) -> int:
+    snap = cap.load_snapshot() or cap.snapshot()
+    dec = D.route(args.kind, snap=snap, want=args.want,
+                  time_budget_secs=args.within,
+                  expect_output_tokens=args.expect_output,
+                  size_input_tokens=args.size, force=args.force)
+
+    if args.json:
+        import dataclasses
+        print(json.dumps({
+            **{k: v for k, v in dec.items()
+               if k not in ("chosen", "ranked", "escalation", "consults")},
+            "chosen": dataclasses.asdict(dec["chosen"]) if dec["chosen"] else None,
+            "ranked": [dataclasses.asdict(c) for c in dec["ranked"]],
+            "escalation": [dataclasses.asdict(c) for c in dec["escalation"]],
+        }, indent=2, sort_keys=True, default=str))
+        return 0
+
+    print(f"# {args.kind} on {dec['machine']} — want: {dec['want']}"
+          + (f", within {args.within}s" if args.within else ""))
+    if dec["chosen"]:
+        print(f"\n  -> {dec['chosen'].destination}")
+        print(f"     {dec['reason']}")
+    else:
+        print(f"\n  -> NO ROUTE. {dec['reason']}")
+        for r in dec["relaxations"]:
+            print(f"     relax {r['drop']:<28} -> {r['gives']}  ({r['cost']})")
+
+    if dec.get("budget_marginal"):
+        print("\n  within the budget only if already LOADED — the filter uses the "
+              "cold estimate\n  because a snapshot cannot tell whether oMLX still "
+              "has the weights resident:")
+        for m in dec["budget_marginal"]:
+            print(f"     [{m['tier']:8}] {m['destination'].replace('omlx/',''):42} "
+                  f"{m['warm_secs']}s warm / {m['cold_secs']}s cold")
+
+    if dec["budget_unusable"]:
+        print(f"\n  ⚠️  {dec['budget_unusable']}")
+
+    if dec["ranked"]:
+        print("\n  local candidates, cleared-for-hand-off first then score:")
+        for c in dec["ranked"]:
+            est = (c.secs_for(args.expect_output) if args.expect_output else None)
+            t = f"{est['warm_secs']}s" if est else (
+                f"{c.tok_per_s} tok/s" if c.tok_per_s else "speed unknown")
+            print(f"     [{c.tier:8}] {c.destination.replace('omlx/',''):42} "
+                  f"{('%.2f' % c.score) if c.score is not None else '  -  ':>5}  {t}")
+
+    if dec["rejected"]:
+        print("\n  rejected:")
+        for r in dec["rejected"]:
+            print(f"     {r['destination'].replace('omlx/',''):42} {r['why']}")
+
+    if dec["chosen"] is not None and args.expect_output:
+        usd = dec["chosen"].usd_for(args.expect_output)
+        if usd:
+            print(f"\n  cost for {args.expect_output} output tokens — the ONLY "
+                  f"like-for-like comparison here.\n  Local is not free; the "
+                  f"gateway's own per-task figure below is for an AA index task\n  "
+                  f"of ~27k output tokens, which is ~{27000 // max(args.expect_output,1)}x "
+                  f"this job and not comparable:")
+            print(f"     {dec['chosen'].destination.replace('omlx/',''):42} "
+                  f"${usd['lo']:.4f}-{usd['hi']:.4f}")
+            print(f"       {usd['basis']}")
+            for e in dec["escalation"]:
+                eu = e.usd_for(args.expect_output)
+                if eu:
+                    print(f"     {e.destination.replace('sanctioned/',''):42} "
+                          f"${eu['lo']:.4f}-{eu['hi']:.4f}")
+            if dec["escalation"]:
+                any_e = next((e for e in dec["escalation"]
+                              if e.usd_for(args.expect_output)), None)
+                if any_e:
+                    print(f"       {any_e.usd_for(args.expect_output)['basis']}")
+                # COMPUTED, never asserted: prose that states a fact about the data
+                # has to come from the data, or it goes stale silently.
+                cheaper = sorted(
+                    ((e.usd_for(args.expect_output)["lo"], e.destination)
+                     for e in dec["escalation"] if e.usd_for(args.expect_output)
+                     and e.usd_for(args.expect_output)["lo"] < usd["lo"]))
+                if cheaper:
+                    print(f"     🔴 {len(cheaper)} sanctioned model(s) are CHEAPER "
+                          f"than local at this size, the cheapest being\n        "
+                          f"{cheaper[0][1].replace('sanctioned/','')} at "
+                          f"${cheaper[0][0]:.4f}. Local's advantage at this size is "
+                          f"that nothing\n        leaves the machine -- it is not "
+                          f"cost, and it is not speed either.")
+
+    if dec["escalation"]:
+        print("\n  escalation — the sanctioned gateway. NOT ranked against the local "
+              "fleet:\n  there is no per-skill published figure for any Anthropic "
+              "model, so there is no\n  job tier to compare. Index and cost are "
+              "intervals across published efforts,\n  because our requests set no "
+              "effort at all.")
+        for c in dec["escalation"]:
+            idx = ("—" if c.index_lo is None
+                   else f"{c.index_lo:.0f}-{c.index_hi:.0f}")
+            usd = ("—" if c.usd_lo is None
+                   else f"${c.usd_lo:.2f}-{c.usd_hi:.2f}")
+            print(f"     {c.destination.replace('sanctioned/',''):46} "
+                  f"index {idx:>9}  {usd:>14} /task")
+
+    if dec["consults"]:
+        con = cap.observation(snap, "consults") or {}
+        print("\n  consults — dispatched BY NAME, never by rank. No corpus anywhere "
+              "carries cost,\n  quality or latency for these, so there is no prior to "
+              "compare and none is invented:")
+        for c in dec["consults"]:
+            who = c.destination.replace("consult/", "")
+            r = (con.get(who) or {}).get("ready")
+            print(f"     consult/{who:<10} {_tri(r):<8} {c.note}")
+            if r is False:
+                print(f"        {(con.get(who) or {}).get('why')}")
+
+    if dec["capacity_note"]:
+        print(f"\n  ⚠️  {dec['capacity_note']}")
+    for u in dec["unknowns"]:
+        print(f"\n  unknown: {u}")
+
+    if args.record:
+        did = D.record(dec, batch_id=args.batch, note=args.note)
+        print(f"\n  decision id: {did}")
+        print(f"  record what happens:  bin/delegate attempt {did} --status completed"
+              f" --latency SECS")
+        print(f"                        bin/delegate record  {did} --disposition "
+              f"used-as-is --source observed_operation --review none")
+    return 0
+
+
+def _harness(args) -> int:
+    r = H.recommend(args.cls, guards_needed=not args.no_guards)
+    if args.json:
+        print(json.dumps(r, indent=2, default=list))
+        return 0
+    ev = r["evidence"]
+    print(f"# Harness for {r['class']}: {ev['what']}")
+    print(f"  run on   {r['harness']}" + ("" if r["harness"] == r["measured_choice"]
+          else f"   (measurements alone pick {r['measured_choice']})"))
+    print(f"  why      {r['reason']}")
+    print(f"  {'harness':12} {'passed':>9} {'90% CI':>13} {'crash/stall':>11} "
+          f"{'wall s':>7} {'cpu s':>6} {'context':>9}")
+    for h, v in ev["by_harness"].items():
+        lo, hi = v["pass_ci90"]
+        ctx = f"{v['context']:,.0f}" if v["context"] else "-"
+        print(f"  {h:12} {v['passed']:>4}/{v['n']:<4} {lo:>6.2f}-{hi:<5.2f} "
+              f"{v['operational_failures']:>11} {v['wall_s']:>7.1f} {v['cpu_s']:>6.2f} {ctx:>9}")
+    print("  evidence " + ", ".join(ev["sources"]))
+    return 0
+
+
+def _second_opinion(args) -> int:
+    gpt_ready, gpt_why = None, ""
+    if args.independence and not args.no_probe:
+        spec = cap.destinations().get("chatgpt")
+        pr = cap.run_probe("chatgpt", spec, offline=True) if spec else {"ready": False,
+                                                                        "why": "not registered"}
+        gpt_ready, gpt_why = pr["ready"], pr.get("why", "")
+    r = S2.recommend(independence=args.independence, gpt_ready=gpt_ready, gpt_why=gpt_why)
+    if args.json:
+        print(json.dumps(r, indent=2, default=list))
+        return 0
+    print(f"# Second opinion ({'independence required' if args.independence else 'cost-equivalent'})")
+    print(f"  route    {r['route'] or 'NONE: ' + r['unmet'] + ' cannot be met here'}")
+    if r["alternatives"]:
+        print(f"  or       {', '.join(r['alternatives'])}")
+    print(f"  why      {r['reason']}")
+    print(f"  evidence {r['evidence']['source']}")
+    return 0
+
+
+def _tier(args) -> int:
+    dec = T.decide(args.kind, check=args.check, stakes=args.stakes, fast=args.fast)
+    if args.json:
+        print(json.dumps(dec, indent=2, sort_keys=True))
+        return 0
+    print(f"# spawn tier for {args.kind!r}"
+          + (f", check: {dec['check']}" if dec["check"] else ", no check named")
+          + (", stakes high" if args.stakes == "high" else ""))
+    if dec["model"] == T.PYTHON:
+        print(f"\n  -> no model: {dec['reason']}")
+        for line in T.evidence_lines(dec["rules"]):
+            print(f"  {line}")
+        return 0
+    wire = cap.resolve_model(dec["model"])["wire_id"]
+    print(f"\n  -> model: {dec['model']}"
+          + (f"   up to {dec['tries']} tries; a failed check escalates to "
+             f"{dec['escalate_to']}, never ships" if dec["escalate_to"] else ""))
+    print(f"     {dec['reason']}")
+    print(f"     resolves to: {wire or 'UNSET -- ' + cap.ALIAS_ENV_KEYS[dec['model']] + ' is not in the environment'}")
+    if dec["check"] and not dec["check_mechanical"]:
+        print(f"  ⚠️  {dec['check']!r} names a reader, not a mechanism: treated as no check")
+    rebind = cap.proxy_rebind()
+    if rebind:
+        print(f"  ⚠️  {rebind['why']}")
+    if dec["refused_haiku"]:
+        print(f"     haiku refused: {dec['refused_haiku']}")
+    if dec["model"] == T.OPUS and 5 in dec["rules"]:
+        print("     to save money here, lower Opus's effort rather than the tier")
+    print()
+    for line in T.evidence_lines(dec["rules"]):
+        print(f"  {line}")
+    print("\n  A check is mechanical and can fail: tests, schema, compiler, exact match,"
+          "\n  a re-runnable command. A model agreeing is not a check.")
+    if args.record:
+        rejected = ([{"destination": "tier/haiku",
+                      "why": "no-check" if dec["refused_haiku"] == "no check named"
+                      else "never-cheap-tier"}] if dec["refused_haiku"] else [])
+        did = L.record_decision(task_kind=f"spawn-{args.kind}",
+                                destination=f"tier/{dec['model']}",
+                                machine=cap.machine_key(), reason="tier-rule",
+                                rejected=rejected, note=args.note)
+        print(f"\n  DECISION {did}")
+        print(f"  each try:  bin/delegate attempt {did} --status completed --n K "
+              f"--check pass|fail")
+    return 0
+
+
+def _attempt(args) -> int:
+    row = L.record_attempt(args.id, args.status, destination=args.destination,
+                           latency_secs=args.latency, error_class=args.error_class,
+                           attempt_n=args.n, note=args.note,
+                           check_passed={"pass": True, "fail": False}.get(args.check))
+    print(f"ATTEMPT {row['status']} for {args.id} ({row['event_id']})")
+    if args.status == "launched":
+        print("  note: `launched` is NOT a completion. A spawn that 400s after "
+              "launching reads as\n  a successful dispatch forever unless a second "
+              "ATTEMPT closes it.")
+    return 0
+
+
+def _record(args) -> int:
+    row = L.record_disposition(args.id, args.disposition, source=args.source,
+                               review_status=args.review,
+                               consumer_type=args.consumer,
+                               supersedes=args.supersedes, note=args.note)
+    print(f"DISPOSITION {row['disposition']} ({row['disposition_source']}) for "
+          f"{args.id}")
+    if args.source == "actor_report":
+        print("  recorded as a SELF-REPORT. It counts, but it is not observed use, "
+              "so it cannot\n  raise the hand-off rate — an agent pronouncing its own "
+              "success is the grader\n  failure this ledger exists to avoid.")
+    if args.disposition == "used-as-is" and args.review != "none":
+        print("  review_status is not 'none', so this does not support an unattended "
+              "hand-off:\n  'no edits' and 'no review needed' are different "
+              "properties.")
+    return 0
+
+
+def _ledger(args) -> int:
+    rows = L.read()
+    if not rows:
+        print("# Ledger empty — nothing has been routed yet.")
+        print("# " + L.actuation_note())
+        return 0
+    cells = L.cells(rows)
+    print(f"# Ledger — {len(rows)} rows, rule v{L.ACTUATION['version']}, "
+          f"{len(cells)} cell(s)")
+    print(f"{'destination':46} {'job':5} {'dec':>4} {'disp':>5} {'unk':>4} "
+          f"{'hand-off rate':>22} basis")
+    for (dest, kind), c in sorted(cells.items()):
+        if c["handoff_rate"] is None:
+            rate = "no dispositions yet"
+        else:
+            rate = (f"{c['handoff_rate']:.2f} "
+                    f"[{c['handoff_rate_lo']:.2f}-{c['handoff_rate_hi']:.2f}]")
+        print(f"{dest.replace('omlx/',''):46} {kind:5} {c['n_decisions']:4} "
+              f"{c['n_dispositions']:5} {c['n_unknown']:4} {rate:>22} {c['basis']}")
+        if c["n_launched_never_completed"]:
+            print(f"  ⚠️  {c['n_launched_never_completed']} launch(es) with no "
+                  f"terminal ATTEMPT — launched is not completed")
+        if c["errors"]:
+            print(f"  errors: {c['errors']}")
+    print("\n# The bracket is the bound, not an interval of confidence: it is the "
+          "rate if every\n# unrecorded decision went the worst way, and the best. A "
+          "wide bracket means the\n# cell says almost nothing — 20 recorded of 100 "
+          "permits anything from 0.20 to 1.00.")
+
+    dis = L.disagreements(rows)
+    if dis:
+        print(f"\n# Where the prior and the measurement disagree ({len(dis)}):")
+        for d in dis:
+            print(f"  {d['destination']:40} {d['task_kind']:5} predicted "
+                  f"{d['predicted_secs']}s, measured {d['measured_secs']}s "
+                  f"(x{d['ratio']}) — cause {d['cause']}")
+        print("# 'unresolved' is the honest answer: a latency model that omitted "
+              "long-input\n# processing and a request that queued behind other work "
+              "produce the same two rows.")
+    return 0
+
+
+def _coverage(args) -> int:
+    c = D.coverage()
+    if args.json:
+        print(json.dumps(c, indent=2, sort_keys=True))
+        return 0
+    print("# Is the router actually seeing the delegation on this machine?")
+    print(f"  guard installed          {_tri(c['guard_installed'])}  "
+          f"{D.GUARD_HOOK}")
+    print(f"  guard has ever run       {_tri(c['guard_has_ever_run'])}  "
+          f"{c['health_path']}")
+    print(f"  spawns evaluated         {c['spawns_evaluated']}")
+    print(f"    of which blocked       {c['blocked']}")
+    print(f"  ENFORCEMENT DEGRADED     {c['not_evaluated']}   spawn(s) the guard "
+          f"could not evaluate and allowed")
+    print(f"  routing decisions        {c['decisions_recorded']}")
+    print(f"  count difference         {c['count_difference']}")
+    if c["malformed_health_rows"]:
+        print(f"  malformed health rows    {c['malformed_health_rows']}")
+
+    print("\n# What these numbers mean, and the one thing they do NOT mean.")
+    if not c["guard_installed"]:
+        print("  🔴 The guard is NOT INSTALLED. Nothing is checking spawns at all.")
+    elif not c["guard_has_ever_run"]:
+        print("  🔴 The guard is installed and has NEVER RUN. A wrong matcher passes "
+              "every unit\n     test, runs no handler and raises nothing — an empty "
+              "record is the only symptom.\n     Check ~/.claude/settings.json "
+              "PreToolUse for an 'Agent|Task' matcher.")
+    if c["not_evaluated"]:
+        print("  ⚠️  `not_evaluated` is the one number with an unambiguous meaning: "
+              "enforcement was\n     degraded for that many spawns. The guard fails "
+              "OPEN by design, so each of those\n     was allowed unchecked.")
+    print("  The count difference is NOT a count of bypasses. A spawn and a decision "
+          "are not the\n  same unit — a decision may route work to a local model with "
+          "no spawn at all, and one\n  routed task may spawn several times. Routing is "
+          "advised, not enforced; there is\n  nowhere in the Agent schema to carry a "
+          "per-invocation routing receipt.")
+    return 0
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(
+        prog="delegate", description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+
+    w = sub.add_parser("where", help="what this machine can reach, and why")
+    w.add_argument("--no-probe", action="store_true",
+                   help="declared facts only; no sockets, no HTTP")
+    w.add_argument("--json", action="store_true")
+    w.set_defaults(fn=_where)
+
+    r = sub.add_parser("route", help="the decision, with its evidence")
+    r.add_argument("kind", help="job kind (A2 A3 E3 E4 F1 F2 B4 B5 CODE AGENT)")
+    r.add_argument("--want", choices=[D.WANT_HANDOFF, D.WANT_BEST],
+                   default=D.WANT_HANDOFF,
+                   help="handoff = you will not read the output, so only a cleared "
+                        "model qualifies; best = you will check it")
+    r.add_argument("--within", type=float, metavar="SECS",
+                   help="time BUDGET, not a completion forecast. Needs "
+                        "--expect-output to filter anything.")
+    r.add_argument("--expect-output", type=int, metavar="N",
+                   help="assumed OUTPUT tokens, used for the duration estimate")
+    r.add_argument("--size", type=int, metavar="N",
+                   help="INPUT tokens. Recorded only: nothing here relates input "
+                        "size to a duration (see `unknown` lines).")
+    r.add_argument("--force", metavar="DEST",
+                   help="route to this destination by name. Honoured and logged as "
+                        "owner-specified; cannot make an unserved model reachable.")
+    r.add_argument("--record", action="store_true",
+                   help="write the DECISION row and print its id")
+    r.add_argument("--batch", metavar="ID",
+                   help="group fan-out siblings; 20 siblings are not 20 experiences")
+    r.add_argument("--note", help=f"one line, max {L.NOTE_MAX} chars")
+    r.add_argument("--json", action="store_true")
+    r.set_defaults(fn=_route)
+
+    t = sub.add_parser("tier", help="which Claude tier (haiku/sonnet/opus) a "
+                                    "subagent spawn gets")
+    t.add_argument("kind", choices=list(T.KINDS))
+    t.add_argument("--check", metavar="CMD",
+                   help="the mechanical check that will run on the output. Without "
+                        "one, Haiku is refused (rule 1)")
+    t.add_argument("--stakes", choices=["normal", "high"], default="normal",
+                   help="high = a wrong answer that slips past the check is costly")
+    t.add_argument("--fast", action="store_true",
+                   help="you want speed. Recorded; never drops a tier (rule 7)")
+    t.add_argument("--record", action="store_true")
+    t.add_argument("--note", help=f"one line, max {L.NOTE_MAX} chars")
+    t.add_argument("--json", action="store_true")
+    t.set_defaults(fn=_tier)
+
+    h = sub.add_parser("harness", help="which agent harness (Claude Code, Pi, OMP) a "
+                                       "task class runs on, from measured results")
+    h.add_argument("cls", choices=list(H.CLASSES), metavar="CLASS",
+                   help="one of: " + ", ".join(H.CLASSES))
+    h.add_argument("--no-guards", action="store_true",
+                   help="the run is sandboxed, so Claude Code's hooks and permission "
+                        "rules are not needed; the measurements alone decide")
+    h.add_argument("--json", action="store_true")
+    h.set_defaults(fn=_harness)
+
+    so = sub.add_parser("second-opinion", help="which second pass a review gets "
+                                                "(GPT, a second Opus, a Sonnet critic)")
+    so.add_argument("--independence", action="store_true",
+                    help="assurance needs a different provider, account and lineage")
+    so.add_argument("--no-probe", action="store_true", help="do not ask the chatgpt probe")
+    so.add_argument("--json", action="store_true")
+    so.set_defaults(fn=_second_opinion)
+
+    a = sub.add_parser("attempt", help="what was actually tried")
+    a.add_argument("id")
+    a.add_argument("--status", required=True, choices=list(L.ATTEMPT_STATUS))
+    a.add_argument("--destination")
+    a.add_argument("--latency", type=float, metavar="SECS")
+    a.add_argument("--error-class", choices=list(L.ERROR_CLASSES))
+    a.add_argument("--n", type=int, help="attempt number for this decision")
+    a.add_argument("--check", choices=["pass", "fail"],
+                   help="did the named check pass on this try's output")
+    a.add_argument("--note")
+    a.set_defaults(fn=_attempt)
+
+    d = sub.add_parser("record", help="what the caller did with the output")
+    d.add_argument("id")
+    d.add_argument("--disposition", required=True, choices=list(L.DISPOSITIONS))
+    d.add_argument("--source", default="actor_report",
+                   choices=list(L.DISPOSITION_SOURCES),
+                   help="observed_operation only when code recorded an action that "
+                        "demonstrably occurred")
+    d.add_argument("--review", choices=list(L.REVIEW_STATUS),
+                   help="was the output read before use? 'none' is what an "
+                        "unattended hand-off needs")
+    d.add_argument("--consumer", choices=list(L.CONSUMER_TYPES))
+    d.add_argument("--supersedes", metavar="EVENT_ID",
+                   help="event_id of a disposition this one corrects")
+    d.add_argument("--note")
+    d.set_defaults(fn=_record)
+
+    g = sub.add_parser("ledger", help="the record, and the disagreements")
+    g.set_defaults(fn=_ledger)
+
+    c = sub.add_parser("coverage",
+                       help="is the guard running, and how much delegation does the "
+                            "router actually see")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(fn=_coverage)
+
+    args = ap.parse_args(argv)
+    try:
+        return args.fn(args)
+    except L.LedgerRefused as e:
+        print(f"refused: {e}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

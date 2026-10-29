@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""Route a job to a local model -- the consumption layer over the published evidence.
+
+Two modes:
+
+  bin/route show [ACTIVITY]        recommend which local model a job should go to,
+  bin/route show --all             from PUBLISHED benchmarks (evals/harness/refer.py)
+                                   over the models oMLX is actually serving. Asks the
+                                   server for its model list; if the server is down it
+                                   says so and ranks every aliased local model
+                                   instead, flagged as an unverified candidate set.
+
+  bin/route run ACTIVITY --input F actually dispatch the job to the recommended local
+                                   model and print its output. Needs a live oMLX
+                                   server; refuses DO-NOT jobs unless --force, and
+                                   refuses an unserved model even WITH --force.
+
+🔴 WHERE THE RECOMMENDATION COMES FROM. Published figures, not our own sweeps. The
+project ruling is to use published figures only. The old table path was wrong on 7 of 10
+jobs -- it recommended a model published evidence rates DO NOT for five of them, and a model
+that was no longer installed for three. `--from-retired-table` still reaches the old
+recommendation, and says in its own help text what it is reading.
+
+Trust tiers, carried through from `refer` unchanged:
+  DELEGATE  high percentile, absolute floor cleared, correspondence MEASURED, no
+            quantisation haircut -> hand off
+  VERIFY    usable, but the evidence is a proxy/estimate or has a haircut, or the
+            score is mid-band -> check the result
+  DO NOT    weak on a required skill -> keep it in-house
+  UNKNOWN   no published figure covers a required skill -> a refusal to guess
+
+Mode defaults to `nothink`: thinking mode was measured to not help local models and
+often to hurt, so plain mode is the recommendation. Pass --mode think to override --
+but note `refer`'s aliases name the non-reasoning published rows either way, so a
+`think` verdict is the `nothink` evidence relabelled. Stdlib only.
+"""
+import argparse
+import os
+import pathlib
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from evals.harness import router
+from evals.harness.prompts import compose, fixture_for_activity
+
+
+def _strip(ref: str) -> str:
+    return (ref or "").replace("omlx/", "").replace("sanctioned/", "")
+
+
+def _show_retired(args) -> int:
+    """The retired-evidence view. Reads routing/routing-table.json -- our own
+    superseded sweeps -- and is reachable only via --from-retired-table."""
+    table = router.load_table()
+    acts = (sorted(table.get("activities", {}))
+            if args.all or not args.activity else [args.activity])
+    print(f"# Routing — {args.mode} mode, local egress")
+    print("# SOURCE: routing/routing-table.json — our own RETIRED sweep evidence, "
+          "ruled out of use\n#         2026-10-01. Shown on request only. Drop "
+          "--from-retired-table for published figures.\n")
+    for act in acts:
+        rec = router.recommend(table, act, mode=args.mode)
+        print(f"[{rec['tier']:8}] {act:4} {router.explain(rec)}")
+        for alt in rec.get("alternatives", []):
+            if alt["eff_success"] is not None:
+                print(f"           alt: {_strip(alt['model_ref']):40} "
+                      f"{alt['tier']:8} ~{round(alt['eff_success']*100)}% of {alt['n_trials']}")
+    return 0
+
+
+def _show(args) -> int:
+    if args.from_retired_table:
+        return _show_retired(args)
+
+    from evals.harness import refer
+
+    # Discover ONCE and pass it down, so ten jobs do not make ten HTTP calls and
+    # cannot disagree with each other about what is loaded.
+    cand = router.local_candidates()
+    acts = (list(refer.JOBS) if args.all or not args.activity else [args.activity])
+    corpus = refer.Corpus()
+
+    print(f"# Routing — {args.mode} mode, local egress")
+    print("# SOURCE: published benchmarks via evals/harness/refer.py. No model is "
+          "called; nothing\n#         here is measured by us.")
+    if cand["served_known"]:
+        print(f"# SERVED:  {len(cand['models'])} oMLX model(s) with a published "
+              f"alias: {', '.join(cand['models'])}")
+    else:
+        # Never silently pass the fallback off as the installed fleet.
+        print(f"# ⚠ THE SERVER DID NOT ANSWER ({cand['discovery_error']}).")
+        print(f"#   Candidates below are EVERY local model we hold a published alias "
+              f"for, which is\n#   NOT the installed fleet: some of these may not be "
+              f"on this disk. `run` refuses in\n#   this state; only `show` will "
+              f"print it. Start oMLX to get a verified list.")
+    print()
+
+    for act in acts:
+        rec = router.recommend_published(act, mode=args.mode, candidates=cand,
+                                         corpus=corpus)
+        print(f"[{rec['tier']:8}] {act:4} {router.explain(rec)}")
+        for alt in rec.get("alternatives", []):
+            score = ("  --" if alt["score"] is None else f"{alt['score']:4.0%}")
+            print(f"           alt: {_strip(alt['model_ref']):40} "
+                  f"{alt['tier']:8} {score} {alt['alias_basis']}")
+    return 0
+
+
+def _run(args) -> int:
+    material = (pathlib.Path(args.input).expanduser().read_text() if args.input
+                else args.prompt)
+    if material is None and not args.fixture_input:
+        print("nothing to dispatch: pass --input FILE, --prompt TEXT, or "
+              "--fixture-input to re-run the job's own measured material",
+              file=sys.stderr)
+        return 2
+
+    if args.raw:
+        # Escape hatch: send exactly what was handed over. Off-distribution from
+        # every number in the table, so it is opt-in and says so.
+        if material is None:
+            print("--raw needs --input or --prompt", file=sys.stderr)
+            return 2
+        prompt = material
+    else:
+        # The measured envelope: material, a rule, then the fixture's instruction.
+        # Without this the model receives material and no task, and whatever it
+        # returns is judged against evidence gathered under a different prompt.
+        fixture = fixture_for_activity(args.activity)
+        if fixture is None:
+            print(f"no measured job for {args.activity}, so there is no instruction "
+                  f"to compose; use --raw to send your text as-is", file=sys.stderr)
+            return 5
+        try:
+            prompt = compose(material, fixture)
+        except ValueError as e:
+            print(f"refusing to dispatch: {e}", file=sys.stderr)
+            return 2
+    source = "table" if args.from_retired_table else "published"
+    try:
+        res = router.run_job(args.activity, prompt, mode=args.mode,
+                             force=args.force, source=source)
+    except router.RouteRefused as e:
+        print(f"refused: {e}", file=sys.stderr)
+        return 3
+    banner = f"# {args.activity} -> {res['model_ref']}  [{res['tier']}]"
+    if res["verify"]:
+        banner += "  (CHECK THIS OUTPUT)"
+    if res.get("retried"):
+        banner += "  (retried once at double the budget)"
+    print(banner + "\n")
+    if res["truncated"]:
+        # Exit non-zero: there is no answer here, and a caller redirecting stdout to
+        # a file must not end up with an empty file and a success code.
+        print(f"NO OUTPUT: {res.get('reason')}", file=sys.stderr)
+        return 4
+    print(res["output"])
+    return 0
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(prog="bin/route")
+    sub = ap.add_subparsers(dest="cmd")
+
+    retired_help = (
+        "read the recommendation from routing/routing-table.json -- our own RETIRED "
+        "sweep evidence, which the owner ruled out of use on 2026-10-01 and which "
+        "was measured wrong on 7 of 10 jobs against the served fleet. Opt-in, for "
+        "inspecting the archived corpus only; the default is published figures.")
+
+    s = sub.add_parser("show", help="recommend a model for a job (published figures)")
+    s.add_argument("activity", nargs="?", help="job id, e.g. B4")
+    s.add_argument("--all", action="store_true", help="every job")
+    s.add_argument("--mode", default="nothink", choices=["nothink", "think"])
+    s.add_argument("--from-retired-table", action="store_true", help=retired_help)
+    s.set_defaults(fn=_show)
+
+    r = sub.add_parser("run", help="dispatch a job to the recommended local model")
+    r.add_argument("activity")
+    r.add_argument("--from-retired-table", action="store_true", help=retired_help)
+    r.add_argument("--input", help="file whose contents are the job input")
+    r.add_argument("--prompt", help="inline job input (if no --input)")
+    r.add_argument("--mode", default="nothink", choices=["nothink", "think"])
+    r.add_argument("--force", action="store_true", help="dispatch even a DO-NOT job")
+    r.add_argument("--raw", action="store_true",
+                   help="send the text verbatim instead of composing it into the "
+                        "measured prompt envelope (off-distribution from the table)")
+    r.add_argument("--fixture-input", action="store_true",
+                   help="dispatch the job's own measured material, for a live "
+                        "end-to-end check of the dispatch path")
+    r.set_defaults(fn=_run)
+
+    args = ap.parse_args(argv)
+    if not getattr(args, "fn", None):
+        ap.print_help()
+        return 0
+    return args.fn(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

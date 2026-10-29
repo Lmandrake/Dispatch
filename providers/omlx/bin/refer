@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Delegation tier for a (model, job) from PUBLISHED benchmarks -- no model is
+# called, no server is needed, nothing is measured here. This is the replacement
+# for the sweep path, which is archived.
+#
+#   ./bin/refer jobs                      # the job kinds and the skills each needs
+#   ./bin/refer models                    # models we can resolve to a published name
+#   ./bin/refer sources                   # which reference files are present
+#   ./bin/refer show <MODEL> <JOB>        # one verdict, with provenance
+#   ./bin/refer table <JOB>               # every known model on one job, ranked
+#
+# Read `evals/harness/refer.py`'s docstring before trusting a verdict: the inputs
+# are mostly estimates and vendor self-reports about full-precision models we do not
+# run, and nothing reaches DELEGATE on an estimated or haircut input.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+exec python3 -m evals.harness.refer_cli "$@"

@@ -1,0 +1,1 @@
+{"category": "implement-from-spec", "what_it_probes": "Implementing a data structure whose docstring spec has several interacting rules (LRU order, per-entry TTL, injectable clock, expiry not counting toward capacity).", "expected_minutes_for_human": 25}

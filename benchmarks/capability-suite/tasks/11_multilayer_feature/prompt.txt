@@ -1,0 +1,35 @@
+We want to tag items in stockroom (e.g. "fragile", "hazmat", "q3-audit") and filter on the tags. Please add this end to end: model, both storage backends, service, query language, CLI, exports/import, reports and the audit log. Keep everything that exists working; old data files must still open. Update the visible tests where the new output legitimately changes them, and add tests for the new behaviour.
+
+Spec:
+
+Tags and validation
+- `Item.tags`: a tuple of strings, always stored sorted and without duplicates; default `()`.
+- A tag is normalised by stripping whitespace and lower-casing; after that it must match `^[a-z0-9][a-z0-9_-]{0,23}$`. An item has at most 10 tags. Anything else raises `ValidationError`, and nothing is changed.
+
+Storage
+- The JSON file format becomes version 3: every item record gets a `"tags"` key holding a sorted list (`[]` when none). Version 1 and 2 files must still load (their items get no tags) and are written back as version 3 on the next commit; a file newer than version 3 is still refused.
+- Both backends get `items_with_tag(tag)`: the items carrying that (normalised) tag, sorted by SKU. It must stay correct after saves, deletes, commit and rollback.
+
+Service (`InventoryService`)
+- `add_item(..., tags=())` accepts tags. The `item.added` event gets a `tags` detail (sorted list) only when the item has tags, so existing events look exactly as before.
+- `tag_item(sku, *tags)` adds tags and returns the updated item. It records one `item.tagged` event, subject the SKU, details `{"tags": [<only the newly added tags, sorted>]}`. If every tag was already present: no change, no event, and `updated_at` is untouched.
+- `untag_item(sku, *tags)` removes tags (tags the item does not have are ignored) and returns the item; one `item.untagged` event with details `{"tags": [<tags actually removed, sorted>]}`, or nothing at all if nothing was removed.
+- `import_items` rows may carry a `tags` key (a list of tags).
+- `tags` is not a field `update_item` accepts.
+
+Query language (`--where`)
+- New field `tag` (alias `tags`). `tag = X`: the item has tag X; `tag != X`: it does not; `tag in (X, Y)`: it has at least one of them; `tag ~ X`: some tag contains X as a substring. Values are compared case-insensitively. Any other operator on `tag` is a `QueryError`.
+- New bare boolean field `tagged`: the item has at least one tag (so `not tagged` works too, and `tagged = false`).
+
+CLI
+- `add ... --tag T` (repeatable).
+- `tag SKU TAG [TAG ...]` and `untag SKU TAG [TAG ...]` both print `<SKU>: tags a, b` (the item's tags afterwards, comma-space separated) or `<SKU>: no tags`.
+- `list --tag T` (repeatable): only items that have *all* the given tags; combines with `--where`, `--low` and `--location`.
+- `show` prints a `Tags:       a, b` line (`Tags:       -` when none) directly after the `Location:` line, same alignment as the other lines.
+- `report tags`: a table with columns `Tag`, `Items`, `Units` (Items and Units right-aligned), one row per tag sorted by tag, then an `(untagged)` row if any item has no tags. Units is the summed quantity of those items. Rendered with `render_table` like the other reports.
+
+Exports and import
+- Item CSV gets a `tags` column appended after `value`; tags are joined with `;` (empty when none).
+- Item JSON gets a `tags` key (list) appended after `value_cents`.
+- The item text table gets a `Tags` column between `Location` and `Value`, tags joined with `,` (no spaces), `-` when none. The footer line is unchanged.
+- CSV import accepts an optional `tags` column in the same `;`-separated form, so an export can be imported back with its tags. Order exports do not change.

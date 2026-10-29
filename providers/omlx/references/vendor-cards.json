@@ -1,0 +1,1005 @@
+{
+ "_source": "HuggingFace model cards, fetched as raw markdown from https://huggingface.co/<repo>/raw/main/README.md. The exact per-number URL is on every reading. Repo ids for the NVIDIA, GLM and Gemma targets were resolved via https://huggingface.co/api/models?search=... rather than guessed.",
+ "_retrieved": "2026-09-29",
+ "_basis": "VENDOR-REPORTED, every single number, without exception. Nothing here was measured by this project and nothing here is an independent third party. Each reading carries `provenance: vendor-reported`, `reported_by`, `is_self_report`, the verbatim `as_labelled_on_card` string, and `compared_against_in_that_table` -- the vendor's own chosen comparison set, which is the thing that makes a vendor table flattering. A benchmark slot holds a LIST of readings precisely so that disagreement is representable: where two vendors state different numbers for the same model on the same benchmark, BOTH are recorded and neither is preferred. HIGHER IS BETTER for every metric present. A slot equal to the string \"NOT_OBTAINED\" means the card does not state it -- NOT that the model scores zero, and NOT that it was not asked for.",
+ "_slots": [
+  "IFBench",
+  "IFEval",
+  "MultiChallenge",
+  "MMLU-Pro",
+  "RULER",
+  "AA-LCR",
+  "AA-Omniscience",
+  "hallucination_rate"
+ ],
+ "_selection": "The nine targets named in the brief, plus zai-org/GLM-4.7 as the explicitly permitted family fallback for GLM-4.7-Flash. Every one has at least one mlx-community quantisation on HuggingFace, verified by API query and listed per model in `mlx_quants_mlx_community` (names are the repo id minus the \"mlx-community/\" prefix). Availability of a quant is NOT evidence the quant scores what the card says -- see _limit_quantisation.",
+ "_coverage": "COMPUTED from this file, not hand-written. 10 models x 8 slots = 80 cells: 31 carry at least one reading, 49 are NOT_OBTAINED. 43 readings total (27 self-reports, 16 competitor-reports), and 11 slots carry more than one reading, i.e. a recorded disagreement. Slots stated per card, worst first: zai-org/GLM-4.7-Flash 0/8; Qwen/Qwen3.8-27B 1/8; google/gemma-4-31B-it 1/8; zai-org/GLM-4.7 1/8; MiniMaxAI/MiniMax-M2.1 3/8; Qwen/Qwen3-Next-80B-A3B-Instruct 3/8; nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 4/8; Qwen/Qwen3.5-122B-A10B 6/8; nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16 6/8; openai/gpt-oss-120b 6/8.",
+ "_key_disagreements": [
+  "gpt-oss-120b MultiChallenge: Qwen says 45.3, NVIDIA says 58.29. 12.99 points apart on the same benchmark for the same model. This one gap is larger than most of the differences between models that this corpus would be used to rank.",
+  "Qwen3.5-122B-A10B IFBench: Qwen's own card 76.1, NVIDIA 73.77 (prompt), NVIDIA 71.92 (loose) -- three readings spanning 4.18 points, and the highest is the self-report.",
+  "Nemotron 3 Super against ITSELF: NVIDIA's two cards disagree on the same model -- MMLU-Pro 83.73 vs 83.89, IFBench 72.56 (prompt) vs 71.92 (loose), AA-LCR 58.31 vs 58.44. Same vendor, same month, different numbers.",
+  "Gemma 4 26B A4B MMLU-Pro: Google's own card says 82.6, NVIDIA's Lightning card says 85.20 -- 2.6 points, with the COMPETITOR reporting the HIGHER figure. Vendor bias is not reliably directional, so \"discount the self-report\" is not a valid correction.",
+  "IFBench has at least three incompatible variants in circulation on these cards -- unlabelled (Qwen, MiniMax), \"(prompt)\" (NVIDIA Super) and \"(loose)\" (NVIDIA Lightning). Two IFBench numbers from different cards are not necessarily the same measurement."
+ ],
+ "_caution_nemotron_naming": "On the Nemotron 3.5 Lightning card the Qwen comparison column is headed \"Qwen 3.6 35B A3B\", not Qwen3.5-122B-A10B. The 71.92 IFBench (loose) reading filed under Qwen/Qwen3.5-122B-A10B above is therefore attached with LOW CONFIDENCE in the identity match and should be treated as a different model unless someone confirms otherwise. Flagged rather than silently dropped or silently merged.",
+ "_not_obtained_summary": {
+  "_counts_are_computed": "Each figure below is the number of the 10 models whose card does not state that slot, recomputed from the file.",
+  "hallucination_rate": "10/10 -- i.e. ALL of them. Not one card in this set publishes a hallucination or factuality rate. Use vectara-hhem.json for that axis; there is no vendor-card source for it.",
+  "AA-Omniscience": "8/10. Stated only on NVIDIA's Lightning card (17.50 for itself, 26.68 for Nemotron 3 Super).",
+  "IFEval": "7/10. Stated only by Qwen3.5-122B-A10B (93.4), Qwen3-Next-80B-A3B-Instruct (87.6), and for gpt-oss-120b by Qwen (88.9).",
+  "MultiChallenge": "7/10.",
+  "RULER": "6/10. gemma-4-31B-it publishes MRCR v2 8-needle 128k instead, which is a different benchmark and was NOT substituted.",
+  "AA-LCR": "5/10.",
+  "IFBench": "4/10: Qwen3-Next-80B-A3B-Instruct, GLM-4.7-Flash, GLM-4.7 and gemma-4-31B-it state none.",
+  "MMLU-Pro": "2/10: Qwen3.8-27B and GLM-4.7-Flash state none.",
+  "per-number uncertainty": "ALL 43 readings. Not one card states a confidence interval, a run count, or a variance for any number in these slots (MiniMax and NVIDIA state run counts for OTHER benchmarks only). Every value here is a bare point estimate.",
+  "quantisation": "9/10. Only openai/gpt-oss-120b states the precision its own evals ran at (MXFP4)."
+ },
+ "_limit_quantisation": "Every number here except gpt-oss-120b's describes the vendor's own full-precision or unstated-precision serving. The MLX quants listed per model are 2-8 bit. NOTHING in this file, or in any of the four reference files, measures what quantisation costs. A card score must not be carried over to a 4-bit local run as if it still held.",
+ "models": {
+  "Qwen/Qwen3.8-27B": {
+   "card_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+   "mlx_quants_mlx_community": [
+    "Qwen3.8-27B-4bit",
+    "Qwen3.8-27B-8bit",
+    "Qwen3.8-27B-bf16",
+    "Qwen3.8-27B-mxfp4",
+    "Qwen3.8-27B-mxfp8",
+    "Qwen3.8-27B-nvfp4",
+    "Qwen3.8-27B-OptiQ-4bit",
+    "Qwen3.8-27B-MTP-4bit"
+   ],
+   "card_table_scope": "Two tables: text/agentic benchmarks and multimodal benchmarks. The ONLY benchmark in this file's slots that appears is IFBench.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 79.5,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "Instruction following / IFBench",
+       "source": "https://huggingface.co/Qwen/Qwen3.8-27B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.6-27B",
+        "Qwen3.7-Plus",
+        "Muse Glimmer-30B",
+        "Opus4.6 Max"
+       ]
+      }
+     ]
+    },
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": "NOT_OBTAINED",
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": "NOT_OBTAINED",
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "Qwen/Qwen3.5-122B-A10B": {
+   "card_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+   "mlx_quants_mlx_community": [
+    "Qwen3.5-122B-A10B-4bit",
+    "Qwen3.5-122B-A10B-5bit",
+    "Qwen3.5-122B-A10B-6bit",
+    "Qwen3.5-122B-A10B-8bit",
+    "Qwen3.5-122B-A10B-bf16",
+    "Qwen3.5-122B-A10B-mxfp4",
+    "Qwen3.5-122B-A10B-mxfp8",
+    "Qwen3.5-122B-A10B-OptiQ-2bit"
+   ],
+   "card_table_scope": "The richest card in this set: it is the only one stating four of the eight slots. It is also the only target measured by a COMPETITOR card (NVIDIA's Nemotron 3 Super), so four slots carry two readings.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 76.1,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFBench",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 73.77,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "IFBench (prompt)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "NVIDIA labels its variant \"(prompt)\"; Qwen labels its own simply \"IFBench\". The 2.33-point gap may be the variant rather than the model, and it runs in the direction that flatters Qwen on Qwen's own card."
+      },
+      {
+       "value": 71.92,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "IFBench (loose)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ],
+       "note": "A THIRD reading of the same model from the same vendor's other card, at a third IFBench variant (\"loose\"). Reported there under the row label \"Qwen 3.6 35B A3B\" -- see _caution_nemotron_naming."
+      }
+     ]
+    },
+    "IFEval": {
+     "readings": [
+      {
+       "value": 93.4,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFEval",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      }
+     ]
+    },
+    "MultiChallenge": {
+     "readings": [
+      {
+       "value": 61.5,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "MultiChallenge",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 61.5,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "Scale AI Multi-Challenge",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "Identical to Qwen's own figure to two decimals."
+      }
+     ]
+    },
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 86.7,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 86.7,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "Identical to Qwen's own figure to two decimals."
+      }
+     ]
+    },
+    "RULER": {
+     "readings": [
+      {
+       "value": {
+        "256k": 96.74,
+        "512k": 95.95,
+        "1M": 91.33
+       },
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "RULER @ 256k / @ 512k / @ 1M",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "Qwen's own card for this model states NO RULER number; this is a competitor's measurement only."
+      }
+     ]
+    },
+    "AA-LCR": {
+     "readings": [
+      {
+       "value": 66.9,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 66.9,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": false,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "Identical to Qwen's own figure to two decimals."
+      }
+     ]
+    },
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "Qwen/Qwen3-Next-80B-A3B-Instruct": {
+   "card_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
+   "mlx_quants_mlx_community": [
+    "Qwen3-Next-80B-A3B-Instruct-4bit",
+    "Qwen3-Next-80B-A3B-Instruct-5bit",
+    "Qwen3-Next-80B-A3B-Instruct-6bit",
+    "Qwen3-Next-80B-A3B-Instruct-8bit"
+   ],
+   "card_table_scope": "An older-generation card. States IFEval and MMLU-Pro in its main table, and a full per-length RULER sweep in a separate \"Long-Context Performance\" section. No IFBench, no MultiChallenge, no AA-* metric.",
+   "benchmarks": {
+    "IFBench": "NOT_OBTAINED",
+    "IFEval": {
+     "readings": [
+      {
+       "value": 87.6,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFEval",
+       "source": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3-30B-A3B-Instruct-2507",
+        "Qwen3-32B Non-Thinking",
+        "Qwen3-235B-A22B-Instruct-2507"
+       ]
+      }
+     ]
+    },
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 80.6,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3-30B-A3B-Instruct-2507",
+        "Qwen3-32B Non-Thinking",
+        "Qwen3-235B-A22B-Instruct-2507"
+       ]
+      }
+     ]
+    },
+    "RULER": {
+     "readings": [
+      {
+       "value": {
+        "acc_avg": 91.8,
+        "4k": 98.5,
+        "8k": 99.0,
+        "16k": 98.0,
+        "32k": 98.7,
+        "64k": 97.6,
+        "96k": 95.0,
+        "128k": 96.0,
+        "192k": 94.0,
+        "256k": 93.5,
+        "384k": 91.7,
+        "512k": 86.9,
+        "640k": 85.5,
+        "768k": 81.7,
+        "896k": 80.3,
+        "1000k": 80.3
+       },
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen",
+       "is_self_report": true,
+       "as_labelled_on_card": "RULER (1M version), Acc avg plus per-length",
+       "source": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3-30B-A3B-Instruct-2507",
+        "Qwen3-32B Non-Thinking",
+        "Qwen3-235B-A22B-Instruct-2507"
+       ],
+       "note": "Card states: evaluated with YaRN enabled, 260 samples per length (13 sub-tasks x 20 samples) -- a small n per cell. Comparison-set Acc avg: Qwen3-30B-A3B-Instruct-2507 86.8, Qwen3-235B-A22B-Instruct-2507 92.5 (the latter two evaluated with Dual Chunk Attention, not YaRN, so the three columns are not a like-for-like comparison)."
+      }
+     ]
+    },
+    "AA-LCR": "NOT_OBTAINED",
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "zai-org/GLM-4.7-Flash": {
+   "card_url": "https://huggingface.co/zai-org/GLM-4.7-Flash",
+   "mlx_quants_mlx_community": [
+    "GLM-4.7-Flash-4bit",
+    "GLM-4.7-Flash-5bit",
+    "GLM-4.7-Flash-6bit",
+    "GLM-4.7-Flash-8bit",
+    "GLM-4.7-Flash-bf16",
+    "GLM-4.7-Flash-4bit-mxfp4",
+    "GLM-4.7-Flash-8bit-mxfp8"
+   ],
+   "card_table_scope": "The card has exactly ONE 7-row benchmark table and NONE of the eight slots appear in it. It states AIME 25, GPQA, LCB v6, HLE, SWE-bench Verified, tau2-Bench and BrowseComp only -- not even MMLU-Pro. Every slot is NOT_OBTAINED; see zai-org/GLM-4.7 for the family sibling.",
+   "benchmarks": {
+    "IFBench": "NOT_OBTAINED",
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": "NOT_OBTAINED",
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": "NOT_OBTAINED",
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "zai-org/GLM-4.7": {
+   "card_url": "https://huggingface.co/zai-org/GLM-4.7",
+   "mlx_quants_mlx_community": [
+    "GLM-4.7-4bit",
+    "GLM-4.7-6bit",
+    "GLM-4.7-8bit"
+   ],
+   "included_because": "The brief allowed \"the GLM-4.7 family\" as a fallback because GLM-4.7-Flash publishes none of the requested metrics. NOTE: GLM-4.7 is far larger than GLM-4.7-Flash and is NOT a substitute for it as a measurement subject.",
+   "card_table_scope": "An 18-row table against 7 competitors. Of the eight slots only MMLU-Pro appears. No instruction-following benchmark and no hallucination benchmark anywhere on the card.",
+   "benchmarks": {
+    "IFBench": "NOT_OBTAINED",
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 84.3,
+       "provenance": "vendor-reported",
+       "reported_by": "Z.ai (zai-org)",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/zai-org/GLM-4.7/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GLM-4.6",
+        "Kimi K2 Thinking",
+        "DeepSeek-V3.2",
+        "Gemini 3.0 Pro",
+        "Claude Sonnet 4.5",
+        "GPT-5-High",
+        "GPT-5.1-High"
+       ],
+       "note": "Comparison-set values on the same row: GLM-4.6 83.2, Kimi K2 Thinking 84.6, DeepSeek-V3.2 85.0, Gemini 3.0 Pro 90.1, Claude Sonnet 4.5 88.2, GPT-5-High 87.5, GPT-5.1-High 87.0 -- i.e. this table puts its own model LAST of eight on MMLU-Pro, which is unusually un-flattering for a vendor card."
+      }
+     ]
+    },
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": "NOT_OBTAINED",
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "google/gemma-4-31B-it": {
+   "card_url": "https://huggingface.co/google/gemma-4-31B-it",
+   "mlx_quants_mlx_community": [
+    "gemma-4-31b-4bit",
+    "gemma-4-31B-it-OptiQ-4bit",
+    "gemma-4-31B-it-assistant-bf16",
+    "gemma-4-31B-it-qat-OptiQ-4bit"
+   ],
+   "card_table_scope": "Of the eight slots only \"MMLU Pro\" appears. Its long-context row is MRCR v2 8-needle 128k (66.4%), which is NOT RULER and must not be substituted for one. No instruction-following benchmark of any kind. Hallucination appears only as an un-numbered prose caveat under \"Factual Accuracy\" in the limitations section.",
+   "comparison_bias_note": "The comparison set is ENTIRELY in-family -- four smaller Gemma 4 variants plus its own predecessor Gemma 3 27B. No external competitor appears anywhere in the table, so the card supports no cross-vendor claim at all.",
+   "benchmarks": {
+    "IFBench": "NOT_OBTAINED",
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 85.2,
+       "provenance": "vendor-reported",
+       "reported_by": "Google",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU Pro (stated as \"85.2%\")",
+       "source": "https://huggingface.co/google/gemma-4-31B-it/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Gemma 4 26B A4B",
+        "Gemma 4 12B Unified",
+        "Gemma 4 E4B",
+        "Gemma 4 E2B",
+        "Gemma 3 27B (no think)"
+       ]
+      }
+     ]
+    },
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": "NOT_OBTAINED",
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16": {
+   "card_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+   "mlx_quants_mlx_community": [
+    "NVIDIA-Nemotron-3-Super-120B-A12B-4bit",
+    "NVIDIA-Nemotron-3-Super-120B-A12B-5bit",
+    "NVIDIA-Nemotron-3-Super-120B-A12B-6bit",
+    "NVIDIA-Nemotron-3-Super-120B-A12B-8bit",
+    "NVIDIA-Nemotron-3-Super-120B-A12B-OptiQ-2bit"
+   ],
+   "mlx_quants_other_authors": [
+    "inferencerlabs/...-MLX-Q4",
+    "inferencerlabs/...-MLX-Q9",
+    "sjug/...-MLX-4bit",
+    "will3509111/...-MLX-NVFP4 / MXFP4 / MXFP8",
+    "exolabs/...-MTP-mlx"
+   ],
+   "card_table_scope": "The second-richest card here: five of the eight slots. Reports IFBench (prompt), Scale AI Multi-Challenge, MMLU-Pro, AA-LCR and a three-point RULER sweep. No IFEval, no AA-Omniscience, no hallucination benchmark.",
+   "self_disagreement_warning": "NVIDIA's OWN OTHER CARD (Nemotron 3.5 Lightning) states different numbers for this same model: MMLU Pro 83.89 vs 83.73 here, IFBench 71.92 (loose) vs 72.56 (prompt) here, AA-LCR 58.44 vs 58.31 here. Both readings are recorded below.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 72.56,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFBench (prompt)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      },
+      {
+       "value": 71.92,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFBench (loose)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ],
+       "note": "Same vendor, different card, different IFBench variant."
+      }
+     ]
+    },
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": {
+     "readings": [
+      {
+       "value": 55.23,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "Scale AI Multi-Challenge",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 83.73,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      },
+      {
+       "value": 83.89,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU Pro",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ],
+       "note": "Same vendor, different card, 0.16 apart."
+      }
+     ]
+    },
+    "RULER": {
+     "readings": [
+      {
+       "value": {
+        "256k": 96.3,
+        "512k": 95.67,
+        "1M": 91.75
+       },
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "RULER @ 256k / @ 512k / @ 1M",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "AA-LCR": {
+     "readings": [
+      {
+       "value": 58.31,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      },
+      {
+       "value": 58.44,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ],
+       "note": "Same vendor, different card, 0.13 apart."
+      }
+     ]
+    },
+    "AA-Omniscience": {
+     "readings": [
+      {
+       "value": 26.68,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-Omniscience",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ],
+       "note": "Stated only on the Lightning card, not on this model's own card."
+      }
+     ]
+    },
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16": {
+   "card_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+   "mlx_quants_mlx_community": [
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-4bit",
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-8bit",
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-bf16",
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-mxfp4",
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-mxfp8",
+    "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-OptiQ-4bit"
+   ],
+   "card_table_scope": "Four of the eight slots: IFBench (loose), MMLU Pro, AA-Omniscience, AA-LCR. No IFEval, no MultiChallenge, no RULER, no hallucination benchmark. This is the ONLY card in the set that states AA-Omniscience.",
+   "methodology_note": "This card states, verbatim: \"Accuracy numbers measured by NVIDIA under a consistent harness (NeMo Gym / Nemo Evaluator SDK); they may differ from vendors' self-reported numbers.\" That makes its competitor columns INDEPENDENT re-measurements. The sibling Nemotron 3 Super card makes no such statement and its Qwen3.5-122B-A10B figures are identical to Qwen's own to two decimals on three of four metrics -- consistent with being copied rather than re-measured, though the card does not say so and this remains an INFERENCE, not a stated fact.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 71.88,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFBench (loose)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ]
+      }
+     ]
+    },
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 81.94,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU Pro",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ]
+      }
+     ]
+    },
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": {
+     "readings": [
+      {
+       "value": 52.0,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ]
+      }
+     ]
+    },
+    "AA-Omniscience": {
+     "readings": [
+      {
+       "value": 17.5,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-Omniscience",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen 3.6 35B A3B",
+        "Gemma 4 26B A4B",
+        "Nemotron 3 Nano",
+        "Nemotron 3 Super",
+        "GPT-OSS 20B"
+       ]
+      }
+     ]
+    },
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "MiniMaxAI/MiniMax-M2.1": {
+   "card_url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.1",
+   "mlx_quants_mlx_community": [
+    "MiniMax-M2.1-3bit",
+    "MiniMax-M2.1-4bit",
+    "MiniMax-M2.1-5bit",
+    "MiniMax-M2.1-6bit",
+    "MiniMax-M2.1-8bit",
+    "MiniMax-M2.1-REAP-30-4bit",
+    "MiniMax-M2.1-REAP-40-4bit"
+   ],
+   "card_table_scope": "Three of the eight slots: IFBench, MMLU-Pro, AA-LCR. No IFEval, no MultiChallenge, no RULER, no AA-Omniscience.",
+   "hallucination_note": "The card does NOT publish a hallucination rate. It describes an internal \"SWE Review\" benchmark that \"evaluat[es] both defect recall and hallucination rates\", but the published SWE Review score is a composite correctness figure, not a hallucination rate, so no number is extracted here. The benchmark is unreleased.",
+   "methodology_note": "Many of this card's agentic scores are produced with Claude Code as the scaffolding and the default system prompt overridden, averaged over 3-4 runs. That does not affect the three slots below, which are standard benchmarks, but it means the card is not a single-harness document.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 70.0,
+       "provenance": "vendor-reported",
+       "reported_by": "MiniMax",
+       "is_self_report": true,
+       "as_labelled_on_card": "IFBench",
+       "source": "https://huggingface.co/MiniMaxAI/MiniMax-M2.1/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "MiniMax-M2",
+        "Claude Sonnet 4.5",
+        "Claude Opus 4.5",
+        "Gemini 3 Pro",
+        "GPT-5.2 (thinking)",
+        "DeepSeek V3.2"
+       ],
+       "note": "Comparison-set values on the same row: MiniMax-M2 72.0, Claude Sonnet 4.5 57.0, Claude Opus 4.5 58.0, Gemini 3 Pro 70.0, GPT-5.2 (thinking) 75.0, DeepSeek V3.2 61.0. Note its own previous model M2 scores HIGHER (72.0)."
+      }
+     ]
+    },
+    "IFEval": "NOT_OBTAINED",
+    "MultiChallenge": "NOT_OBTAINED",
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 88.0,
+       "provenance": "vendor-reported",
+       "reported_by": "MiniMax",
+       "is_self_report": true,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/MiniMaxAI/MiniMax-M2.1/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "MiniMax-M2",
+        "Claude Sonnet 4.5",
+        "Claude Opus 4.5",
+        "Gemini 3 Pro",
+        "GPT-5.2 (thinking)",
+        "DeepSeek V3.2"
+       ]
+      }
+     ]
+    },
+    "RULER": "NOT_OBTAINED",
+    "AA-LCR": {
+     "readings": [
+      {
+       "value": 62.0,
+       "provenance": "vendor-reported",
+       "reported_by": "MiniMax",
+       "is_self_report": true,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/MiniMaxAI/MiniMax-M2.1/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "MiniMax-M2",
+        "Claude Sonnet 4.5",
+        "Claude Opus 4.5",
+        "Gemini 3 Pro",
+        "GPT-5.2 (thinking)",
+        "DeepSeek V3.2"
+       ]
+      }
+     ]
+    },
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  },
+  "openai/gpt-oss-120b": {
+   "card_url": "https://huggingface.co/openai/gpt-oss-120b",
+   "mlx_quants_mlx_community": [
+    "gpt-oss-120b-4bit",
+    "gpt-oss-120b-mxfp4-bf16",
+    "gpt-oss-120b-MXFP4-Q4",
+    "gpt-oss-120b-MXFP4-Q8"
+   ],
+   "card_table_scope": "The card publishes NO benchmark table at all -- zero markdown tables, and no numeric score for any benchmark. Every reading below therefore comes from a COMPETITOR's card, and the two competitors DISAGREE.",
+   "quantisation_datapoint": "This is the ONLY quantisation statement found anywhere in the four reference files. The card states the model was POST-TRAINED with MXFP4 quantization of the MoE weights and that \"All evals were performed with the same MXFP4 quantization\". So for gpt-oss-120b alone, the published precision is known and is MXFP4 -- not the unlabelled bf16-or-whatever that every other number in this corpus silently assumes.",
+   "benchmarks": {
+    "IFBench": {
+     "readings": [
+      {
+       "value": 69.0,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "IFBench",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 68.32,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "IFBench (prompt)",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "IFEval": {
+     "readings": [
+      {
+       "value": 88.9,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "IFEval",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      }
+     ]
+    },
+    "MultiChallenge": {
+     "readings": [
+      {
+       "value": 45.3,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "MultiChallenge",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 58.29,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "Scale AI Multi-Challenge",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ],
+       "note": "THE LARGEST DISAGREEMENT IN THIS FILE: 12.99 points on the same benchmark for the same model. Do not average these and do not pick one."
+      }
+     ]
+    },
+    "MMLU-Pro": {
+     "readings": [
+      {
+       "value": 80.8,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 81.0,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "MMLU-Pro",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "RULER": {
+     "readings": [
+      {
+       "value": {
+        "256k": 52.3,
+        "512k": 46.7,
+        "1M": 22.3
+       },
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "RULER @ 256k / @ 512k / @ 1M",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "AA-LCR": {
+     "readings": [
+      {
+       "value": 50.7,
+       "provenance": "vendor-reported",
+       "reported_by": "Qwen (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "GPT-5-mini 2025-08-07",
+        "GPT-OSS-120B",
+        "Qwen3-235B-A22B",
+        "Qwen3.5-27B",
+        "Qwen3.5-35B-A3B"
+       ]
+      },
+      {
+       "value": 51.0,
+       "provenance": "vendor-reported",
+       "reported_by": "NVIDIA (competitor card)",
+       "is_self_report": false,
+       "as_labelled_on_card": "AA-LCR",
+       "source": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/raw/main/README.md",
+       "compared_against_in_that_table": [
+        "Qwen3.5-122B-A10B",
+        "GPT-OSS-120B"
+       ]
+      }
+     ]
+    },
+    "AA-Omniscience": "NOT_OBTAINED",
+    "hallucination_rate": "NOT_OBTAINED"
+   }
+  }
+ }
+}

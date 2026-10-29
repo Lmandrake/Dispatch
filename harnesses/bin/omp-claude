@@ -1,0 +1,13 @@
+#!/bin/sh
+# OMP (oh-my-pi) driving Claude through the same GenAI route Claude Code uses (read from
+# ~/.claude/settings.json at run time). NH_PROFILE=full (default) or bare. Binary: $NH_OMP_BIN,
+# else the install under agent storage (see docs/METHOD.md "Install").
+set -eu
+here=$(cd "$(dirname "$0")/.." && pwd)
+root=$(printf "%s" "${DISPATCH_STORAGE_ROOT:-$HOME/.cache/dispatch}")
+dir=$(python3 -I "$here/gen/make_configs.py" --harness omp --profile "${NH_PROFILE:-full}")
+bin=${NH_OMP_BIN:-$root/harnesses/build/omp/node_modules/.bin/omp}
+[ -x "$bin" ] || { echo "omp-claude: no omp binary at $bin (set NH_OMP_BIN)" >&2; exit 2; }
+export PI_CODING_AGENT_DIR="$dir" OMP_SKIP_SETUP=1 PI_NO_TITLE=1 OTEL_SDK_DISABLED=true
+[ -n "${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}" ] || export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+exec "$bin" "$@"

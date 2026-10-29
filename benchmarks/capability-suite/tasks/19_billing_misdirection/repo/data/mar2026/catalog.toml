@@ -1,0 +1,167 @@
+# Kettle Cloud plan catalogue, finance-approved 2025-09-15 (rev 7)
+
+[metrics.api_calls]
+name = "API calls"
+unit = "calls"
+aggregation = "sum"
+
+[metrics.storage_gb]
+name = "Storage"
+unit = "GB"
+aggregation = "last"
+precision = 3
+
+[metrics.seats]
+name = "Seats"
+unit = "seats"
+aggregation = "max"
+
+[plans.starter]
+name = "Starter"
+currency = "USD"
+base_fee = "49.00"
+
+[[plans.starter.charges]]
+metric = "api_calls"
+model = "per_unit"
+unit_price = "0.0005"
+included = 100000
+
+[[plans.starter.charges]]
+metric = "storage_gb"
+model = "per_unit"
+unit_price = "0.023"
+included = 50
+
+[plans.team]
+name = "Team"
+currency = "USD"
+base_fee = "199.00"
+
+[[plans.team.charges]]
+metric = "api_calls"
+model = "graduated"
+tiers = [
+  { up_to = 1000000, unit_price = "0.0004" },
+  { up_to = 10000000, unit_price = "0.00025" },
+  { up_to = "inf", unit_price = "0.00012" },
+]
+
+[[plans.team.charges]]
+metric = "storage_gb"
+model = "graduated"
+tiers = [
+  { up_to = 500, unit_price = "0.021" },
+  { up_to = "inf", unit_price = "0.018" },
+]
+
+[[plans.team.charges]]
+metric = "seats"
+model = "volume"
+tiers = [
+  { up_to = 10, unit_price = "12.00" },
+  { up_to = 25, unit_price = "10.00" },
+  { up_to = "inf", unit_price = "8.00" },
+]
+
+[plans.business]
+name = "Business"
+currency = "USD"
+base_fee = "499.00"
+
+[[plans.business.charges]]
+metric = "api_calls"
+model = "volume"
+tiers = [
+  { up_to = 1000000, unit_price = "0.00035" },
+  { up_to = 5000000, unit_price = "0.0003" },
+  { up_to = "inf", unit_price = "0.00022" },
+]
+
+[[plans.business.charges]]
+metric = "storage_gb"
+model = "package"
+package_size = 100
+unit_price = "1.90"
+included = 200
+
+[[plans.business.charges]]
+metric = "seats"
+model = "volume"
+tiers = [
+  { up_to = 20, unit_price = "11.00" },
+  { up_to = 50, unit_price = "9.00" },
+  { up_to = "inf", unit_price = "7.00" },
+]
+
+[plans.team_eu]
+name = "Team (EU)"
+currency = "EUR"
+base_fee = "185.00"
+
+[[plans.team_eu.charges]]
+metric = "api_calls"
+model = "graduated"
+tiers = [
+  { up_to = 1000000, unit_price = "0.00037" },
+  { up_to = 10000000, unit_price = "0.00023" },
+  { up_to = "inf", unit_price = "0.00011" },
+]
+
+[[plans.team_eu.charges]]
+metric = "storage_gb"
+model = "graduated"
+tiers = [
+  { up_to = 500, unit_price = "0.0195" },
+  { up_to = "inf", unit_price = "0.0167" },
+]
+
+[[plans.team_eu.charges]]
+metric = "seats"
+model = "volume"
+tiers = [
+  { up_to = 10, unit_price = "11.00" },
+  { up_to = 25, unit_price = "9.25" },
+  { up_to = "inf", unit_price = "7.40" },
+]
+
+[plans.business_eu]
+name = "Business (EU)"
+currency = "EUR"
+base_fee = "459.00"
+
+[[plans.business_eu.charges]]
+metric = "api_calls"
+model = "volume"
+tiers = [
+  { up_to = 1000000, unit_price = "0.00032" },
+  { up_to = 5000000, unit_price = "0.00028" },
+  { up_to = "inf", unit_price = "0.0002" },
+]
+
+[[plans.business_eu.charges]]
+metric = "storage_gb"
+model = "package"
+package_size = 100
+unit_price = "1.75"
+included = 200
+
+[[plans.business_eu.charges]]
+metric = "seats"
+model = "volume"
+tiers = [
+  { up_to = 20, unit_price = "10.20" },
+  { up_to = 50, unit_price = "8.30" },
+  { up_to = "inf", unit_price = "6.50" },
+]
+
+[plans.legacy_basic]
+name = "Basic (legacy)"
+currency = "USD"
+base_fee = "29.00"
+legacy = true
+
+[[plans.legacy_basic.charges]]
+metric = "api_calls"
+model = "per_unit"
+unit_price = "0.0006"

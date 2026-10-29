@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Credentials never live in this repo. See docs/CREDENTIALS.md.
+.env
+env
+*.key
+secrets*
+
+# Local run output. Benchmark results that matter are committed explicitly.
+.cache/
+runs/local/

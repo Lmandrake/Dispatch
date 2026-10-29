@@ -1,0 +1,64 @@
+{
+  "amount_due": "14742",
+  "credits": [],
+  "currency": "JPY",
+  "customer": {
+    "id": "C05",
+    "name": "Eastgate Studio KK",
+    "tax_id": null
+  },
+  "discounts": [
+    {
+      "amount": "1474",
+      "coupon": "WELCOME10"
+    }
+  ],
+  "due_date": "2026-03-12",
+  "issued": "2026-02-10",
+  "late_fees": "0",
+  "lines": [
+    {
+      "amount": "7409",
+      "description": "Starter plan, Jan 10-Feb 9",
+      "kind": "base",
+      "plan": "starter",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "7276",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "starter",
+      "quantity": "196240",
+      "unit": "calls"
+    },
+    {
+      "amount": "57",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "starter",
+      "quantity": "66.408",
+      "unit": "GB"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C05",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-02-09",
+    "start": "2026-01-10",
+    "timezone": "Asia/Tokyo"
+  },
+  "subtotal": "14742",
+  "tax": {
+    "amount": "1474",
+    "jurisdiction": "JP",
+    "rate": "0.1",
+    "reverse_charge": false,
+    "taxable": "14742"
+  },
+  "total": "14742"
+}

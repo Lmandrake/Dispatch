@@ -1,0 +1,59 @@
+{
+  "amount_due": "245.39",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C14",
+    "name": "Orchard Lane Ltd",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-03",
+  "issued": "2026-02-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "49.00",
+      "description": "Starter plan, Jan 1-Jan 31",
+      "kind": "base",
+      "plan": "starter",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "155.11",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "starter",
+      "quantity": "410214",
+      "unit": "calls"
+    },
+    {
+      "amount": "0.38",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "starter",
+      "quantity": "66.389",
+      "unit": "GB"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C14",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-01-31",
+    "start": "2026-01-01",
+    "timezone": "Europe/London"
+  },
+  "subtotal": "204.49",
+  "tax": {
+    "amount": "40.90",
+    "jurisdiction": "GB",
+    "rate": "0.2",
+    "reverse_charge": false,
+    "taxable": "204.49"
+  },
+  "total": "245.39"
+}

@@ -1,0 +1,1 @@
+{"category": "feature", "what_it_probes": "Threading a new option through argparse and a library function in a second module while keeping defaults and validation intact.", "expected_minutes_for_human": 15}

@@ -1,0 +1,55 @@
+# Codex config for the consult worker. Installed into the credential home as config.toml by
+# bin/codex-worker on every run (repo copy is the source of truth; drift is overwritten).
+cli_auth_credentials_store = "file"
+approval_policy = "never"
+sandbox_mode = "read-only"
+web_search = "disabled"
+check_for_update_on_startup = false
+model_reasoning_effort = "high"    # recorded in the ledger row as reasoning_effort
+project_doc_max_bytes = 0          # never load AGENTS.md from the packet
+
+[history]
+persistence = "none"
+
+[analytics]
+enabled = false
+
+[otel]
+exporter = "none"
+metrics_exporter = "none"
+trace_exporter = "none"
+log_user_prompt = false
+
+# Everything that would give the consult capabilities beyond reading the packet, or reach
+# beyond the model connection, is off. `codex features list` shows the current set.
+[features]
+apps = false
+plugins = false
+remote_plugin = false
+plugin_sharing = false
+hooks = false
+browser_use = false
+browser_use_external = false
+browser_use_full_cdp_access = false
+in_app_browser = false
+computer_use = false
+image_generation = false
+multi_agent = false
+skill_search = false
+skill_mcp_dependency_install = false
+tool_suggest = false
+workspace_dependencies = false
+worktrees = false
+daemon_auto_start = false
+realtime_conversation = false
+unbounded_connection_retries = false
+in_app_local_automation = false
+code_mode_host = false             # exposed functions.exec (+ nested apply_patch) when on
+goals = false
+# No tools that read the filesystem: the packet is INLINED into the prompt, so disclosure is
+# exactly the scanned prompt. bubblewrap cannot create namespaces in this container (measured
+# 2026-10-07), so any command that did slip through runs under read-only and fails closed.
+shell_tool = false
+unified_exec = false
+shell_snapshot = false
+view_image = false

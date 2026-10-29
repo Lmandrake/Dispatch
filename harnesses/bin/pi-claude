@@ -1,0 +1,13 @@
+#!/bin/sh
+# Pi driving Claude through the same GenAI route Claude Code uses (read from ~/.claude/settings.json
+# at run time; nothing account-specific here). NH_PROFILE=full (default: CLAUDE.md, skills, MCP) or bare.
+# Binary: $NH_PI_BIN, else the install under agent storage (see docs/METHOD.md "Install").
+set -eu
+here=$(cd "$(dirname "$0")/.." && pwd)
+root=$(printf "%s" "${DISPATCH_STORAGE_ROOT:-$HOME/.cache/dispatch}")
+dir=$(python3 -I "$here/gen/make_configs.py" --harness pi --profile "${NH_PROFILE:-full}")
+bin=${NH_PI_BIN:-$root/harnesses/build/pi/node_modules/.bin/pi}
+[ -x "$bin" ] || { echo "pi-claude: no pi binary at $bin (set NH_PI_BIN)" >&2; exit 2; }
+export PI_CODING_AGENT_DIR="$dir" PI_SKIP_VERSION_CHECK=1 PI_TELEMETRY=0
+[ -n "${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}" ] || export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+exec "$bin" "$@"

@@ -1,0 +1,54 @@
+# Curated model shortlists for assessment runs.
+# IDs are reconciled against the live catalog; stale ones are skipped.
+
+smoke:
+  - nvidia/nemotron-3-nano-30b-a3b   # fastest reachable; 100% uptime 2026-08-26
+
+# 2026-08-26: removed 5 ids confirmed unreachable (410 EOL or sustained 404).
+# Re-verify with `nemo profile` before adding any id back.
+# The headline free models worth knowing well — spans reasoning, general, code,
+# and vision across vendors. Sized to stay within the free-tier rate budget.
+flagship:
+  - nvidia/nemotron-3-ultra-550b-a55b
+  - nvidia/nemotron-3-super-120b-a12b
+  - nvidia/nemotron-3-nano-30b-a3b
+  - moonshotai/kimi-k3
+  - openai/gpt-oss-120b
+  - openai/gpt-oss-20b
+  - meta/llama-3.3-70b-instruct
+  - google/gemma-4-31b-it
+  - writer/palmyra-creative-122b
+
+nemotron:
+  - nvidia/nemotron-3-ultra-550b-a55b
+  - nvidia/nemotron-3-super-120b-a12b
+  - nvidia/nemotron-3-nano-30b-a3b
+  - nvidia/nemotron-3-nano-omni-30b-a3b-reasoning
+  - nvidia/llama-3.1-nemotron-70b-instruct
+
+# 2026-08-26: four of the five original entries here are 404 on the free tier
+# (codestral-22b, granite-34b-code, deepseek-coder-6.7b, codellama-70b), so the
+# preset ran almost empty. Replaced with code-capable models confirmed reachable.
+code:
+  - poolside/laguna-xs-2.1        # top code score, but only ~33% reachable
+  - nvidia/nemotron-3-super-120b-a12b
+  - openai/gpt-oss-20b
+  - nvidia/nemotron-3-nano-30b-a3b
+
+# 2026-08-26: nemotron-nano-12b-v2-vl and llama-3.1-nemotron-nano-vl-8b-v1 both
+# hit 410 end-of-life; phi-3-vision is 404. Remaining entries verified reachable.
+vision:
+  - nvidia/nemotron-3-nano-omni-30b-a3b-reasoning
+  - meta/llama-3.2-90b-vision-instruct
+  - meta/llama-3.2-11b-vision-instruct
+
+# Candidates for the agentic tool-calling sweep (`nemo agentic`). Drawn from the
+# top of results/leaderboard.md, biased toward throughput: an agent loop emits
+# many turns, so tok/s matters more here than a half point of judged prose.
+agentic:
+  - openai/gpt-oss-20b
+  - nvidia/nemotron-3-nano-30b-a3b
+  - poolside/laguna-xs-2.1
+  - nvidia/nemotron-3-super-120b-a12b
+  - moonshotai/kimi-k3
+  - nvidia/nemotron-3-ultra-550b-a55b

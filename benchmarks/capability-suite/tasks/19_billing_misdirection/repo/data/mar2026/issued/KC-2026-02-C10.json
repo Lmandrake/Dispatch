@@ -1,0 +1,99 @@
+{
+  "amount_due": "234.78",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C10",
+    "name": "Juniper Labs Inc.",
+    "tax_id": null
+  },
+  "discounts": [
+    {
+      "amount": "23.75",
+      "coupon": "WELCOME10"
+    }
+  ],
+  "due_date": "2026-03-31",
+  "issued": "2026-03-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "22.75",
+      "description": "Starter plan, Feb 1-Feb 13 (13/28 days)",
+      "kind": "base",
+      "plan": "starter",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "31.76",
+      "description": "API calls, Feb 1-Feb 13",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "starter",
+      "quantity": "163518",
+      "unit": "calls"
+    },
+    {
+      "amount": "0.00",
+      "description": "Storage, Feb 1-Feb 13",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "starter",
+      "quantity": "45.615",
+      "unit": "GB"
+    },
+    {
+      "amount": "106.61",
+      "description": "Team plan, Feb 14-Feb 28 (15/28 days)",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "75.21",
+      "description": "API calls, Feb 14-Feb 28",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "188032",
+      "unit": "calls"
+    },
+    {
+      "amount": "1.13",
+      "description": "Storage, Feb 14-Feb 28",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "53.754",
+      "unit": "GB"
+    },
+    {
+      "amount": "0.00",
+      "description": "Seats, Feb 14-Feb 28",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "0",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-02-C10",
+  "period": {
+    "cycle": "2026-02",
+    "end": "2026-02-28",
+    "start": "2026-02-01",
+    "timezone": "America/New_York"
+  },
+  "subtotal": "237.46",
+  "tax": {
+    "amount": "21.07",
+    "jurisdiction": "US-NY",
+    "rate": "0.08875",
+    "reverse_charge": false,
+    "taxable": "237.46"
+  },
+  "total": "234.78"
+}

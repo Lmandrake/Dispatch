@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Discover what models exist right now -> routing/roster.json
+#
+#   bash bin/roster                    # discover and write the roster
+#   bash bin/roster --check            # ...and report drift vs the table
+#   bash bin/roster --skip-sanctioned  # local models only, no gateway call
+#
+# Discovery is read-only metadata: it lists models and their limits, and runs no
+# inference, so it costs no tokens and is safe to re-run at any time.
+#
+# A discovery failure is a warning, not an abort: a roster missing one target is
+# still true about the other, and `--check` will report the absent models as
+# `missing` rather than pretending they were retired.
+set -uo pipefail
+cd "$(dirname "$0")/.."
+python3 -m evals.harness.roster "$@"

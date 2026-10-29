@@ -1,0 +1,16 @@
+# Dunning schedule (Credit control, 2025-11)
+
+[[steps]]
+days = 7
+action = "reminder"
+
+[[steps]]
+days = 21
+action = "late_fee"
+percent = "1.5"
+minimum = "5.00"
+currency = "USD"
+
+[[steps]]
+days = 45
+action = "suspend"

@@ -1,0 +1,1 @@
+{"category": "spec-implementation", "what_it_probes": "Implementing a whole interpreter (lexer, parser, scoped closures, exact rational arithmetic, display rules, recursion limit, positioned error model) from a 450-line spec with many interacting edge cases.", "expected_minutes_for_human": 240}

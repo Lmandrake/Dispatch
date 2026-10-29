@@ -1,0 +1,1 @@
+{"category": "performance", "what_it_probes": "Replacing an O(n^2) all-pairs interval-overlap scan with a sort-and-sweep while preserving exact output semantics (half-open intervals, id ordering, duplicates).", "expected_minutes_for_human": 25}

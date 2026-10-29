@@ -1,0 +1,68 @@
+{
+  "amount_due": "998.62",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C03",
+    "name": "Cobalt Analytics LLC",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-17",
+  "issued": "2026-02-15",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "199.00",
+      "description": "Team plan, Jan 15-Feb 14",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "561.42",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "1645681",
+      "unit": "calls"
+    },
+    {
+      "amount": "8.20",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "390.371",
+      "unit": "GB"
+    },
+    {
+      "amount": "230.00",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "23",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C03",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-02-14",
+    "start": "2026-01-15",
+    "timezone": "America/Los_Angeles"
+  },
+  "subtotal": "998.62",
+  "tax": {
+    "amount": "0.00",
+    "jurisdiction": "US-CA",
+    "rate": "0",
+    "reverse_charge": false,
+    "taxable": "998.62"
+  },
+  "total": "998.62"
+}

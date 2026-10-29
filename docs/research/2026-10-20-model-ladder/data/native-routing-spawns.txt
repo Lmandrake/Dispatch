@@ -1,0 +1,21 @@
+codegen     1 total=$0.327 {'sonnet-5-5[1m]': 0.186, 'opus-5-5[1m]': 0.141} spawns=[('-', 'sonnet'), ('-', 'sonnet'), ('-', 'sonnet')]
+codegen     2 total=$0.327 {'opus-5-5[1m]': 0.169, 'sonnet-5-5[1m]': 0.159} spawns=[('-', 'sonnet'), ('-', 'sonnet'), ('-', 'sonnet')]
+codegen     3 total=$0.305 {'sonnet-5-5[1m]': 0.158, 'opus-5-5[1m]': 0.147} spawns=[('-', 'sonnet'), ('-', 'sonnet'), ('-', 'sonnet')]
+extraction  1 total=$0.579 {'haiku-5-5': 0.327, 'opus-5-5[1m]': 0.144, 'sonnet-5-5[1m]': 0.108} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'sonnet')]
+extraction  2 total=$0.496 {'haiku-5-5': 0.278, 'opus-5-5[1m]': 0.108, 'sonnet-5-5[1m]': 0.11} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'sonnet')]
+extraction  3 total=$0.541 {'haiku-5-5': 0.319, 'opus-5-5[1m]': 0.111, 'sonnet-5-5[1m]': 0.11} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'sonnet')]
+factual     1 total=$0.361 {'opus-5-5[1m]': 0.099, 'haiku-5-5': 0.262} spawns=[('-', 'haiku'), ('-', 'haiku'), ('-', 'haiku')]
+factual     2 total=$0.231 {'opus-5-5[1m]': 0.064, 'haiku-5-5': 0.168} spawns=[('-', 'haiku'), ('-', 'haiku'), ('-', 'haiku')]
+factual     3 total=$0.190 {'opus-5-5[1m]': 0.063, 'haiku-5-5': 0.127} spawns=[('-', 'haiku'), ('-', 'haiku'), ('-', 'haiku')]
+judgment    1 total=$1.011 {'sonnet-5-5[1m]': 0.127, 'opus-5-5[1m]': 0.788, 'haiku-5-5': 0.096} spawns=[('general-purpose', 'sonnet'), ('general-purpose', 'opus'), ('Explore', 'haiku')]
+judgment    2 total=$0.580 {'sonnet-5-5[1m]': 0.168, 'opus-5-5[1m]': 0.412} spawns=[('general-purpose', 'sonnet'), ('general-purpose', 'opus'), ('general-purpose', 'sonnet')]
+judgment    3 total=$0.605 {'sonnet-5-5[1m]': 0.11, 'opus-5-5[1m]': 0.348, 'haiku-5-5': 0.147} spawns=[('general-purpose', 'sonnet'), ('general-purpose', 'opus'), ('general-purpose', 'haiku')]
+mechanical  1 total=$0.496 {'haiku-5-5': 0.286, 'opus-5-5[1m]': 0.209} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'haiku')]
+mechanical  2 total=$0.294 {'haiku-5-5': 0.163, 'opus-5-5[1m]': 0.131} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'haiku')]
+mechanical  3 total=$0.382 {'haiku-5-5': 0.239, 'opus-5-5[1m]': 0.143} spawns=[('Explore', 'haiku'), ('Explore', 'haiku'), ('Explore', 'haiku')]
+model param chosen by Opus across spawns: {'sonnet': 16, 'haiku': 26, 'opus': 3}
+  codegen {'sonnet': 9}
+  extraction {'haiku': 6, 'sonnet': 3}
+  factual {'haiku': 9}
+  judgment {'sonnet': 4, 'opus': 3, 'haiku': 2}
+  mechanical {'haiku': 9}

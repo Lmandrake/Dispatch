@@ -1,0 +1,1 @@
+{"category": "refactor", "what_it_probes": "Finding every use of a function across ~6 files, including a string-keyed registry resolved by getattr that a naive symbol rename misses.", "expected_minutes_for_human": 10}

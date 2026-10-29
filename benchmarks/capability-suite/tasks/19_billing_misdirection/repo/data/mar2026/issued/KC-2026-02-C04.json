@@ -1,0 +1,75 @@
+{
+  "amount_due": "0.00",
+  "credits": [
+    {
+      "applied": "456.60",
+      "grant": "G-2120",
+      "remaining": "3.40",
+      "remaining_currency": "GBP"
+    }
+  ],
+  "currency": "GBP",
+  "customer": {
+    "id": "C04",
+    "name": "Dunmore Ltd",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-31",
+  "issued": "2026-03-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "157.25",
+      "description": "Team plan, Feb 1-Feb 28",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "135.86",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "429838",
+      "unit": "calls"
+    },
+    {
+      "amount": "2.05",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "123.672",
+      "unit": "GB"
+    },
+    {
+      "amount": "85.34",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "9",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-02-C04",
+  "period": {
+    "cycle": "2026-02",
+    "end": "2026-02-28",
+    "start": "2026-02-01",
+    "timezone": "Europe/London"
+  },
+  "subtotal": "380.50",
+  "tax": {
+    "amount": "76.10",
+    "jurisdiction": "GB",
+    "rate": "0.2",
+    "reverse_charge": false,
+    "taxable": "380.50"
+  },
+  "total": "456.60"
+}

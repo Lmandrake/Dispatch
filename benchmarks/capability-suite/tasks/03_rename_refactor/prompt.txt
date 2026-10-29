@@ -1,0 +1,1 @@
+`calc_total` is a terrible name now that it also applies discounts and tax. Rename it to `compute_order_total` everywhere in the project. Don't leave a backwards-compatible alias behind; I want the old name gone completely. Everything should still work afterwards.

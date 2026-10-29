@@ -1,0 +1,80 @@
+{
+  "amount_due": "18221.40",
+  "credits": [],
+  "currency": "SEK",
+  "customer": {
+    "id": "C06",
+    "name": "Fjallbacka Data AB",
+    "tax_id": null
+  },
+  "discounts": [
+    {
+      "amount": "520.60",
+      "coupon": "PARTNER50"
+    }
+  ],
+  "due_date": "2026-03-31",
+  "issued": "2026-03-01",
+  "late_fees": "52.06",
+  "lines": [
+    {
+      "amount": "5195.59",
+      "description": "Business plan, Feb 1-Feb 28",
+      "kind": "base",
+      "plan": "business",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "7441.77",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "business",
+      "quantity": "2382435",
+      "unit": "calls"
+    },
+    {
+      "amount": "138.48",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "business",
+      "quantity": "884.427",
+      "unit": "GB"
+    },
+    {
+      "amount": "2176.11",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "business",
+      "quantity": "19",
+      "unit": "seats"
+    },
+    {
+      "amount": "52.06",
+      "description": "Late fee on KC-2025-12-C06",
+      "kind": "fee",
+      "quantity": "1",
+      "unit": "fee"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-02-C06",
+  "period": {
+    "cycle": "2026-02",
+    "end": "2026-02-28",
+    "start": "2026-02-01",
+    "timezone": "Europe/Stockholm"
+  },
+  "subtotal": "15004.01",
+  "tax": {
+    "amount": "3737.99",
+    "jurisdiction": "SE",
+    "rate": "0.25",
+    "reverse_charge": false,
+    "taxable": "14951.95"
+  },
+  "total": "18221.40"
+}

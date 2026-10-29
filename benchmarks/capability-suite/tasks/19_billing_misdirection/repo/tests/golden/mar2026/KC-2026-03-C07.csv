@@ -1,0 +1,14 @@
+invoice,customer,kind,description,quantity,unit,amount,currency
+KC-2026-03-C07,C07,base,"Starter plan, Mar 28-Apr 9 (13/31 days)",1,period,20.55,USD
+KC-2026-03-C07,C07,usage,"API calls, Mar 28-Apr 9",128545,calls,14.27,USD
+KC-2026-03-C07,C07,usage,"Storage, Mar 28-Apr 9",135.534,GB,1.97,USD
+KC-2026-03-C07,C07,base,"Team plan, Apr 10-Apr 27 (18/31 days)",1,period,115.55,USD
+KC-2026-03-C07,C07,usage,"API calls, Apr 10-Apr 27",274128,calls,109.65,USD
+KC-2026-03-C07,C07,usage,"Storage, Apr 10-Apr 27",154.627,GB,3.25,USD
+KC-2026-03-C07,C07,usage,"Seats, Apr 10-Apr 27",7,seats,84.00,USD
+KC-2026-03-C07,C07,subtotal,,,,349.24,USD
+KC-2026-03-C07,C07,discount,BASE20,,,-27.22,USD
+KC-2026-03-C07,C07,tax,US-TX 6.25%,,,20.12,USD
+KC-2026-03-C07,C07,total,,,,342.14,USD
+KC-2026-03-C07,C07,credit,G-2511,,,-43.11,USD
+KC-2026-03-C07,C07,due,,,,299.03,USD

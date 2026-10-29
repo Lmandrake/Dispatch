@@ -1,0 +1,68 @@
+{
+  "amount_due": "757.92",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C01",
+    "name": "Acme Robotics Inc.",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-03",
+  "issued": "2026-02-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "199.00",
+      "description": "Team plan, Jan 1-Jan 31",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "382.12",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "955293",
+      "unit": "calls"
+    },
+    {
+      "amount": "7.02",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "334.05",
+      "unit": "GB"
+    },
+    {
+      "amount": "108.00",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "9",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C01",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-01-31",
+    "start": "2026-01-01",
+    "timezone": "America/New_York"
+  },
+  "subtotal": "696.14",
+  "tax": {
+    "amount": "61.78",
+    "jurisdiction": "US-NY",
+    "rate": "0.08875",
+    "reverse_charge": false,
+    "taxable": "696.14"
+  },
+  "total": "757.92"
+}

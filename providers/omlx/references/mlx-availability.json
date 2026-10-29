@@ -1,0 +1,1955 @@
+{
+ "_what": "Which open-weight models have an MLX build oMLX can load, and their REAL resident size. Replaces two guesses: whether a model is runnable at all (the corpus does not know its format) and how big it is (params x a nominal bytes/param was 27% low on 4-bit).",
+ "_why": "Ling-3.0-flash-VL scored 24.6 and was the top candidate for weeks with no MLX build in existence. And _BYTES_PER_PARAM['4bit']=0.55 against a real 0.70 made one estimate miss a measured rate by 48%.",
+ "_source": "huggingface_hub.HfApi for availability; `uvx hf-mem --model-id <repo>` for size, read over HTTP Range without downloading weights. Validated against a disk measurement: hf-mem returned 39,803,043,240 B for K2-Horizon-MoVA-36B-A4B-8bit where the local files measure 39.8 GB.",
+ "_reproduce": "python3 tools/hf_mlx_scan.py [--refresh]",
+ "_retrieved": "2026-10-01",
+ "🔴 _limits": [
+  "A size is the WEIGHTS only -- no KV cache, no activations, no framework overhead. `hf-mem --experimental` adds KV cache if that is ever needed.",
+  "`repo` is the plainest build at the best quantisation we will run. Variant builds (abliterated, DWQ, REAP, OptiQ, msq) are deliberately NOT accepted as 'the MLX build of X' -- a modified copy is a different artifact from the one AA scored.",
+  "`repo: null` means not runnable TODAY. mlx-community publishes continuously, so re-run before concluding a model is unavailable.",
+  "A null `gb` on a repo that exists means hf-mem could not read it, NOT that the model is small. Never treat it as zero."
+ ],
+ "_counts": {
+  "base_models": 215,
+  "runnable": 137,
+  "sized": 126
+ },
+ "models": {
+  "Apertus 70B Instruct": {
+   "params_b": 70.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Apertus 8B Instruct": {
+   "params_b": 8.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/Apertus-8B-Instruct-2509-8bit",
+   "quant": "8bit",
+   "bytes": 8556929280,
+   "gb": 8.56,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Apriel-v1.5-15B-Thinker": {
+   "params_b": 15.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Apriel-v1.6-15B-Thinker": {
+   "params_b": 15.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Command A": {
+   "params_b": 111.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/command-a-reasoning-08-2025-8bit",
+   "quant": "8bit",
+   "bytes": 117999427584,
+   "gb": 118.0,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Command-R": {
+   "params_b": 35.0,
+   "mlx_repos": 18,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Command-R+": {
+   "params_b": 104.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "DBRX Instruct": {
+   "params_b": 132.0,
+   "mlx_repos": 1,
+   "repo": "mlx-community/dbrx-instruct-4bit",
+   "quant": "4bit",
+   "bytes": 74910068736,
+   "gb": 74.91,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepHermes 3 - Llama-3.1 8B Preview": {
+   "params_b": 8.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "DeepHermes 3 - Mistral 24B Preview": {
+   "params_b": 24.0,
+   "mlx_repos": 3,
+   "repo": "mlx-community/DeepHermes-3-Mistral-24B-Preview-8bit",
+   "quant": "8bit",
+   "bytes": 25046132480,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek Coder V2 Lite Instruct": {
+   "params_b": 16.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/DeepSeek-Coder-V2-Lite-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 16691452928,
+   "gb": 16.69,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek LLM 67B Chat": {
+   "params_b": 7.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "DeepSeek R1 0528 Qwen3 8B": {
+   "params_b": 8.19,
+   "mlx_repos": 9,
+   "repo": "mlx-community/DeepSeek-R1-0528-Qwen3-8B-8bit",
+   "quant": "8bit",
+   "bytes": 8702945280,
+   "gb": 8.7,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek R1 Distill Llama 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/DeepSeek-R1-Distill-Llama-70B-8bit",
+   "quant": "8bit",
+   "bytes": 74964549632,
+   "gb": 74.96,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek R1 Distill Llama 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 9,
+   "repo": "mlx-community/DeepSeek-R1-Distill-Llama-8B-8bit",
+   "quant": "8bit",
+   "bytes": 8532402176,
+   "gb": 8.53,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek R1 Distill Qwen 1.5B": {
+   "params_b": 1.5,
+   "mlx_repos": 8,
+   "repo": "mlx-community/DeepSeek-R1-Distill-Qwen-1.5B-8bit",
+   "quant": "8bit",
+   "bytes": 1888291840,
+   "gb": 1.89,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek R1 Distill Qwen 14B": {
+   "params_b": 14.0,
+   "mlx_repos": 9,
+   "repo": "mlx-community/DeepSeek-R1-Distill-Qwen-14B-8bit",
+   "quant": "8bit",
+   "bytes": 15693948928,
+   "gb": 15.69,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DeepSeek R1 Distill Qwen 32B": {
+   "params_b": 32.0,
+   "mlx_repos": 16,
+   "repo": "mlx-community/DeepSeek-R1-Distill-Qwen-32B-MLX-8Bit",
+   "quant": "8bit",
+   "bytes": 34812667904,
+   "gb": 34.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Devstral 2": {
+   "params_b": 125.0,
+   "mlx_repos": 29,
+   "repo": "mlx-community/Devstral-2-123B-Instruct-2512-8bit",
+   "quant": "8bit",
+   "bytes": 132842151936,
+   "gb": 132.84,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Devstral Small": {
+   "params_b": 24.0,
+   "mlx_repos": 23,
+   "repo": "mlx-community/Devstral-Small-2505-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Devstral Small 2": {
+   "params_b": 24.0,
+   "mlx_repos": 23,
+   "repo": "mlx-community/Devstral-Small-2505-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "DiffusionGemma 26B A4B": {
+   "params_b": 25.2,
+   "mlx_repos": 9,
+   "repo": "mlx-community/diffusiongemma-26B-A4B-it-8bit",
+   "quant": "8bit",
+   "bytes": 27972380376,
+   "gb": 27.97,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "EXAONE 4.0 32B": {
+   "params_b": 32.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/EXAONE-4.0-32B-4bit",
+   "quant": "4bit",
+   "bytes": 18002782208,
+   "gb": 18.0,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "EXAONE 4.5 33B": {
+   "params_b": 34.4,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Exaone 4.0 1.2B": {
+   "params_b": 1.28,
+   "mlx_repos": 3,
+   "repo": "mlx-community/exaone-4.0-1.2b-8bit",
+   "quant": "8bit",
+   "bytes": 1359474176,
+   "gb": 1.36,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Falcon-H1R-7B": {
+   "params_b": 7.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Falcon-H1R-7B-8bit",
+   "quant": "8bit",
+   "bytes": 8060876992,
+   "gb": 8.06,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "G9v3-39A5B": {
+   "params_b": 39.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "G9v3-3B": {
+   "params_b": 3.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "GLM-4.5-Air": {
+   "params_b": 106.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/GLM-4.5-Air-8bit",
+   "quant": "8bit",
+   "bytes": 113553627648,
+   "gb": 113.55,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "GLM-4.5V": {
+   "params_b": 108.0,
+   "mlx_repos": 11,
+   "repo": "mlx-community/GLM-4.5V-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "GLM-4.6V": {
+   "params_b": 108.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/GLM-4.6V-Flash-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "GLM-4.7-Flash": {
+   "params_b": 31.2,
+   "mlx_repos": 15,
+   "repo": "mlx-community/GLM-4.7-Flash-8bit",
+   "quant": "8bit",
+   "bytes": 31820755968,
+   "gb": 31.82,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 3 12B Instruct": {
+   "params_b": 12.2,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 3 1B Instruct": {
+   "params_b": 1.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 3 270M": {
+   "params_b": 0.268,
+   "mlx_repos": 25,
+   "repo": "mlx-community/gemma-3-270m-8bit",
+   "quant": "8bit",
+   "bytes": 463164672,
+   "gb": 0.46,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 3 27B Instruct": {
+   "params_b": 27.4,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 3 4B Instruct": {
+   "params_b": 4.3,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Gemma 3n E2B Instruct": {
+   "params_b": 5.98,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 3n E4B Instruct": {
+   "params_b": 8.39,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 3n E4B Instruct Preview": {
+   "params_b": 8.39,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Gemma 4 12B": {
+   "params_b": 12.0,
+   "mlx_repos": 57,
+   "repo": "mlx-community/gemma-4-12B-it-8bit",
+   "quant": "8bit",
+   "bytes": 12716030048,
+   "gb": 12.72,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 4 26B A4B": {
+   "params_b": 25.2,
+   "mlx_repos": 42,
+   "repo": "mlx-community/gemma-4-26b-a4b-it-8bit",
+   "quant": "8bit",
+   "bytes": 27953417372,
+   "gb": 27.95,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 4 31B": {
+   "params_b": 30.7,
+   "mlx_repos": 38,
+   "repo": "mlx-community/gemma-4-31b-it-8bit",
+   "quant": "8bit",
+   "bytes": 33762858712,
+   "gb": 33.76,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 4 E2B": {
+   "params_b": 5.1,
+   "mlx_repos": 43,
+   "repo": "mlx-community/gemma-4-e2b-it-8bit",
+   "quant": "8bit",
+   "bytes": 5866263494,
+   "gb": 5.87,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Gemma 4 E4B": {
+   "params_b": 8.0,
+   "mlx_repos": 60,
+   "repo": "mlx-community/gemma-4-E4B-it-OBLITERATED-mlx-8Bit",
+   "quant": "8bit",
+   "bytes": 7988478548,
+   "gb": 7.99,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 3.3 8B": {
+   "params_b": 8.17,
+   "mlx_repos": 5,
+   "repo": "mlx-community/granite-3.3-8b-instruct-8bit",
+   "quant": "8bit",
+   "bytes": 8681854720,
+   "gb": 8.68,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 1B": {
+   "params_b": 1.6,
+   "mlx_repos": 30,
+   "repo": "mlx-community/granite-4.0-h-1b-8bit",
+   "quant": "8bit",
+   "bytes": 1553671296,
+   "gb": 1.55,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 350M": {
+   "params_b": 0.35,
+   "mlx_repos": 28,
+   "repo": "mlx-community/granite-4.0-h-350m-8bit",
+   "quant": "8bit",
+   "bytes": 361929088,
+   "gb": 0.36,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 H 1B": {
+   "params_b": 1.5,
+   "mlx_repos": 12,
+   "repo": "mlx-community/granite-4.0-h-1b-8bit",
+   "quant": "8bit",
+   "bytes": 1553671296,
+   "gb": 1.55,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 H 350M": {
+   "params_b": 0.34,
+   "mlx_repos": 12,
+   "repo": "mlx-community/granite-4.0-h-350m-8bit",
+   "quant": "8bit",
+   "bytes": 361929088,
+   "gb": 0.36,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 H Small": {
+   "params_b": 32.0,
+   "mlx_repos": 2,
+   "repo": "mlx-community/granite-4.0-h-small-8bit",
+   "quant": "8bit",
+   "bytes": 34222322688,
+   "gb": 34.22,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.0 Micro": {
+   "params_b": 3.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/granite-4.0-h-micro-8bit",
+   "quant": "8bit",
+   "bytes": 3391892992,
+   "gb": 3.39,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.1 30B": {
+   "params_b": 30.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/granite-4.1-30b-8bit",
+   "quant": "8bit",
+   "bytes": 32474406912,
+   "gb": 32.47,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.1 3B": {
+   "params_b": 3.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/granite-4.1-3b-8bit",
+   "quant": "8bit",
+   "bytes": 3828372480,
+   "gb": 3.83,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.1 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/granite-4.1-3b-8bit",
+   "quant": "8bit",
+   "bytes": 3828372480,
+   "gb": 3.83,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Granite 4.2 30B": {
+   "params_b": 30.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Granite 4.2 3B": {
+   "params_b": 3.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Granite 4.2 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Hermes 3 - Llama-3.1 70B": {
+   "params_b": 70.6,
+   "mlx_repos": 3,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Hermes 4 - Llama-3.1 70B": {
+   "params_b": 70.6,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "HyperCLOVA X SEED Think": {
+   "params_b": 32.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "HyperNova 60B 2605": {
+   "params_b": 58.7,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "INTELLECT-3": {
+   "params_b": 107.0,
+   "mlx_repos": 6,
+   "repo": "mlx-community/INTELLECT-3-8bit",
+   "quant": "8bit",
+   "bytes": 113553627648,
+   "gb": 113.55,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Jamba 1.5 Mini": {
+   "params_b": 52.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Jamba 1.6 Mini": {
+   "params_b": 52.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Jamba 1.7 Mini": {
+   "params_b": 52.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Jamba Reasoning 3B": {
+   "params_b": 3.0,
+   "mlx_repos": 3,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "K2 Horizon 0.9B": {
+   "params_b": 0.9,
+   "mlx_repos": 3,
+   "repo": "mlx-community/K2-Horizon-0.9B-8bit",
+   "quant": "8bit",
+   "bytes": 1145760768,
+   "gb": 1.15,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "K2 Horizon 3.7B": {
+   "params_b": 3.7,
+   "mlx_repos": 3,
+   "repo": "mlx-community/K2-Horizon-3.7B-8bit",
+   "quant": "8bit",
+   "bytes": 5374571520,
+   "gb": 5.37,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "K2 Horizon 7B": {
+   "params_b": 7.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/K2-Horizon-7B-8bit",
+   "quant": "8bit",
+   "bytes": 9561907200,
+   "gb": 9.56,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "K2 Horizon MoVA 36B A4B": {
+   "params_b": 36.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/K2-Horizon-MoVA-36B-A4B-8bit",
+   "quant": "8bit",
+   "bytes": 39803043240,
+   "gb": 39.8,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "K2 Think V2": {
+   "params_b": 70.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "K2-V2": {
+   "params_b": 70.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Kimi Linear 48B A3B Instruct": {
+   "params_b": 49.1,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Kimi-Linear-48B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 52194144256,
+   "gb": 52.19,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2 1.2B": {
+   "params_b": 1.17,
+   "mlx_repos": 37,
+   "repo": "mlx-community/LFM2-1.2B-8bit",
+   "quant": "8bit",
+   "bytes": 1243608576,
+   "gb": 1.24,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2 2.6B": {
+   "params_b": 2.57,
+   "mlx_repos": 21,
+   "repo": "mlx-community/LFM2-2.6B-8bit",
+   "quant": "8bit",
+   "bytes": 2730096640,
+   "gb": 2.73,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2 24B A2B": {
+   "params_b": 23.8,
+   "mlx_repos": 1,
+   "repo": "mlx-community/LFM2-24B-A2B-4bit",
+   "quant": "4bit",
+   "bytes": 13415063552,
+   "gb": 13.42,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2 8B A1B": {
+   "params_b": 8.34,
+   "mlx_repos": 11,
+   "repo": "mlx-community/LFM2-8B-A1B-8bit",
+   "quant": "8bit",
+   "bytes": 9383032576,
+   "gb": 9.38,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2.5-1.2B-Instruct": {
+   "params_b": 1.17,
+   "mlx_repos": 15,
+   "repo": "mlx-community/LFM2.5-1.2B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 1243608576,
+   "gb": 1.24,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2.5-1.2B-Thinking": {
+   "params_b": 1.17,
+   "mlx_repos": 6,
+   "repo": "mlx-community/LFM2.5-1.2B-Thinking-8bit",
+   "quant": "8bit",
+   "bytes": 1243608576,
+   "gb": 1.24,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2.5-2.6B": {
+   "params_b": 2.7,
+   "mlx_repos": 9,
+   "repo": "mlx-community/LFM2.5-2.6B-8bit",
+   "quant": "8bit",
+   "bytes": 2866018304,
+   "gb": 2.87,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2.5-8B-A1B": {
+   "params_b": 8.3,
+   "mlx_repos": 3,
+   "repo": "mlx-community/LFM2.5-8B-A1B-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 8997298432,
+   "gb": 9.0,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "LFM2.5-VL-1.6B": {
+   "params_b": 1.6,
+   "mlx_repos": 5,
+   "repo": "mlx-community/LFM2.5-VL-1.6B-8bit",
+   "quant": "8bit",
+   "bytes": 2083399648,
+   "gb": 2.08,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ling 2.6 Flash": {
+   "params_b": 107.0,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Ling-2.6-flash-mlx-8bit",
+   "quant": "8bit",
+   "bytes": 110698992640,
+   "gb": 110.7,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ling 3.0 Flash": {
+   "params_b": 124.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Ling 3.0 Tiny": {
+   "params_b": 7.9,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Ling-3.0-flash-Fin": {
+   "params_b": 124.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Ling-3.0-flash-VL": {
+   "params_b": 124.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Ling-flash-2.0": {
+   "params_b": 103.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Ling-mini-2.0": {
+   "params_b": 16.3,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Ling-mini-2.0-8bit",
+   "quant": "8bit",
+   "bytes": 17271709184,
+   "gb": 17.27,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Llama 2 Chat 13B": {
+   "params_b": 13.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Llama 2 Chat 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Llama 2 Chat 7B": {
+   "params_b": 7.0,
+   "mlx_repos": 3,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3 Instruct 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 38,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3 Instruct 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 60,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.1 Instruct 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 16,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.1 Instruct 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 35,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.1 Nemotron Instruct 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Llama-3.1-Nemotron-70B-Instruct-HF-8bit",
+   "quant": "8bit",
+   "bytes": 74964549632,
+   "gb": 74.96,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Llama 3.1 Nemotron Nano 4B v1.1": {
+   "params_b": 4.51,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Llama-3.1-Nemotron-Nano-4B-v1.1-8bit",
+   "quant": "8bit",
+   "bytes": 4794980352,
+   "gb": 4.79,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Llama 3.2 Instruct 11B": {
+   "params_b": 11.0,
+   "mlx_repos": 5,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.2 Instruct 1B": {
+   "params_b": 1.0,
+   "mlx_repos": 5,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.2 Instruct 3B": {
+   "params_b": 3.0,
+   "mlx_repos": 8,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.2 Instruct 90B": {
+   "params_b": 90.0,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.3 Instruct 70B": {
+   "params_b": 70.0,
+   "mlx_repos": 9,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Llama 3.3 Nemotron Super 49B v1": {
+   "params_b": 49.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Llama 4 Scout": {
+   "params_b": 109.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/Llama-4-Scout-17B-16E-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Llama 65B": {
+   "params_b": 65.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Llama Nemotron Super 49B v1.5": {
+   "params_b": 49.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "LongCat Flash Lite": {
+   "params_b": 68.5,
+   "mlx_repos": 8,
+   "repo": "mlx-community/LongCat-Flash-Lite-8bit",
+   "quant": "8bit",
+   "bytes": 72847852800,
+   "gb": 72.85,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Magistral Small 1": {
+   "params_b": 23.6,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Magistral Small 1.2": {
+   "params_b": 24.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "MiniCPM-V 4.6 1.3B": {
+   "params_b": 1.3,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "MiniCPM5-1B": {
+   "params_b": 1.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/MiniCPM5-1B-8bit",
+   "quant": "8bit",
+   "bytes": 1148242944,
+   "gb": 1.15,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "MiniCPM5-2B": {
+   "params_b": 2.6,
+   "mlx_repos": 4,
+   "repo": "mlx-community/MiniCPM5-2B-8bit",
+   "quant": "8bit",
+   "bytes": 2674216960,
+   "gb": 2.67,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ministral 3 14B": {
+   "params_b": 14.0,
+   "mlx_repos": 19,
+   "repo": "mlx-community/Ministral-3-14B-Instruct-2512-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ministral 3 3B": {
+   "params_b": 3.0,
+   "mlx_repos": 15,
+   "repo": "mlx-community/Ministral-3-3B-Instruct-2512-8bit",
+   "quant": "8bit",
+   "bytes": 4467910656,
+   "gb": 4.47,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ministral 3 8B": {
+   "params_b": 8.0,
+   "mlx_repos": 21,
+   "repo": "mlx-community/Ministral-3-3B-Instruct-2512-8bit",
+   "quant": "8bit",
+   "bytes": 4467910656,
+   "gb": 4.47,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral 7B Instruct": {
+   "params_b": 7.0,
+   "mlx_repos": 12,
+   "repo": "mlx-community/Mistral-7B-Instruct-v0.3-8bit",
+   "quant": "8bit",
+   "bytes": 7701274624,
+   "gb": 7.7,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Large 2": {
+   "params_b": 123.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/Mistral-Large-Instruct-2407-8bit",
+   "quant": "8bit",
+   "bytes": 130275237888,
+   "gb": 130.28,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Medium 3.5": {
+   "params_b": 128.0,
+   "mlx_repos": 1,
+   "repo": "mlx-community/Mistral-Medium-3.5-128B-4bit",
+   "quant": "4bit",
+   "bytes": 78001944064,
+   "gb": 78.0,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Small": {
+   "params_b": 22.0,
+   "mlx_repos": 38,
+   "repo": "mlx-community/Mistral-Small-Instruct-2409-8bit",
+   "quant": "8bit",
+   "bytes": 23638388736,
+   "gb": 23.64,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Small 3": {
+   "params_b": 24.0,
+   "mlx_repos": 15,
+   "repo": "mlx-community/Mistral-Small-3.1-Text-24B-Instruct-2503-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Small 3.1": {
+   "params_b": 24.0,
+   "mlx_repos": 11,
+   "repo": "mlx-community/Mistral-Small-3.1-Text-24B-Instruct-2503-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Small 3.2": {
+   "params_b": 24.0,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Mistral-Small-3.2-24B-Instruct-2506-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mistral Small 4": {
+   "params_b": 119.0,
+   "mlx_repos": 14,
+   "repo": "mlx-community/Mistral-Small-4-119B-2603-8bit",
+   "quant": "8bit",
+   "bytes": 127242303488,
+   "gb": 127.24,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mixtral 8x22B Instruct": {
+   "params_b": 141.0,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Mixtral-8x22B-Instruct-v0.1-8bit",
+   "quant": "8bit",
+   "bytes": 149611425792,
+   "gb": 149.61,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Mixtral 8x7B Instruct": {
+   "params_b": 46.7,
+   "mlx_repos": 4,
+   "repo": "mlx-community/Mixtral-8x7B-Instruct-v0.1-8bit",
+   "quant": "8bit",
+   "bytes": 49621966848,
+   "gb": 49.62,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Molmo 7B-D": {
+   "params_b": 8.02,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Molmo-7B-D-0924-8bit",
+   "quant": "8bit",
+   "bytes": 9035432960,
+   "gb": 9.04,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Molmo2-8B": {
+   "params_b": 8.66,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Molmo2-8B-8bit",
+   "quant": "8bit",
+   "bytes": 10228315040,
+   "gb": 10.23,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Muse Glimmer": {
+   "params_b": 30.0,
+   "mlx_repos": 9,
+   "repo": "mlx-community/Muse-Glimmer-30B-8bit",
+   "quant": "8bit",
+   "bytes": 33375819776,
+   "gb": 33.38,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "NVIDIA Nemotron 3 Nano 30B A3B": {
+   "params_b": 31.6,
+   "mlx_repos": 10,
+   "repo": "mlx-community/NVIDIA-Nemotron-3-Nano-30B-A3B-MLX-8Bit",
+   "quant": "8bit",
+   "bytes": 33559880448,
+   "gb": 33.56,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "NVIDIA Nemotron 3 Nano 4B": {
+   "params_b": 3.97,
+   "mlx_repos": 9,
+   "repo": "mlx-community/NVIDIA-Nemotron-3-Nano-4B-8bit",
+   "quant": "8bit",
+   "bytes": 4223145024,
+   "gb": 4.22,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "NVIDIA Nemotron Nano 12B v2 VL": {
+   "params_b": 13.2,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "NVIDIA Nemotron Nano 9B V2": {
+   "params_b": 9.0,
+   "mlx_repos": 2,
+   "repo": "mlx-community/NVIDIA-Nemotron-Nano-9B-v2-6bit",
+   "quant": "6bit",
+   "bytes": 7224298496,
+   "gb": 7.22,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Nanbeige4.1-3B": {
+   "params_b": 3.93,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Nanbeige4.1-3B-8bit",
+   "quant": "8bit",
+   "bytes": 4179645440,
+   "gb": 4.18,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Nemotron 3 Nano Omni 30B A3B Reasoning": {
+   "params_b": 30.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-8bit",
+   "quant": "8bit",
+   "bytes": 35771636876,
+   "gb": 35.77,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Nemotron 3 Super 120B A12B": {
+   "params_b": 120.6,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Nemotron-3-Super-120B-A12B-MLX-6bit",
+   "quant": "6bit",
+   "bytes": 98146277376,
+   "gb": 98.15,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Nemotron 3.5 Lightning": {
+   "params_b": 31.6,
+   "mlx_repos": 7,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Nemotron Cascade 2 30B A3B": {
+   "params_b": 31.6,
+   "mlx_repos": 9,
+   "repo": "mlx-community/Nemotron-Cascade-2-30B-A3B-8bit",
+   "quant": "8bit",
+   "bytes": 33559877504,
+   "gb": 33.56,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "North Mini Code": {
+   "params_b": 30.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/North-Mini-Code-1.0-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "OLMo 2 32B": {
+   "params_b": 32.2,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "OLMo 2 7B": {
+   "params_b": 7.3,
+   "mlx_repos": 10,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Olmo 3 32B Think": {
+   "params_b": 32.2,
+   "mlx_repos": 3,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Olmo 3 7B Instruct": {
+   "params_b": 7.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/Olmo-3-7B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 7754632192,
+   "gb": 7.75,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Olmo 3 7B Think": {
+   "params_b": 7.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Olmo-3-7B-Think-8bit",
+   "quant": "8bit",
+   "bytes": 7754632192,
+   "gb": 7.75,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Olmo 3.1 32B Instruct": {
+   "params_b": 32.2,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Olmo-3.1-32B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 34249105152,
+   "gb": 34.25,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Olmo 3.1 32B Think": {
+   "params_b": 32.2,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Olmo-3.1-32B-Think-8bit",
+   "quant": "8bit",
+   "bytes": 34249105152,
+   "gb": 34.25,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "OpenChat 3.5": {
+   "params_b": 7.0,
+   "mlx_repos": 3,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Phi-3 Mini Instruct 3.8B": {
+   "params_b": 3.8,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Phi-4": {
+   "params_b": 14.0,
+   "mlx_repos": 57,
+   "repo": "mlx-community/phi-4-8bit",
+   "quant": "8bit",
+   "bytes": 15576115200,
+   "gb": 15.58,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Phi-4 Mini Instruct": {
+   "params_b": 3.84,
+   "mlx_repos": 14,
+   "repo": "mlx-community/Phi-4-mini-instruct-8bit",
+   "quant": "8bit",
+   "bytes": 4075960320,
+   "gb": 4.08,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Phi-4 Multimodal Instruct": {
+   "params_b": 5.6,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Pixtral Large": {
+   "params_b": 124.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "QwQ 32B": {
+   "params_b": 32.8,
+   "mlx_repos": 25,
+   "repo": "mlx-community/QwQ-32B-Preview-8bit",
+   "quant": "8bit",
+   "bytes": 34812667904,
+   "gb": 34.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "QwQ 32B-Preview": {
+   "params_b": 32.8,
+   "mlx_repos": 10,
+   "repo": "mlx-community/QwQ-32B-Preview-8bit",
+   "quant": "8bit",
+   "bytes": 34812667904,
+   "gb": 34.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen Chat 14B": {
+   "params_b": 14.0,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen Chat 72B": {
+   "params_b": 72.0,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen1.5 Chat 110B": {
+   "params_b": 110.0,
+   "mlx_repos": 2,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen2 Instruct 72B": {
+   "params_b": 72.0,
+   "mlx_repos": 22,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen2.5 Coder Instruct 32B": {
+   "params_b": 32.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Qwen2.5-Coder-32B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 34812667904,
+   "gb": 34.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen2.5 Coder Instruct 7B": {
+   "params_b": 7.62,
+   "mlx_repos": 11,
+   "repo": "mlx-community/Qwen2.5-Coder-7B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 8091905024,
+   "gb": 8.09,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen2.5 Instruct 32B": {
+   "params_b": 32.0,
+   "mlx_repos": 16,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen2.5 Instruct 72B": {
+   "params_b": 72.0,
+   "mlx_repos": 14,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen3 0.6B": {
+   "params_b": 0.752,
+   "mlx_repos": 60,
+   "repo": "mlx-community/Qwen3-0.6B-8bit",
+   "quant": "8bit",
+   "bytes": 633364480,
+   "gb": 0.63,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 1.7B": {
+   "params_b": 2.03,
+   "mlx_repos": 35,
+   "repo": "mlx-community/Qwen3-1.7B-8bit",
+   "quant": "8bit",
+   "bytes": 1828227072,
+   "gb": 1.83,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 14B": {
+   "params_b": 14.8,
+   "mlx_repos": 15,
+   "repo": "mlx-community/Qwen3-14B-8bit",
+   "quant": "8bit",
+   "bytes": 15691724800,
+   "gb": 15.69,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 30B A3B": {
+   "params_b": 30.5,
+   "mlx_repos": 60,
+   "repo": "mlx-community/Qwen3-30B-A3B-8bit",
+   "quant": "8bit",
+   "bytes": 32440578048,
+   "gb": 32.44,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 30B A3B 2507": {
+   "params_b": 30.5,
+   "mlx_repos": 23,
+   "repo": "mlx-community/Qwen3-30B-A3B-Instruct-2507-8bit",
+   "quant": "8bit",
+   "bytes": 32440578048,
+   "gb": 32.44,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 30B A3B 2507 Instruct": {
+   "params_b": 30.5,
+   "mlx_repos": 21,
+   "repo": "mlx-community/Qwen3-30B-A3B-Instruct-2507-8bit",
+   "quant": "8bit",
+   "bytes": 32440578048,
+   "gb": 32.44,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 32B": {
+   "params_b": 32.8,
+   "mlx_repos": 20,
+   "repo": "mlx-community/Qwen3-32B-8bit",
+   "quant": "8bit",
+   "bytes": 34810390528,
+   "gb": 34.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 4B": {
+   "params_b": 4.02,
+   "mlx_repos": 60,
+   "repo": "mlx-community/Qwen3-4B-8bit",
+   "quant": "8bit",
+   "bytes": 4274056192,
+   "gb": 4.27,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 4B 2507": {
+   "params_b": 4.02,
+   "mlx_repos": 54,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen3 4B 2507 Instruct": {
+   "params_b": 4.02,
+   "mlx_repos": 40,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Qwen3 8B": {
+   "params_b": 8.19,
+   "mlx_repos": 60,
+   "repo": "mlx-community/Qwen3-8B-8bit",
+   "quant": "8bit",
+   "bytes": 8702945280,
+   "gb": 8.7,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Coder 30B A3B Instruct": {
+   "params_b": 30.5,
+   "mlx_repos": 15,
+   "repo": "mlx-community/Qwen3-Coder-30B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 32440578048,
+   "gb": 32.44,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Coder Next": {
+   "params_b": 79.7,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Qwen3-Coder-Next-8bit",
+   "quant": "8bit",
+   "bytes": 84655345152,
+   "gb": 84.66,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Next 80B A3B": {
+   "params_b": 80.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/Qwen3-Next-80B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 84655345152,
+   "gb": 84.66,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Next 80B A3B Instruct": {
+   "params_b": 80.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/Qwen3-Next-80B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 84655345152,
+   "gb": 84.66,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Omni 30B A3B": {
+   "params_b": 35.3,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Qwen3-Omni-30B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 38762019170,
+   "gb": 38.76,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 Omni 30B A3B Instruct": {
+   "params_b": 35.3,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Qwen3-Omni-30B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 38762019170,
+   "gb": 38.76,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 30B A3B": {
+   "params_b": 30.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 30B A3B Instruct": {
+   "params_b": 30.0,
+   "mlx_repos": 7,
+   "repo": "mlx-community/Qwen3-VL-30B-A3B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 32B": {
+   "params_b": 33.4,
+   "mlx_repos": 12,
+   "repo": "mlx-community/Qwen3-VL-32B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 32B Instruct": {
+   "params_b": 33.4,
+   "mlx_repos": 6,
+   "repo": "mlx-community/Qwen3-VL-32B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 4B": {
+   "params_b": 4.44,
+   "mlx_repos": 24,
+   "repo": "mlx-community/Qwen3-VL-4B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 5104751616,
+   "gb": 5.1,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 4B Instruct": {
+   "params_b": 4.44,
+   "mlx_repos": 11,
+   "repo": "mlx-community/Qwen3-VL-4B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 5104751616,
+   "gb": 5.1,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 8B": {
+   "params_b": 8.77,
+   "mlx_repos": 25,
+   "repo": "mlx-community/Qwen3-VL-8B-Thinking-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3 VL 8B Instruct": {
+   "params_b": 8.77,
+   "mlx_repos": 10,
+   "repo": "mlx-community/Qwen3-VL-8B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": null,
+   "gb": null,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 0.8B": {
+   "params_b": 0.873,
+   "mlx_repos": 25,
+   "repo": "mlx-community/Qwen3.5-0.8B-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 1001071296,
+   "gb": 1.0,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 122B A10B": {
+   "params_b": 125.0,
+   "mlx_repos": 12,
+   "repo": "mlx-community/Qwen3.5-122B-A10B-8bit",
+   "quant": "8bit",
+   "bytes": 130648036320,
+   "gb": 130.65,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 27B": {
+   "params_b": 27.8,
+   "mlx_repos": 17,
+   "repo": "mlx-community/Qwen3.5-27B-8bit",
+   "quant": "8bit",
+   "bytes": 29500943328,
+   "gb": 29.5,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 2B": {
+   "params_b": 2.27,
+   "mlx_repos": 22,
+   "repo": "mlx-community/Qwen3.5-2B-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 2662787264,
+   "gb": 2.66,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 35B A3B": {
+   "params_b": 36.0,
+   "mlx_repos": 13,
+   "repo": "mlx-community/Qwen3.5-35B-A3B-8bit",
+   "quant": "8bit",
+   "bytes": 37721130592,
+   "gb": 37.72,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 4B": {
+   "params_b": 4.66,
+   "mlx_repos": 53,
+   "repo": "mlx-community/Qwen3.5-4B-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 5136542208,
+   "gb": 5.14,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.5 9B": {
+   "params_b": 9.65,
+   "mlx_repos": 30,
+   "repo": "mlx-community/Qwen3.5-9B-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 10426433504,
+   "gb": 10.43,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.6 27B": {
+   "params_b": 27.8,
+   "mlx_repos": 25,
+   "repo": "mlx-community/Qwen3.6-27B-8bit",
+   "quant": "8bit",
+   "bytes": 29500938720,
+   "gb": 29.5,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.6 35B A3B": {
+   "params_b": 36.0,
+   "mlx_repos": 21,
+   "repo": "mlx-community/Qwen3.6-35B-A3B-8bit",
+   "quant": "8bit",
+   "bytes": 37721128672,
+   "gb": 37.72,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.8 27B": {
+   "params_b": 27.0,
+   "mlx_repos": 25,
+   "repo": "mlx-community/Qwen3.8-27B-8bit",
+   "quant": "8bit",
+   "bytes": 29500938720,
+   "gb": 29.5,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Qwen3.8-Flash-Next": {
+   "params_b": 180.0,
+   "mlx_repos": 7,
+   "repo": "mlx-community/Qwen3.8-Flash-Next-4bit",
+   "quant": "4bit",
+   "bytes": 111518894072,
+   "gb": 111.52,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Reka Flash 3": {
+   "params_b": 21.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/reka-flash-3-mlx-8bit",
+   "quant": "8bit",
+   "bytes": 41810964480,
+   "gb": 41.81,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Ring-flash-2.0": {
+   "params_b": 103.0,
+   "mlx_repos": 10,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Sarvam 105B": {
+   "params_b": 106.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Sarvam 30B": {
+   "params_b": 32.2,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Sarvam M": {
+   "params_b": 23.6,
+   "mlx_repos": 8,
+   "repo": "mlx-community/sarvam-m-8bit",
+   "quant": "8bit",
+   "bytes": 25046067200,
+   "gb": 25.05,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Seed-OSS-36B-Instruct": {
+   "params_b": 36.2,
+   "mlx_repos": 2,
+   "repo": "mlx-community/Seed-OSS-36B-Instruct-8bit",
+   "quant": "8bit",
+   "bytes": 38411905024,
+   "gb": 38.41,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Solar Mini": {
+   "params_b": 10.7,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Solar Open 100B": {
+   "params_b": 102.0,
+   "mlx_repos": 3,
+   "repo": "mlx-community/Solar-Open-100B-8bit",
+   "quant": "8bit",
+   "bytes": 109091520512,
+   "gb": 109.09,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Step 3.5 Flash": {
+   "params_b": 196.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/Step-3.5-Flash-8bit",
+   "quant": "8bit",
+   "bytes": 209266284288,
+   "gb": 209.27,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Step 3.7 Flash": {
+   "params_b": 198.0,
+   "mlx_repos": 5,
+   "repo": "mlx-community/Step-3.7-Flash-8bit",
+   "quant": "8bit",
+   "bytes": 209266284288,
+   "gb": 209.27,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "Step3 VL 10B": {
+   "params_b": 10.2,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Tiny Aya Global": {
+   "params_b": 3.35,
+   "mlx_repos": 1,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no plain mlx-community build at 8/6/4-bit"
+  },
+  "Tri-21B-Think": {
+   "params_b": 21.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "Tri-21B-think Preview": {
+   "params_b": 21.0,
+   "mlx_repos": 0,
+   "repo": null,
+   "quant": null,
+   "bytes": null,
+   "gb": null,
+   "why": "no mlx-community repo at all"
+  },
+  "gpt-oss-120b": {
+   "params_b": 117.0,
+   "mlx_repos": 4,
+   "repo": "mlx-community/gpt-oss-120b-4bit",
+   "quant": "4bit",
+   "bytes": 65774358144,
+   "gb": 65.77,
+   "source": "hf-mem over HTTP Range, no download"
+  },
+  "gpt-oss-20b": {
+   "params_b": 21.0,
+   "mlx_repos": 8,
+   "repo": "mlx-community/gpt-oss-20b-Ja-Fin-Thinking-MLX-8bit",
+   "quant": "8bit",
+   "bytes": 22228464768,
+   "gb": 22.23,
+   "source": "hf-mem over HTTP Range, no download"
+  }
+ }
+}

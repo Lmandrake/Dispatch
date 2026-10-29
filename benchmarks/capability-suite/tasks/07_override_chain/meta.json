@@ -1,0 +1,1 @@
+{"category": "codebase-search", "what_it_probes": "Tracing an effective value through a constants -> profile -> ini -> env override chain across ~40 files with decoy timeouts, and changing only the deciding layer.", "expected_minutes_for_human": 12}

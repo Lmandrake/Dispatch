@@ -1,0 +1,58 @@
+# Codex config for the RESEARCH consult profile. Installed into the research credential home as
+# config.toml on every research run. A copy of config.toml with exactly two changes (standing ruling
+# 2026-10-07, "Build it without the network rule"): web_search = "live" and code_mode_host = true.
+# Code mode is the only way codex 0.161 exposes web search, and it ALSO exposes functions.exec,
+# apply_patch and sub-agent spawn inside the container. See codex/README.md "Research profile".
+cli_auth_credentials_store = "file"
+approval_policy = "never"
+sandbox_mode = "read-only"
+web_search = "live"
+check_for_update_on_startup = false
+model_reasoning_effort = "high"    # recorded in the ledger row as reasoning_effort
+project_doc_max_bytes = 0          # never load AGENTS.md from the packet
+
+[history]
+persistence = "none"
+
+[analytics]
+enabled = false
+
+[otel]
+exporter = "none"
+metrics_exporter = "none"
+trace_exporter = "none"
+log_user_prompt = false
+
+# Everything that would give the consult capabilities beyond reading the packet, or reach
+# beyond the model connection, is off. `codex features list` shows the current set.
+[features]
+apps = false
+plugins = false
+remote_plugin = false
+plugin_sharing = false
+hooks = false
+browser_use = false
+browser_use_external = false
+browser_use_full_cdp_access = false
+in_app_browser = false
+computer_use = false
+image_generation = false
+multi_agent = false
+skill_search = false
+skill_mcp_dependency_install = false
+tool_suggest = false
+workspace_dependencies = false
+worktrees = false
+daemon_auto_start = false
+realtime_conversation = false
+unbounded_connection_retries = false
+in_app_local_automation = false
+code_mode_host = true              # REQUIRED for web search; also exposes functions.exec + apply_patch
+goals = false
+# No tools that read the filesystem: the packet is INLINED into the prompt, so disclosure is
+# exactly the scanned prompt. bubblewrap cannot create namespaces in this container (measured
+# 2026-10-07), so any command that did slip through runs under read-only and fails closed.
+shell_tool = false
+unified_exec = false
+shell_snapshot = false
+view_image = false

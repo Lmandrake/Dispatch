@@ -1,0 +1,143 @@
+{
+ "source": "https://huggingface.co/datasets/livecodebench/code_generation_lite/resolve/main/test6.jsonl",
+ "n_problems": 175,
+ "per_model": {
+  "opus": {
+   "samples": 175,
+   "pass_at_1_private": 0.8228571428571428,
+   "public_pass_rate": 0.8514285714285714,
+   "false_accept_given_public_pass": 0.03355704697986577,
+   "cost_per_sample": 0.043945389714285715,
+   "median_latency_s": 9.565944194793701,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.923,
+    "hard": 0.662
+   }
+  },
+  "sonnet": {
+   "samples": 350,
+   "pass_at_1_private": 0.8057142857142857,
+   "public_pass_rate": 0.8485714285714285,
+   "false_accept_given_public_pass": 0.050505050505050504,
+   "cost_per_sample": 0.029817832,
+   "median_latency_s": 7.350325107574463,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.952,
+    "hard": 0.606
+   }
+  },
+  "haiku": {
+   "samples": 875,
+   "pass_at_1_private": 0.7725714285714286,
+   "public_pass_rate": 0.8354285714285714,
+   "false_accept_given_public_pass": 0.07660738714090287,
+   "cost_per_sample": 0.0029457120000000005,
+   "median_latency_s": 8.68971586227417,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.865,
+    "hard": 0.59
+   }
+  }
+ },
+ "strategies": {
+  "haiku x1 unchecked": {
+   "n": 175,
+   "correct": 0.7657142857142857,
+   "cost_per_problem": 0.0020197936,
+   "latency_per_problem_s": 16.942439437593734,
+   "accepted_wrong": 0.2342857142857143,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.8461538461538461,
+    "hard": 0.5875
+   }
+  },
+  "sonnet x1 unchecked": {
+   "n": 175,
+   "correct": 0.8114285714285714,
+   "cost_per_problem": 0.025354157714285713,
+   "latency_per_problem_s": 17.49802679334368,
+   "accepted_wrong": 0.18857142857142858,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9615384615384616,
+    "hard": 0.6125
+   }
+  },
+  "opus x1 unchecked": {
+   "n": 175,
+   "correct": 0.8228571428571428,
+   "cost_per_problem": 0.043945389714285715,
+   "latency_per_problem_s": 19.21107981954302,
+   "accepted_wrong": 0.17714285714285713,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9230769230769231,
+    "hard": 0.6625
+   }
+  },
+  "haiku up to 1, check=public tests, else opus": {
+   "n": 175,
+   "correct": 0.8285714285714286,
+   "cost_per_problem": 0.013762589028571427,
+   "latency_per_problem_s": 22.082477381569998,
+   "accepted_wrong": 0.17142857142857143,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9038461538461539,
+    "hard": 0.6875
+   }
+  },
+  "haiku up to 3, check=public tests, else opus": {
+   "n": 175,
+   "correct": 0.84,
+   "cost_per_problem": 0.01268452177142857,
+   "latency_per_problem_s": 33.35053514753069,
+   "accepted_wrong": 0.16,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9230769230769231,
+    "hard": 0.7
+   }
+  },
+  "haiku up to 5, check=public tests, else opus": {
+   "n": 175,
+   "correct": 0.8457142857142858,
+   "cost_per_problem": 0.013938032114285716,
+   "latency_per_problem_s": 45.962257253101896,
+   "accepted_wrong": 0.15428571428571428,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9230769230769231,
+    "hard": 0.7125
+   }
+  },
+  "sonnet up to 2, check=public tests, else opus": {
+   "n": 175,
+   "correct": 0.8457142857142858,
+   "cost_per_problem": 0.043306132571428575,
+   "latency_per_problem_s": 27.184285751070295,
+   "accepted_wrong": 0.15428571428571428,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9615384615384616,
+    "hard": 0.6875
+   }
+  },
+  "haiku up to 5, check=public tests, else sonnet": {
+   "n": 175,
+   "correct": 0.8285714285714286,
+   "cost_per_problem": 0.008492340685714285,
+   "latency_per_problem_s": 44.377304879597254,
+   "accepted_wrong": 0.17142857142857143,
+   "by_difficulty": {
+    "easy": 1.0,
+    "medium": 0.9230769230769231,
+    "hard": 0.675
+   }
+  }
+ }
+}

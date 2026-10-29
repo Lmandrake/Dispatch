@@ -1,0 +1,20 @@
+# Legal entities (Group finance, 2025-10)
+
+[entities.KC-US]
+name = "Kettle Cloud Inc."
+functional_currency = "USD"
+currencies = ["USD", "CAD", "JPY", "AUD"]
+
+[entities.KC-EU]
+name = "Kettle Cloud B.V."
+functional_currency = "EUR"
+currencies = ["EUR", "CHF", "SEK"]
+
+[entities.KC-UK]
+name = "Kettle Cloud Ltd"
+functional_currency = "GBP"
+currencies = ["GBP"]
+
+[group]
+presentation_currency = "USD"
+parent = "KC-US"

@@ -1,0 +1,30 @@
+# Coupons (Revenue Ops)
+
+[coupons.WELCOME10]
+name = "Welcome"
+percent_off = "10"
+duration = "repeating"
+cycles = 3
+
+[coupons.SPRING15]
+name = "Spring usage"
+percent_off = "15"
+applies_to = "usage"
+duration = "once"
+
+[coupons.PARTNER50]
+name = "Partner credit"
+amount_off = "50.00"
+currency = "USD"
+duration = "forever"
+
+[coupons.BASE20]
+name = "Annual prepay"
+percent_off = "20"
+applies_to = "base"
+duration = "forever"
+
+[coupons.AUTUMN12]
+name = "Autumn"
+percent_off = "12.5"
+duration = "once"

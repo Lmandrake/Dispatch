@@ -1,0 +1,247 @@
+{
+ "hard-coding": {
+  "by_harness": {
+   "claude-code": {
+    "context": 429680.0,
+    "cpu_s": 4.525,
+    "n": 30,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.5165820023620582,
+     0.7891720597717535
+    ],
+    "passed": 20,
+    "rss_mb": 392.9,
+    "wall_s": 122.1
+   },
+   "omp": {
+    "context": 357359,
+    "cpu_s": 4.355,
+    "n": 30,
+    "op_rate": 0.03333333333333333,
+    "operational_failures": 1,
+    "pass_ci90": [
+     0.5165820023620582,
+     0.7891720597717535
+    ],
+    "passed": 20,
+    "rss_mb": 560.0999999999999,
+    "wall_s": 143.05
+   },
+   "pi": {
+    "context": 232929.0,
+    "cpu_s": 2.3,
+    "n": 30,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.6209599324121905,
+     0.8682465670019085
+    ],
+    "passed": 23,
+    "rss_mb": 243.7,
+    "wall_s": 78.25
+   }
+  },
+  "class": "hard-coding",
+  "metric": "wall_s",
+  "what": "multi-file features, races, migrations, spec work (suite tasks 11-15)"
+ },
+ "many-agents": {
+  "by_harness": {
+   "claude-code": {
+    "context": null,
+    "cpu_s": 0.654,
+    "n": 21,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.8858507489129873,
+     1.0
+    ],
+    "passed": 21,
+    "rss_mb": 216.8,
+    "wall_s": 4.674
+   },
+   "omp": {
+    "context": null,
+    "cpu_s": 1.926,
+    "n": 21,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.8858507489129873,
+     1.0
+    ],
+    "passed": 21,
+    "rss_mb": 440.2,
+    "wall_s": 5.942
+   },
+   "pi": {
+    "context": null,
+    "cpu_s": 0.43,
+    "n": 21,
+    "op_rate": 0.047619047619047616,
+    "operational_failures": 1,
+    "pass_ci90": [
+     0.8121789340198237,
+     0.9893050769014508
+    ],
+    "passed": 20,
+    "rss_mb": 134.4,
+    "wall_s": 3.092
+   }
+  },
+  "class": "many-agents",
+  "metric": "cpu_s",
+  "what": "many concurrent agents on one laptop, mostly waiting on the model"
+ },
+ "metered": {
+  "by_harness": {
+   "claude-code": {
+    "context": 185636,
+    "cpu_s": 1.5,
+    "n": 75,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.8693089750373029,
+     0.9671769988624044
+    ],
+    "passed": 70,
+    "rss_mb": 304.6,
+    "wall_s": 17.2
+   },
+   "omp": {
+    "context": 86276,
+    "cpu_s": 2.5,
+    "n": 75,
+    "op_rate": 0.04,
+    "operational_failures": 3,
+    "pass_ci90": [
+     0.8204249041288647,
+     0.938846979872408
+    ],
+    "passed": 67,
+    "rss_mb": 480.5,
+    "wall_s": 21.6
+   },
+   "pi": {
+    "context": 22530,
+    "cpu_s": 1.0,
+    "n": 75,
+    "op_rate": 0.013333333333333334,
+    "operational_failures": 1,
+    "pass_ci90": [
+     0.9040580327114458,
+     0.9839040011205511
+    ],
+    "passed": 72,
+    "rss_mb": 166.8,
+    "wall_s": 14.0
+   }
+  },
+  "class": "metered",
+  "metric": "context",
+  "what": "a metered or rate-limited gateway, where context sent is the cost"
+ },
+ "short-edit": {
+  "by_harness": {
+   "claude-code": {
+    "context": 183086.0,
+    "cpu_s": 1.66,
+    "n": 90,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.970810688949289,
+     1.0
+    ],
+    "passed": 90,
+    "rss_mb": 312.15,
+    "wall_s": 14.850000000000001
+   },
+   "omp": {
+    "context": 86276,
+    "cpu_s": 2.82,
+    "n": 90,
+    "op_rate": 0.022222222222222223,
+    "operational_failures": 2,
+    "pass_ci90": [
+     0.9350441388614882,
+     0.9926194083567211
+    ],
+    "passed": 88,
+    "rss_mb": 493.0,
+    "wall_s": 14.149999999999999
+   },
+   "pi": {
+    "context": 30697.0,
+    "cpu_s": 1.2149999999999999,
+    "n": 90,
+    "op_rate": 0.011111111111111112,
+    "operational_failures": 1,
+    "pass_ci90": [
+     0.9517195552723745,
+     0.997517562811375
+    ],
+    "passed": 89,
+    "rss_mb": 172.39999999999998,
+    "wall_s": 9.45
+   }
+  },
+  "class": "short-edit",
+  "metric": "wall_s",
+  "what": "short, well-specified coding edits (suite tasks 01-10)"
+ },
+ "unattended": {
+  "by_harness": {
+   "claude-code": {
+    "context": 222324.5,
+    "cpu_s": 2.24,
+    "n": 120,
+    "op_rate": 0.0,
+    "operational_failures": 0,
+    "pass_ci90": [
+     0.8654181182051688,
+     0.9495377896241328
+    ],
+    "passed": 110,
+    "rss_mb": 329.3,
+    "wall_s": 18.25
+   },
+   "omp": {
+    "context": 97155.0,
+    "cpu_s": 2.995,
+    "n": 120,
+    "op_rate": 0.025,
+    "operational_failures": 3,
+    "pass_ci90": [
+     0.8457632559090902,
+     0.9365944156070396
+    ],
+    "passed": 108,
+    "rss_mb": 516.5999999999999,
+    "wall_s": 20.85
+   },
+   "pi": {
+    "context": 65864.0,
+    "cpu_s": 1.46,
+    "n": 120,
+    "op_rate": 0.008333333333333333,
+    "operational_failures": 1,
+    "pass_ci90": [
+     0.8855213112813838,
+     0.9620328328610901
+    ],
+    "passed": 112,
+    "rss_mb": 181.6,
+    "wall_s": 13.149999999999999
+   }
+  },
+  "class": "unattended",
+  "metric": "op_rate",
+  "what": "a long unattended run, where a crash or a stalled stream is the cost"
+ }
+}

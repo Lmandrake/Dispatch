@@ -1,0 +1,10 @@
+[project]
+name = "dispatch"
+version = "0.0.0"
+description = "The delegation router. Stdlib only, on purpose: it runs on a bare system python3."
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

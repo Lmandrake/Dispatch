@@ -1,0 +1,64 @@
+{
+  "amount_due": "155.71",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C07",
+    "name": "Granite Health Partners",
+    "tax_id": null
+  },
+  "discounts": [
+    {
+      "amount": "9.80",
+      "coupon": "BASE20"
+    }
+  ],
+  "due_date": "2026-04-14",
+  "issued": "2026-02-28",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "49.00",
+      "description": "Starter plan, Jan 28-Feb 27",
+      "kind": "base",
+      "plan": "starter",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "105.80",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "starter",
+      "quantity": "311602",
+      "unit": "calls"
+    },
+    {
+      "amount": "0.98",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "starter",
+      "quantity": "92.6",
+      "unit": "GB"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C07",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-02-27",
+    "start": "2026-01-28",
+    "timezone": "America/Chicago"
+  },
+  "subtotal": "155.78",
+  "tax": {
+    "amount": "9.73",
+    "jurisdiction": "US-TX",
+    "rate": "0.0625",
+    "reverse_charge": false,
+    "taxable": "155.78"
+  },
+  "total": "155.71"
+}

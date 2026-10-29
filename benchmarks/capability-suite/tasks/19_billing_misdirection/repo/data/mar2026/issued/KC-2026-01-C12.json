@@ -1,0 +1,68 @@
+{
+  "amount_due": "740.08",
+  "credits": [],
+  "currency": "USD",
+  "customer": {
+    "id": "C12",
+    "name": "Meridian Outfitters Corp.",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-09",
+  "issued": "2026-02-05",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "199.00",
+      "description": "Team plan, Jan 5-Feb 4",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "296.41",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "741015",
+      "unit": "calls"
+    },
+    {
+      "amount": "3.81",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "181.202",
+      "unit": "GB"
+    },
+    {
+      "amount": "220.00",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "22",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C12",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-02-04",
+    "start": "2026-01-05",
+    "timezone": "America/Denver"
+  },
+  "subtotal": "719.22",
+  "tax": {
+    "amount": "20.86",
+    "jurisdiction": "US-CO",
+    "rate": "0.029",
+    "reverse_charge": false,
+    "taxable": "719.22"
+  },
+  "total": "740.08"
+}

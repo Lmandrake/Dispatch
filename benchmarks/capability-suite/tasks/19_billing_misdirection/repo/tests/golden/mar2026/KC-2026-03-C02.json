@@ -1,0 +1,75 @@
+{
+  "amount_due": "554.62",
+  "credits": [],
+  "currency": "EUR",
+  "customer": {
+    "id": "C02",
+    "name": "Brightline GmbH",
+    "tax_id": "DE811907980"
+  },
+  "discounts": [
+    {
+      "amount": "61.62",
+      "coupon": "WELCOME10"
+    }
+  ],
+  "due_date": "2026-04-15",
+  "issued": "2026-04-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "185.00",
+      "description": "Team (EU) plan, Mar 1-Mar 31",
+      "kind": "base",
+      "plan": "team_eu",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "253.12",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team_eu",
+      "quantity": "684100",
+      "unit": "calls"
+    },
+    {
+      "amount": "11.62",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team_eu",
+      "quantity": "611.875",
+      "unit": "GB"
+    },
+    {
+      "amount": "166.50",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team_eu",
+      "quantity": "18",
+      "unit": "seats"
+    }
+  ],
+  "notes": [
+    "Reverse charge: VAT to be accounted for by the recipient."
+  ],
+  "number": "KC-2026-03-C02",
+  "period": {
+    "cycle": "2026-03",
+    "end": "2026-03-31",
+    "start": "2026-03-01",
+    "timezone": "Europe/Berlin"
+  },
+  "subtotal": "616.24",
+  "tax": {
+    "amount": "0.00",
+    "jurisdiction": "DE",
+    "rate": "0",
+    "reverse_charge": true,
+    "taxable": "554.62"
+  },
+  "total": "554.62"
+}

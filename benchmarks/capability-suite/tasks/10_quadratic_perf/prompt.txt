@@ -1,0 +1,1 @@
+`find_overlaps` in intervals.py is way too slow on real data: tests/test_intervals.py::test_large_input takes forever. Please make it fast (it needs to handle a few hundred thousand intervals in well under a second or two) without changing its results or its documented behaviour.

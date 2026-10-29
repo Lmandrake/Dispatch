@@ -1,0 +1,1 @@
+{"category": "noisy-output", "what_it_probes": "Running a script that emits 20,000 log lines, finding the 10 malformed ones without drowning in output, and fixing the single responsible formatter.", "expected_minutes_for_human": 15}

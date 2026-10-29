@@ -1,0 +1,21 @@
+#!/bin/sh
+# Print a bearer token for the GenAI gateway, cached for CLAUDE_CODE_API_KEY_HELPER_TTL_MS (what
+# Claude Code does with its apiKeyHelper). The helper path and TTL come from ~/.claude/settings.json.
+# Cache lives in agent storage, mode 0600. Never echo this output anywhere.
+set -eu
+# Bench mode: a token already fetched once is handed in by env, so no helper runs per request.
+if [ -n "${NH_GENAI_TOKEN:-}" ]; then printf '%s' "$NH_GENAI_TOKEN"; exit 0; fi
+here=$(cd "$(dirname "$0")/.." && pwd)
+root=$(printf "%s" "${DISPATCH_STORAGE_ROOT:-$HOME/.cache/dispatch}")
+cache="$root/harnesses/state/genai-token"
+mkdir -p "$(dirname "$cache")"; chmod 700 "$(dirname "$cache")"
+eval "$(python3 -I -c 'import sys;sys.path.insert(0,sys.argv[1]);import genai_route as g;s=g.settings();print("helper=%s ttl=%d"%(g.key_helper(s),g.helper_ttl_ms(s)//1000))' "$here/gen")"
+if [ -s "$cache" ]; then
+  age=$(( $(date +%s) - $(stat -f %m "$cache") ))
+  if [ "$age" -lt "$ttl" ]; then cat "$cache"; exit 0; fi
+fi
+umask 077
+tok=$("$helper" 2>/dev/null | tail -1)
+[ -n "$tok" ] || { echo "genai-token: $helper returned nothing" >&2; exit 1; }
+printf '%s' "$tok" > "$cache.tmp" && mv "$cache.tmp" "$cache"
+printf '%s' "$tok"

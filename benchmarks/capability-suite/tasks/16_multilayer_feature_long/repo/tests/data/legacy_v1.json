@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "users": [
+    {
+      "username": "ana",
+      "display_name": "Ana Lima",
+      "email": "ana@example.com",
+      "created_at": "2025-01-02T08:00:00Z"
+    },
+    {
+      "username": "bob",
+      "display_name": "Bob Stone",
+      "email": "",
+      "created_at": "2025-01-02T08:05:00Z"
+    },
+    {
+      "username": "cyd",
+      "display_name": "Cyd Park",
+      "email": "cyd@example.com",
+      "created_at": "2025-01-03T10:00:00Z"
+    }
+  ],
+  "projects": [
+    {
+      "key": "WEB",
+      "name": "Website",
+      "description": "Public site",
+      "next_number": 4,
+      "created_at": "2025-01-02T09:00:00Z"
+    },
+    {
+      "key": "OPS",
+      "name": "Operations",
+      "description": "",
+      "next_number": 2,
+      "created_at": "2025-01-04T09:00:00Z"
+    }
+  ],
+  "memberships": [
+    {
+      "project": "WEB",
+      "username": "ana",
+      "role": "owner"
+    },
+    {
+      "project": "WEB",
+      "username": "bob",
+      "role": "writer"
+    },
+    {
+      "project": "WEB",
+      "username": "cyd",
+      "role": "reader"
+    },
+    {
+      "project": "OPS",
+      "username": "bob",
+      "role": "owner"
+    }
+  ],
+  "issues": [
+    {
+      "project": "WEB",
+      "number": 1,
+      "title": "Login page broken",
+      "description": "500 on submit",
+      "type": "bug",
+      "status": "done",
+      "priority": "urgent",
+      "reporter": "ana",
+      "assignee": "bob",
+      "tags": "UI, auth",
+      "deadline": "2025-01-10",
+      "created_at": "2025-01-05T10:00:00Z",
+      "updated_at": "2025-01-08T16:00:00Z",
+      "closed_at": "2025-01-08T16:00:00Z",
+      "comments": [
+        {
+          "author": "bob",
+          "body": "Looking at it",
+          "created_at": "2025-01-06T09:00:00Z"
+        },
+        {
+          "author": "ana",
+          "body": "Thanks @bob",
+          "created_at": "2025-01-06T09:30:00Z"
+        }
+      ]
+    },
+    {
+      "project": "WEB",
+      "number": 2,
+      "title": "Write style guide",
+      "description": "",
+      "type": "task",
+      "status": "open",
+      "priority": "normal",
+      "reporter": "bob",
+      "assignee": "",
+      "tags": "docs",
+      "deadline": "",
+      "created_at": "2025-01-06T11:00:00Z",
+      "updated_at": "2025-01-06T11:00:00Z",
+      "closed_at": "",
+      "comments": []
+    },
+    {
+      "project": "WEB",
+      "number": 3,
+      "title": "Renew TLS certificate",
+      "description": "",
+      "type": "chore",
+      "status": "in_progress",
+      "priority": "high",
+      "reporter": "ana",
+      "assignee": "ana",
+      "tags": "",
+      "deadline": "2025-02-01",
+      "created_at": "2025-01-07T12:00:00Z",
+      "updated_at": "2025-01-07T12:30:00Z",
+      "closed_at": "",
+      "comments": [
+        {
+          "author": "ana",
+          "body": "Ordered",
+          "created_at": "2025-01-07T12:30:00Z"
+        }
+      ]
+    },
+    {
+      "project": "OPS",
+      "number": 1,
+      "title": "Rotate backup tapes",
+      "description": "weekly",
+      "type": "chore",
+      "status": "open",
+      "priority": "low",
+      "reporter": "bob",
+      "assignee": "bob",
+      "tags": "ops,Backups",
+      "deadline": "2025-01-12",
+      "created_at": "2025-01-04T09:30:00Z",
+      "updated_at": "2025-01-04T09:30:00Z",
+      "closed_at": "",
+      "comments": []
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "timestamp": "2025-01-02T09:00:00Z",
+      "action": "project.created",
+      "subject": "WEB",
+      "details": {
+        "name": "Website"
+      }
+    },
+    {
+      "seq": 2,
+      "timestamp": "2025-01-05T10:00:00Z",
+      "action": "issue.created",
+      "subject": "WEB-1",
+      "details": {
+        "title": "Login page broken",
+        "type": "bug",
+        "priority": "urgent"
+      }
+    },
+    {
+      "seq": 3,
+      "timestamp": "2025-01-08T16:00:00Z",
+      "action": "issue.transitioned",
+      "subject": "WEB-1",
+      "details": {
+        "from": "open",
+        "to": "done"
+      }
+    }
+  ]
+}

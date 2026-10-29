@@ -1,0 +1,80 @@
+{
+  "amount_due": "17710.16",
+  "credits": [
+    {
+      "applied": "500.00",
+      "grant": "G-2130",
+      "remaining": "0.00",
+      "remaining_currency": "SEK"
+    }
+  ],
+  "currency": "SEK",
+  "customer": {
+    "id": "C06",
+    "name": "Fjallbacka Data AB",
+    "tax_id": null
+  },
+  "discounts": [
+    {
+      "amount": "522.75",
+      "coupon": "PARTNER50"
+    }
+  ],
+  "due_date": "2026-03-03",
+  "issued": "2026-02-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "5217.05",
+      "description": "Business plan, Jan 1-Jan 31",
+      "kind": "base",
+      "plan": "business",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "7580.00",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "business",
+      "quantity": "2416708",
+      "unit": "calls"
+    },
+    {
+      "amount": "119.19",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "business",
+      "quantity": "796.682",
+      "unit": "GB"
+    },
+    {
+      "amount": "2070.09",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "business",
+      "quantity": "18",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C06",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-01-31",
+    "start": "2026-01-01",
+    "timezone": "Europe/Stockholm"
+  },
+  "subtotal": "14986.33",
+  "tax": {
+    "amount": "3746.58",
+    "jurisdiction": "SE",
+    "rate": "0.25",
+    "reverse_charge": false,
+    "taxable": "14986.33"
+  },
+  "total": "18210.16"
+}

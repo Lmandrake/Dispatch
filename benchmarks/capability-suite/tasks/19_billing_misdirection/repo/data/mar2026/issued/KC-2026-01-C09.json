@@ -1,0 +1,75 @@
+{
+  "amount_due": "1258.82",
+  "credits": [
+    {
+      "applied": "115.88",
+      "grant": "G-2310",
+      "remaining": "0.00",
+      "remaining_currency": "EUR"
+    }
+  ],
+  "currency": "CHF",
+  "customer": {
+    "id": "C09",
+    "name": "Ironwood SA",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-03",
+  "issued": "2026-02-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "443.27",
+      "description": "Business (EU) plan, Jan 1-Jan 31",
+      "kind": "base",
+      "plan": "business_eu",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "494.71",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "business_eu",
+      "quantity": "1829509",
+      "unit": "calls"
+    },
+    {
+      "amount": "5.07",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "business_eu",
+      "quantity": "405.941",
+      "unit": "GB"
+    },
+    {
+      "amount": "328.64",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "business_eu",
+      "quantity": "41",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C09",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-01-31",
+    "start": "2026-01-01",
+    "timezone": "Europe/Zurich"
+  },
+  "subtotal": "1271.69",
+  "tax": {
+    "amount": "103.01",
+    "jurisdiction": "CH",
+    "rate": "0.081",
+    "reverse_charge": false,
+    "taxable": "1271.69"
+  },
+  "total": "1374.70"
+}

@@ -1,0 +1,76 @@
+# Gold answer key for the agentic doc-sweep task.
+#
+# Scoring is deterministic, NOT judge-based. A reported item counts as a hit on
+# a key item when the reported `file` resolves to that item's file AND any one
+# of `match_any` appears (case-insensitively) anywhere in the reported item text
+# or reason. Each key item can be hit at most once; extra reports against a file
+# with no key item, or against anything in `keep`, are false positives.
+#
+# `required` items are what a competent sweep must find. `optional` items are
+# defensible but borderline — hitting one neither helps nor hurts (they are
+# excluded from precision's denominator) so the metric does not punish judgment.
+
+task: |
+  Search all of the project documentation in this repository and report every
+  item that is retired, stale, or completed and could therefore be removed.
+  Use the tools to list and read the files before answering. When you are done,
+  call report_removable exactly once with everything you found.
+
+required:
+  - id: readme_roadmap_done
+    file: README.md
+    match_any: [roadmap, "q1 2025", "q2 2025", "q3 2025", parquet, "v2 rest", protobuf, "shipped", "checked off", completed]
+    why: Three roadmap entries are shipped and checked off; they are history, not plan.
+
+  - id: readme_legacy_forwarder
+    file: README.md
+    match_any: [legacy, forwarder, decommission, "historical reference", forwarder_batch_ms]
+    why: The Legacy notes section documents a sidecar decommissioned in March 2026.
+
+  - id: todo_completed
+    file: TODO.md
+    match_any: [jenkins, libtelem, "staging cluster", completed, "checked off", "[x]"]
+    why: Three TODO entries are checked off with completion dates.
+
+  - id: arch_deprecated_v1
+    file: docs/architecture.md
+    match_any: [deprecated, monolith, "v1", sqlite]
+    why: The DEPRECATED v1 monolith section describes an architecture removed in 2.0.
+
+  - id: runbook_forwarder
+    file: docs/runbook.md
+    match_any: [forwarder, "telemetry-forwarder", forwarder_batch_ms]
+    why: >
+      Cross-file inference — the runbook still has restart steps for
+      telemetry-forwarder, which README.md says was decommissioned. Finding this
+      requires connecting two documents, not just reading one.
+
+  - id: migration_doc_whole
+    file: docs/migration-v1-to-v2.md
+    match_any: [migration, migrating, completed, "entire file", "whole file", "v1 to v2", retained]
+    why: The migration completed 2025-08-30 and the whole file is now removable.
+
+optional:
+  - id: changelog_old_releases
+    file: CHANGELOG.md
+    match_any: ["1.4", "2.0", "old release"]
+    why: Defensible to flag, but the file declares itself append-only and retained by policy.
+
+# Reporting anything matching these is a false positive: they are live content
+# that a careless sweep mistakes for stale.
+keep:
+  - file: TODO.md
+    match_any: [backpressure, "p99", "crc failure modes"]
+    why: Open, unchecked TODO items — active work.
+  - file: README.md
+    match_any: ["q4 2026", "q1 2027", streaming downlink, "multi-mission", quick start]
+    why: Unchecked future roadmap entries and live install instructions.
+  - file: docs/architecture.md
+    match_any: ["current design", "data retention", ingest worker]
+    why: Live architecture and retention policy.
+  - file: docs/runbook.md
+    match_any: ["ingest worker", "draining a node", drain]
+    why: Live operational procedures.
+  - file: CHANGELOG.md
+    match_any: ["append-only", "in full", "entire file", "whole file", "delete the changelog"]
+    why: The changelog is retained in full by policy; proposing to remove it is wrong.

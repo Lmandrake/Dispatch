@@ -1,0 +1,1 @@
+{"category": "data-parsing", "what_it_probes": "Writing a robust multi-format log parser to a precise output schema, including unit normalisation, corrupt-line classification and percentile/tie-break rules.", "expected_minutes_for_human": 35}

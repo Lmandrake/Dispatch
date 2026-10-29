@@ -1,0 +1,1 @@
+{"category": "bugfix", "what_it_probes": "Tracing a visible failing test to a subtle off-by-one in page counting that is not where the symptom appears.", "expected_minutes_for_human": 10}

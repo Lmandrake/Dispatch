@@ -1,0 +1,20 @@
+logs/app.log is a messy export from our log shipper. It mixes three line formats:
+
+  1. `2026-03-01T23:50:07Z [INFO] auth: some message latency=455ms`   (latency part optional)
+  2. JSON objects: `{"ts": "2026-03-01 23:50:27", "level": "error", "service": "api", "msg": "...", "latency_ms": 12}`   (latency_ms optional, other extra keys possible)
+  3. syslog style: `Mar  1 23:50:12 host4 api[273]: WARN some message latency=0.168s`   (latency optional, in seconds; no year in these, assume 2026)
+
+All timestamps are UTC. Levels may appear in any case, and WARNING means WARN; the only valid levels are DEBUG, INFO, WARN, ERROR. Blank or whitespace-only lines should be ignored completely. Any other line that doesn't fully parse as one of these formats (bad JSON, missing fields, invalid date, unknown level, random junk) counts as corrupt.
+
+Please write `summarize.py` so that `python3 summarize.py logs/app.log` prints a single JSON object to stdout with exactly these keys:
+
+- "total_lines": number of non-blank lines
+- "parsed": number of valid records
+- "corrupt": number of corrupt lines
+- "by_level": {"DEBUG": n, "INFO": n, "WARN": n, "ERROR": n}  (all four keys always present)
+- "by_service": {service: n} for every service seen in valid records
+- "latency_ms": {"count", "min", "max", "mean", "p95"} over records that carry a latency, all in milliseconds; mean rounded to 2 decimals; p95 is the nearest-rank percentile (the ceil(0.95*count)-th smallest value). If no record has a latency, use count 0 and null for the rest.
+- "first_ts" / "last_ts": earliest and latest valid record timestamp as `YYYY-MM-DDTHH:MM:SSZ` (null if there are no valid records)
+- "top_errors": up to 3 `[service, count]` pairs for services with the most ERROR records, most first, ties broken by service name.
+
+Also make the logic importable: `summarize.summarize(path)` should return the same dict.

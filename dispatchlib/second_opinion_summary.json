@@ -1,0 +1,55 @@
+{
+ "source": "docs/MEASURED_RESULTS.md",
+ "bugs": 42,
+ "snapshots": 14,
+ "repos": 7,
+ "shapes": {
+  "S1": {
+   "route": "opus-alone",
+   "recall": 0.42,
+   "recall_ci95": [
+    0.3,
+    0.54
+   ],
+   "fp_per_run": 0.38,
+   "claude_eff_tokens_k": 27.5
+  },
+  "S2b": {
+   "route": "opus-second-pass",
+   "recall": 0.51,
+   "recall_ci95": [
+    0.36,
+    0.64
+   ],
+   "fp_per_run": 1.29,
+   "claude_eff_tokens_k": 48.3
+  },
+  "Xb": {
+   "route": "gpt",
+   "recall": 0.53,
+   "recall_ci95": [
+    0.4,
+    0.66
+   ],
+   "fp_per_run": 0.5,
+   "claude_eff_tokens_k": 27.5
+  },
+  "SW": {
+   "route": "sonnet-critic",
+   "recall": 0.53,
+   "recall_ci95": [
+    0.4,
+    0.66
+   ],
+   "fp_per_run": 1.12,
+   "claude_eff_tokens_k": 63.0
+  }
+ },
+ "paired": {
+  "gpt_minus_opus2_recall": 0.03,
+  "ci90": [
+   -0.03,
+   0.08
+  ]
+ }
+}

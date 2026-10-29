@@ -1,0 +1,58 @@
+{
+ "_what": "Warm generation throughput of the local oMLX fleet on THIS machine. Our own measurement, not a published number -- deliberately so: no source publishes tokens/sec for a specific quantisation on a specific Mac, and that figure is a property of the hardware, not of the model. It is the axis `refer` does not have.",
+ "_why_it_exists": "Quality and speed are anti-correlated across this fleet. A pick-or-drop decision computed from `refer` scores alone deleted the entire fast tier on paper.",
+ "_measured": "2026-10-01",
+ "_machine": "Apple-silicon desktop",
+ "_method": "Per model: one cold call (load + generate), then 3 warm calls. temperature 0, max_tokens 250, one identical pinned prompt. Rate is the server's own usage.completion_tokens over wall-clock; the warm figure is the median. cold_load_s is the cold call minus its own generation time, so it is load alone.",
+ "_reproduce": "python3 tools/measure_throughput.py --all --write",
+ "_prompt_sha256": "3be038396fe4de54",
+ "🔴 _limits": [
+  "ONE prompt shape, short (~120 tokens in). These characterise short-prompt GENERATION only.",
+  "The long-context jobs send very large prompts where prompt PROCESSING dominates and MoE models behave differently. Do not pick a model for those from this file -- it has not measured that regime.",
+  "n=3 warm reps on a deterministic local server. Low variance reflects determinism, not a characterised distribution.",
+  "Output capped at 250 tokens; `truncated_at_cap` says which rows hit it. A model that stops early is timed over fewer tokens.",
+  "Does not survive an oMLX upgrade or a machine change. Re-run after either."
+ ],
+ "installed": {
+  "GLM-4.7-Flash-8bit": {
+   "warm_tok_per_s": 58.2,
+   "cold_load_s": 8.0,
+   "gb": 31.8,
+   "warm_reps": 3,
+   "completion_tokens": 250,
+   "truncated_at_cap": true
+  },
+  "K2-Horizon-MoVA-36B-A4B-8bit": {
+   "warm_tok_per_s": 44.1,
+   "cold_load_s": 6.7,
+   "gb": 39.8,
+   "warm_reps": 3,
+   "completion_tokens": 250,
+   "truncated_at_cap": true
+  },
+  "Qwen3.5-9B-MLX-4bit": {
+   "warm_tok_per_s": 78.8,
+   "cold_load_s": 5.7,
+   "gb": 6.0,
+   "warm_reps": 3,
+   "completion_tokens": 250,
+   "truncated_at_cap": true
+  },
+  "Qwen3.8-27B-8bit": {
+   "warm_tok_per_s": 15.3,
+   "cold_load_s": 9.8,
+   "gb": 29.5,
+   "warm_reps": 3,
+   "completion_tokens": 250,
+   "truncated_at_cap": true
+  },
+  "Qwen3.8-27B-OBLITERATED-OptiQ-4bit": {
+   "warm_tok_per_s": 19.6,
+   "cold_load_s": 31.7,
+   "gb": 20.7,
+   "warm_reps": 3,
+   "completion_tokens": 129,
+   "truncated_at_cap": false
+  }
+ }
+}

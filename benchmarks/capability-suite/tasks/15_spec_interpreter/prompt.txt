@@ -1,0 +1,1 @@
+Please implement the Tally interpreter in the tally/ package. SPEC.md is the complete language definition; follow it exactly, including the error messages, line and column numbers, and output formatting. The exception classes in tally/errors.py are already done. Standard library only.

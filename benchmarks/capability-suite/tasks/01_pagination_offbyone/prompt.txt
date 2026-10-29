@@ -1,0 +1,1 @@
+The pagination test in tests/test_paginator.py is failing and I can't see why; the slicing looks right to me. Can you find the bug in paginator.py and fix it? Keep the public API the same.

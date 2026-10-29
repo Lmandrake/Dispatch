@@ -1,0 +1,1 @@
+{"category": "concurrency-debugging", "what_it_probes": "Diagnosing a misleading report (\"TTL is broken\") down to a lost-invalidation race in a read-through cache, out-of-order write warming, an order-insensitive cache key that drops dict keys, and non-atomic stats counters, then fixing them without serializing loads behind one lock.", "expected_minutes_for_human": 60}

@@ -1,0 +1,1 @@
+{"category": "precise-edit", "what_it_probes": "Making a surgical change to one of 145 near-identical generated functions in a 2000-line file without collateral edits to lookalike lines.", "expected_minutes_for_human": 8}

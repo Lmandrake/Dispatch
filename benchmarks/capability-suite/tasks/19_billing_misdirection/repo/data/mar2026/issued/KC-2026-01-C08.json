@@ -1,0 +1,81 @@
+{
+  "amount_due": "0.00",
+  "credits": [
+    {
+      "applied": "300.00",
+      "grant": "G-2201",
+      "remaining": "0.00",
+      "remaining_currency": "AUD"
+    },
+    {
+      "applied": "1154.45",
+      "grant": "G-2202",
+      "remaining": "3845.55",
+      "remaining_currency": "AUD"
+    }
+  ],
+  "currency": "AUD",
+  "customer": {
+    "id": "C08",
+    "name": "Harbour & Co Pty Ltd",
+    "tax_id": null
+  },
+  "discounts": [],
+  "due_date": "2026-03-03",
+  "issued": "2026-02-01",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "306.50",
+      "description": "Team plan, Jan 1-Jan 31",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "678.55",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "1162234",
+      "unit": "calls"
+    },
+    {
+      "amount": "13.74",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "424.708",
+      "unit": "GB"
+    },
+    {
+      "amount": "323.44",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "21",
+      "unit": "seats"
+    }
+  ],
+  "notes": [],
+  "number": "KC-2026-01-C08",
+  "period": {
+    "cycle": "2026-01",
+    "end": "2026-01-31",
+    "start": "2026-01-01",
+    "timezone": "Australia/Sydney"
+  },
+  "subtotal": "1322.23",
+  "tax": {
+    "amount": "132.22",
+    "jurisdiction": "AU",
+    "rate": "0.1",
+    "reverse_charge": false,
+    "taxable": "1322.23"
+  },
+  "total": "1454.45"
+}

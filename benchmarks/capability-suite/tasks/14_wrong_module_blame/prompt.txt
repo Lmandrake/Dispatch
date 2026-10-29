@@ -1,0 +1,1 @@
+tests/test_report_format.py::test_totals_rounding and test_quarter_csv_totals_match_cells are failing: the report totals come out a few cents off from the figures our accountants signed off on (tests/golden/). Please find out why and fix it properly. Don't change the tests or the golden files.

@@ -1,0 +1,64 @@
+# Tax jurisdictions (Finance / Tax, reviewed 2026-01-05)
+
+[jurisdictions.US-NY]
+name = "New York City"
+rate = "0.08875"
+rounding = "per_invoice"
+label = "Sales tax"
+
+[jurisdictions.US-CA]
+name = "California (SaaS exempt)"
+rate = "0"
+label = "Sales tax"
+
+[jurisdictions.US-TX]
+name = "Texas"
+rate = "0.0625"
+rounding = "per_line"
+label = "Sales tax"
+
+[jurisdictions.US-CO]
+name = "Colorado"
+rate = "0.029"
+label = "Sales tax"
+
+[jurisdictions.DE]
+name = "Germany"
+rate = "0.19"
+reverse_charge = true
+label = "VAT"
+
+[jurisdictions.NL]
+name = "Netherlands"
+rate = "0.21"
+reverse_charge = true
+label = "VAT"
+
+[jurisdictions.GB]
+name = "United Kingdom"
+rate = "0.20"
+rounding = "per_line"
+label = "VAT"
+
+[jurisdictions.SE]
+name = "Sweden"
+rate = "0.25"
+label = "Moms"
+
+[jurisdictions.CH]
+name = "Switzerland"
+rate = "0.081"
+mode = "half_even"
+label = "MWST"
+
+[jurisdictions.JP]
+name = "Japan"
+rate = "0.10"
+mode = "down"
+label = "Consumption tax"
+
+[jurisdictions.AU]
+name = "Australia"
+rate = "0.10"
+rounding = "per_line"
+label = "GST"

@@ -1,0 +1,82 @@
+# LiteLLM proxy config — the universal hub for Nemotron Bridge.
+#
+# One proxy exposes NVIDIA NIM models as BOTH an OpenAI-compatible endpoint
+# (/chat/completions) AND an Anthropic-compatible endpoint (/v1/messages) on the
+# same port, so Claude Code and any OpenAI-native tool can share it.
+#
+# Run:
+#   export NVIDIA_API_KEY=...            # do not echo
+#   litellm --config configs/litellm.config.yaml --port 4000
+#
+# The `nvidia_nim/` prefix routes to https://integrate.api.nvidia.com/v1.
+# Model IDs below are real entries from the live catalog (2026-08). Refresh with
+# `python cli.py models --refresh`. Tune the alias mapping to results/leaderboard.md.
+
+model_list:
+  # --- alias tier mapping (what Claude Code's opus/sonnet/haiku resolve to) ---
+  #
+  # Retuned 2026-08-26 after the previous mapping was found broken: `opus`
+  # pointed at deepseek-v4-flash-0731, which now returns 404 on every call
+  # (24/24 samples, with and without tools). Opus-tier requests would have
+  # failed outright the moment the proxy was used.
+  #
+  # Candidates are now chosen on measured AVAILABILITY as well as quality.
+  # Free-tier capacity is per-model and flaps: sampling 12 calls found kimi-k3
+  # (rank 1 for chat quality) answering 1, while nemotron-3-super answered
+  # 24/24 in the same loop. A model you cannot reach is not a good default.
+  #
+  # Availability sampled 2026-08-26, requests carrying tools=:
+  #   nemotron-3-super-120b-a12b   100%      nemotron-3-nano-30b-a3b  100%
+  #   nemotron-3-ultra-550b-a55b   100%      gpt-oss-20b              100%
+  #   poolside/laguna-xs-2.1        33%      kimi-k3                    0%
+  #   deepseek-v4-flash-0731         0% (gone)  codestral-22b            0% (gone)
+  - model_name: opus            # highest quality that is reliably reachable
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: sonnet          # best measured agentic driver; 100% reachable
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-super-120b-a12b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: haiku           # fast default: ~178 tok/s, 0.3s TTFT
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-nano-30b-a3b
+      api_key: os.environ/NVIDIA_API_KEY
+
+  # --- named models for direct selection ---
+  - model_name: nemotron-super  # the agentic workhorse (see results/agentic.md)
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-super-120b-a12b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: gpt-oss         # top chat quality:speed; agentic score varies wildly
+    litellm_params:
+      model: nvidia_nim/openai/gpt-oss-20b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: nemotron-nano   # fastest strong model
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-nano-30b-a3b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: nemotron-ultra
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: laguna          # strong on code, but only ~33% reachable (500s)
+    litellm_params:
+      model: nvidia_nim/poolside/laguna-xs-2.1
+      api_key: os.environ/NVIDIA_API_KEY
+  - model_name: kimi-k3         # rank 1 for chat quality, but ~8% reachable free
+    litellm_params:               # keep for one-off quality work; never a default
+      model: nvidia_nim/moonshotai/kimi-k3
+      api_key: os.environ/NVIDIA_API_KEY
+  # Removed 2026-08-26 (confirmed 404, not flapping): deepseek-ai/deepseek-v4-flash-0731,
+  # mistralai/codestral-22b-instruct-v0.1. nvidia/nvidia-nemotron-nano-9b-v2 hit a
+  # stated end-of-life at 2026-08-26T09:00:00Z and returns 410.
+
+litellm_settings:
+  # Respect the free-tier 40 RPM limit and fail over gracefully.
+  num_retries: 3
+  request_timeout: 180
+
+general_settings:
+  # Optional: set a proxy key clients must present (else any key works locally).
+  # master_key: sk-local-dummy

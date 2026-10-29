@@ -1,0 +1,8 @@
+# Per-project consult state: neither the pointer nor the transcripts belong in a shared repo.
+.consult/
+
+__pycache__/
+*.pyc
+
+# Kept local: the consult ledger.
+ledger/consults.jsonl

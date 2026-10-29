@@ -1,0 +1,275 @@
+{
+ "n_items": 400,
+ "source": "https://openaipublic.blob.core.windows.net/simple-evals/simple_qa_test_set.csv",
+ "arms": {
+  "haiku-default": {
+   "n": 400,
+   "correct": 0.18,
+   "incorrect": 0.4575,
+   "not_attempted": 0.3625,
+   "precision_when_attempted": 0.2823529411764706,
+   "cost_per_item": 0.000294745825,
+   "median_latency_s": 2.928178071975708,
+   "p90_latency_s": 4.726439952850342,
+   "mean_out_tokens": 515.885,
+   "conf_parsed": 1.0,
+   "calibration": [
+    {
+     "conf": "0-49",
+     "n": 277,
+     "correct": 0.04332129963898917,
+     "wrong": 0.4332129963898917
+    },
+    {
+     "conf": "50-79",
+     "n": 87,
+     "correct": 0.367816091954023,
+     "wrong": 0.632183908045977
+    },
+    {
+     "conf": "80-94",
+     "n": 31,
+     "correct": 0.7741935483870968,
+     "wrong": 0.22580645161290322
+    },
+    {
+     "conf": "95-100",
+     "n": 5,
+     "correct": 0.8,
+     "wrong": 0.2
+    }
+   ]
+  },
+  "sonnet-default": {
+   "n": 400,
+   "correct": 0.4575,
+   "incorrect": 0.42,
+   "not_attempted": 0.1225,
+   "precision_when_attempted": 0.5213675213675214,
+   "cost_per_item": 0.0052042265,
+   "median_latency_s": 3.8601510524749756,
+   "p90_latency_s": 7.159652948379517,
+   "mean_out_tokens": 453.095,
+   "conf_parsed": 1.0,
+   "calibration": [
+    {
+     "conf": "0-49",
+     "n": 174,
+     "correct": 0.12643678160919541,
+     "wrong": 0.5919540229885057
+    },
+    {
+     "conf": "50-79",
+     "n": 129,
+     "correct": 0.5813953488372093,
+     "wrong": 0.4186046511627907
+    },
+    {
+     "conf": "80-94",
+     "n": 82,
+     "correct": 0.8658536585365854,
+     "wrong": 0.13414634146341464
+    },
+    {
+     "conf": "95-100",
+     "n": 15,
+     "correct": 1.0,
+     "wrong": 0.0
+    }
+   ]
+  },
+  "opus-default": {
+   "n": 400,
+   "correct": 0.71,
+   "incorrect": 0.265,
+   "not_attempted": 0.025,
+   "precision_when_attempted": 0.7282051282051282,
+   "cost_per_item": 0.007281703,
+   "median_latency_s": 3.6391680240631104,
+   "p90_latency_s": 7.220443964004517,
+   "mean_out_tokens": 310.97,
+   "conf_parsed": 1.0,
+   "calibration": [
+    {
+     "conf": "0-49",
+     "n": 88,
+     "correct": 0.17045454545454544,
+     "wrong": 0.7159090909090909
+    },
+    {
+     "conf": "50-79",
+     "n": 160,
+     "correct": 0.78125,
+     "wrong": 0.21875
+    },
+    {
+     "conf": "80-94",
+     "n": 133,
+     "correct": 0.9398496240601504,
+     "wrong": 0.06015037593984962
+    },
+    {
+     "conf": "95-100",
+     "n": 19,
+     "correct": 1.0,
+     "wrong": 0.0
+    }
+   ]
+  },
+  "opus-low": {
+   "n": 400,
+   "correct": 0.705,
+   "incorrect": 0.28,
+   "not_attempted": 0.015,
+   "precision_when_attempted": 0.7157360406091371,
+   "cost_per_item": 0.005810067999999999,
+   "median_latency_s": 3.0281240940093994,
+   "p90_latency_s": 5.553514003753662,
+   "mean_out_tokens": 244.0775,
+   "conf_parsed": 1.0,
+   "calibration": [
+    {
+     "conf": "0-49",
+     "n": 102,
+     "correct": 0.23529411764705882,
+     "wrong": 0.7058823529411765
+    },
+    {
+     "conf": "50-79",
+     "n": 159,
+     "correct": 0.7924528301886793,
+     "wrong": 0.20754716981132076
+    },
+    {
+     "conf": "80-94",
+     "n": 124,
+     "correct": 0.9435483870967742,
+     "wrong": 0.056451612903225805
+    },
+    {
+     "conf": "95-100",
+     "n": 15,
+     "correct": 1.0,
+     "wrong": 0.0
+    }
+   ]
+  },
+  "haiku-high": {
+   "n": 400,
+   "correct": 0.1825,
+   "incorrect": 0.4425,
+   "not_attempted": 0.375,
+   "precision_when_attempted": 0.292,
+   "cost_per_item": 0.00035055157500000003,
+   "median_latency_s": 3.2478270530700684,
+   "p90_latency_s": 5.471446990966797,
+   "mean_out_tokens": 617.35,
+   "conf_parsed": 1.0,
+   "calibration": [
+    {
+     "conf": "0-49",
+     "n": 273,
+     "correct": 0.03663003663003663,
+     "wrong": 0.4175824175824176
+    },
+    {
+     "conf": "50-79",
+     "n": 90,
+     "correct": 0.35555555555555557,
+     "wrong": 0.6333333333333333
+    },
+    {
+     "conf": "80-94",
+     "n": 30,
+     "correct": 0.8333333333333334,
+     "wrong": 0.16666666666666666
+    },
+    {
+     "conf": "95-100",
+     "n": 7,
+     "correct": 0.8571428571428571,
+     "wrong": 0.14285714285714285
+    }
+   ]
+  }
+ },
+ "cascades": [
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 0,
+   "n": 400,
+   "escalated": 0.0,
+   "correct": 0.18,
+   "incorrect": 0.4575,
+   "cost_per_item": 0.0002947458250000003,
+   "mean_latency_s": 3.1324236941337587
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 50,
+   "n": 400,
+   "escalated": 0.6925,
+   "correct": 0.59,
+   "incorrect": 0.3875,
+   "cost_per_item": 0.005820298825000007,
+   "mean_latency_s": 6.281847764849663
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 70,
+   "n": 400,
+   "escalated": 0.8525,
+   "correct": 0.67,
+   "incorrect": 0.305,
+   "cost_per_item": 0.006813301825000007,
+   "mean_latency_s": 6.851160354614258
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 80,
+   "n": 400,
+   "escalated": 0.91,
+   "correct": 0.695,
+   "incorrect": 0.28,
+   "cost_per_item": 0.0071702518250000066,
+   "mean_latency_s": 7.052739544510842
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 90,
+   "n": 400,
+   "escalated": 0.9725,
+   "correct": 0.7075,
+   "incorrect": 0.2675,
+   "cost_per_item": 0.007481628825000003,
+   "mean_latency_s": 7.244655538201332
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 95,
+   "n": 400,
+   "escalated": 0.9875,
+   "correct": 0.7075,
+   "incorrect": 0.2675,
+   "cost_per_item": 0.007534296825000001,
+   "mean_latency_s": 7.280516240000725
+  },
+  {
+   "small": "haiku-default",
+   "big": "opus-default",
+   "escalate_below": 101,
+   "n": 400,
+   "escalated": 1.0,
+   "correct": 0.71,
+   "incorrect": 0.265,
+   "cost_per_item": 0.007576448824999999,
+   "mean_latency_s": 7.309685040712356
+  }
+ ]
+}

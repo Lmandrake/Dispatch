@@ -1,0 +1,1 @@
+{"category": "debugging", "what_it_probes": "Diagnosing order-dependent test failures whose symptoms point elsewhere, caused by a class-level list and mutable default arguments shared across instances.", "expected_minutes_for_human": 20}

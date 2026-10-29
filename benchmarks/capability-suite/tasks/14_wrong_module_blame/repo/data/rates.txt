@@ -1,0 +1,11 @@
+; Exchange rates, units of USD per unit of currency.
+; A rate applies from its effective date until the next one for that currency.
+base USD
+2026-01-01  EUR  1.0850
+2026-01-01  GBP  1.2700
+2026-02-01  GBP  1.2650
+2026-02-01  EUR  1.0790
+2026-03-01  GBP  1.2610
+2026-03-01  EUR  1.0815
+2026-03-16  EUR  1.0817   ; ECB fixing after the March 13 move
+2026-01-01  JPY  0.00671

@@ -1,0 +1,49 @@
+; Q1 2026 operating ledger, Studio Kettle LLC
+; date | account | description | amount | currency | tags
+
+!account Assets:Bank:Checking
+!account Income:Consulting
+!account Income:Workshops
+!account Expenses:Travel:Air
+!account Expenses:Travel:Hotel
+!account Expenses:Travel:Meals
+!account Expenses:Office:Supplies
+!account Expenses:Office:Software
+!account Expenses:Rent:HQ
+!account Expenses:Rent:Lab
+!alias air Expenses:Travel:Air
+!alias hotel Expenses:Travel:Hotel
+!alias sw Expenses:Office:Software
+!split rent Expenses:Rent:HQ=3 Expenses:Rent:Lab=1
+!strict
+
+2026-01-05 | Income:Consulting      | Invoice 101, Harbor Co   | -4,200.00
+2026-01-09 | air                    | SFO-BOS                  | 412.37   |     | trip-bos
+2026-01-10 | hotel                  | Boston, 3 nights         | 611.40   |     | trip-bos
+2026-01-11 | exp:trav:meals         | Team dinner              | 84.225   |     | trip-bos
+2026-01-15 | @rent                  | January rent             | 2,400.00
+2026-01-20 | sw                     | Editor licence           | 199.00
+2026-01-28 | Income:Workshops       | "Workshop: pricing | tax" | (1,150.00)
+2026-02-02 | Expenses:Office:Supplies | Paper\, toner          | 37.835
+2026-02-03 | air                    | LHR return               | 388.10   | GBP | trip-lon
+2026-02-04 | hotel                  | London, 2 nights         | 290.00   | GBP | trip-lon
+2026-02-05 | exp:trav:meals         | Client lunch             | 61.20    | GBP | trip-lon
+2026-02-15 | @rent                  | February rent            | 2,400.00
+2026-02-23 | Income:Consulting      | Invoice 102, Harbor Co   | -3,975.50
+2026-02-27 | sw                     | Plugin bundle            | 12,000   | JPY
+
+!locale de_DE
+!currency EUR
+!tag trip-ber
+2026-03-04 | air                    | TXL Hin- und Rückflug    | 214,60
+2026-03-05 | hotel                  | Berlin, 4 Nächte         | 1.046,40
+2026-03-06 | exp:trav:meals         | Abendessen               | 58,35
+2026-03-09 | exp:off:sup            | Druckerpatronen          | 41,90
+!endtag trip-ber
+2026-03-17 | hotel                  | München, 1 Nacht         | 145,25
+2026-03-18 | exp:trav:meals         | Mittagessen              | 23,75
+!locale en_US
+!currency USD
+2026-03-15 | @rent                  | March rent               | 2,400.00
+2026-03-26 | Income:Consulting      | Invoice 103, Harbor Co   | 5,210.75-
+2026-03-30 | sw                     | Renewal                  | 49.995

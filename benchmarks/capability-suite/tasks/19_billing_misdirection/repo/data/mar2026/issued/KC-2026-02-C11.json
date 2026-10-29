@@ -1,0 +1,70 @@
+{
+  "amount_due": "1635.08",
+  "credits": [],
+  "currency": "EUR",
+  "customer": {
+    "id": "C11",
+    "name": "Lumen BV",
+    "tax_id": "NL8533.67.432.B01"
+  },
+  "discounts": [],
+  "due_date": "2026-04-20",
+  "issued": "2026-03-20",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "460.78",
+      "description": "Business plan, Feb 20-Mar 19",
+      "kind": "base",
+      "plan": "business",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "921.47",
+      "description": "API calls",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "business",
+      "quantity": "3326376",
+      "unit": "calls"
+    },
+    {
+      "amount": "3.51",
+      "description": "Storage",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "business",
+      "quantity": "305.68",
+      "unit": "GB"
+    },
+    {
+      "amount": "249.32",
+      "description": "Seats",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "business",
+      "quantity": "30",
+      "unit": "seats"
+    }
+  ],
+  "notes": [
+    "Reverse charge: VAT to be accounted for by the recipient."
+  ],
+  "number": "KC-2026-02-C11",
+  "period": {
+    "cycle": "2026-02",
+    "end": "2026-03-19",
+    "start": "2026-02-20",
+    "timezone": "Europe/Amsterdam"
+  },
+  "subtotal": "1635.08",
+  "tax": {
+    "amount": "0.00",
+    "jurisdiction": "NL",
+    "rate": "0",
+    "reverse_charge": true,
+    "taxable": "1635.08"
+  },
+  "total": "1635.08"
+}

@@ -1,0 +1,9 @@
+From Finance (billing close, March 2026): the March invoices meterbill produced from data/mar2026/ don't match the invoices we signed off (tests/golden/mar2026/, sign-off FIN-2026-041), and tests/test_golden.py fails for most customers. Totals are off by anything from a few cents to a few hundred, and the tax lines are wrong too, so we're fairly sure the invoice renderer's rounding is broken (render/fmt.py, maybe render/text.py). On top of that, colleagues have raised the tickets in tickets/; some of those problems don't show up in the goldens at all.
+
+Please:
+1. Find out why the figures differ and fix the causes properly, so that every golden matches, every ticket is resolved, and the code computes invoices the way docs/ says it should. Next month's data will be different, so fixes have to be correct in general, not tuned to March or to these customers.
+2. Implement re-billing as specified in docs/REBILL.md: the `meterbill.rebill` module and the `python3 -m meterbill rebill` command, recomputing the invoices we already sent (data/mar2026/issued/) with the corrected engine and producing credit/debit notes in exactly the text and CSV formats given there.
+3. Implement the multi-period restatement specified in docs/RESTATEMENT.md: the `meterbill.restatement` module and the `python3 -m meterbill restate` command, with the summary, journal and revenue reports exactly as specified. Finance will run it on January to March.
+4. Implement the month-end close specified in docs/CLOSE.md on top of the restatement: the `meterbill.close` package and the `python3 -m meterbill close` command (entities, intercompany, FX revaluation with reversals, consolidation with eliminations, and the audit pack with its tie-out checks), byte-exact as specified.
+
+Don't change the tests, the golden files, the tickets or the data. All the visible tests must pass when you're done.

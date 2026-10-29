@@ -1,0 +1,461 @@
+{"id": "st-00001", "customer": "C01", "metric": "storage_gb", "value": "310.514", "ts": 1766854800000}
+{"id": "st-00002", "customer": "C01", "metric": "storage_gb", "value": "312.489", "ts": 1767114000, "unit": "GB"}
+{"id": "st-00003", "customer": "C01", "metric": "storage_gb", "value": "314572", "ts": 1767373200, "unit": "MB"}
+{"id": "st-00004", "customer": "C01", "metric": "storage_gb", "value": "317.326", "ts": 1767632400, "unit": "GB"}
+{"id": "st-00005", "customer": "C01", "metric": "storage_gb", "value": "318.836", "ts": "2026-01-08T12:00:00-05:00"}
+{"id": "st-00006", "customer": "C01", "metric": "storage_gb", "value": "321505", "ts": 1768150800, "unit": "MB"}
+{"id": "st-00007", "customer": "C01", "metric": "storage_gb", "value": "323.409", "ts": "2026-01-14T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00008", "customer": "C01", "metric": "storage_gb", "value": "325.276", "ts": "2026-01-17T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00009", "customer": "C01", "metric": "storage_gb", "value": "327198", "ts": 1768928400000, "unit": "MB"}
+{"id": "st-00010", "customer": "C01", "metric": "storage_gb", "value": "329.333", "ts": 1769187600000, "unit": "GB"}
+{"id": "st-00011", "customer": "C01", "metric": "storage_gb", "value": "331564", "ts": 1769446800000, "unit": "MB"}
+{"id": "st-00012", "customer": "C01", "metric": "storage_gb", "value": "334.050", "ts": 1769706000000}
+{"id": "st-00013", "customer": "C01", "metric": "storage_gb", "value": "335.658", "ts": 1769965200, "unit": "GB"}
+{"id": "st-00014", "customer": "C01", "metric": "storage_gb", "value": "337.768", "ts": "2026-02-04T12:00:00-05:00"}
+{"id": "st-00015", "customer": "C01", "metric": "storage_gb", "value": "340.626", "ts": 1770483600000, "unit": "GB"}
+{"id": "st-00016", "customer": "C01", "metric": "storage_gb", "value": "342638", "ts": "2026-02-10T12:00:00-05:00", "unit": "MB"}
+{"id": "st-00017", "customer": "C01", "metric": "storage_gb", "value": "344.436", "ts": 1771002000, "unit": "GB"}
+{"id": "st-00018", "customer": "C01", "metric": "storage_gb", "value": "346.790", "ts": 1771261200, "unit": "GB"}
+{"id": "st-00019", "customer": "C01", "metric": "storage_gb", "value": "348835", "ts": 1771520400000, "unit": "MB"}
+{"id": "st-00020", "customer": "C01", "metric": "storage_gb", "value": "350.397", "ts": "2026-02-22T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00021", "customer": "C01", "metric": "storage_gb", "value": "353.250", "ts": 1772038800}
+{"id": "st-00022", "customer": "C01", "metric": "storage_gb", "value": "355.194", "ts": 1772298000000, "unit": "GB"}
+{"id": "st-00023", "customer": "C01", "metric": "storage_gb", "value": "356.745", "ts": 1772557200, "unit": "GB"}
+{"id": "st-00024", "customer": "C01", "metric": "storage_gb", "value": "359.677", "ts": 1772816400000}
+{"id": "st-00025", "customer": "C01", "metric": "storage_gb", "value": "361795", "ts": 1773072000, "unit": "MB"}
+{"id": "st-00026", "customer": "C01", "metric": "storage_gb", "value": "363.914", "ts": 1773331200, "unit": "GB"}
+{"id": "st-00027", "customer": "C01", "metric": "storage_gb", "value": "365.508", "ts": "2026-03-15T12:00:00-04:00"}
+{"id": "st-00028", "customer": "C01", "metric": "storage_gb", "value": "367.491", "ts": "2026-03-18T12:00:00-04:00", "unit": "GB"}
+{"id": "st-00029", "customer": "C01", "metric": "storage_gb", "value": "369.904", "ts": "2026-03-21T12:00:00-04:00", "unit": "GB"}
+{"id": "st-00030", "customer": "C01", "metric": "storage_gb", "value": "372.413", "ts": "2026-03-24T12:00:00-04:00", "unit": "GB"}
+{"id": "st-00031", "customer": "C01", "metric": "storage_gb", "value": "373771", "ts": 1774627200, "unit": "MB"}
+{"id": "st-00032", "customer": "C01", "metric": "storage_gb", "value": "376.500", "ts": 1774886400}
+{"id": "st-00033", "customer": "C01", "metric": "storage_gb", "value": "378.461", "ts": 1775145600}
+{"id": "st-00034", "customer": "C02", "metric": "storage_gb", "value": "520189", "ts": "2025-12-27T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00035", "customer": "C02", "metric": "storage_gb", "value": "523.166", "ts": "2025-12-30T12:00:00+01:00"}
+{"id": "st-00036", "customer": "C02", "metric": "storage_gb", "value": "526.120", "ts": "2026-01-02T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00037", "customer": "C02", "metric": "storage_gb", "value": "528.986", "ts": 1767610800}
+{"id": "st-00038", "customer": "C02", "metric": "storage_gb", "value": "532.181", "ts": 1767870000000, "unit": "GB"}
+{"id": "st-00039", "customer": "C02", "metric": "storage_gb", "value": "534078", "ts": 1768129200, "unit": "MB"}
+{"id": "st-00040", "customer": "C02", "metric": "storage_gb", "value": "537.361", "ts": "2026-01-14T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00041", "customer": "C02", "metric": "storage_gb", "value": "540.614", "ts": "2026-01-17T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00042", "customer": "C02", "metric": "storage_gb", "value": "542513", "ts": 1768906800, "unit": "MB"}
+{"id": "st-00043", "customer": "C02", "metric": "storage_gb", "value": "545.818", "ts": 1769166000, "unit": "GB"}
+{"id": "st-00044", "customer": "C02", "metric": "storage_gb", "value": "548.260", "ts": 1769425200, "unit": "GB"}
+{"id": "st-00045", "customer": "C02", "metric": "storage_gb", "value": "551.930", "ts": 1769684400, "unit": "GB"}
+{"id": "st-00046", "customer": "C02", "metric": "storage_gb", "value": "554.523", "ts": "2026-02-01T12:00:00+01:00"}
+{"id": "st-00047", "customer": "C02", "metric": "storage_gb", "value": "557.364", "ts": 1770202800, "unit": "GB"}
+{"id": "st-00048", "customer": "C02", "metric": "storage_gb", "value": "559.696", "ts": 1770462000}
+{"id": "st-00049", "customer": "C02", "metric": "storage_gb", "value": "562.918", "ts": 1770721200, "unit": "GB"}
+{"id": "st-00050", "customer": "C02", "metric": "storage_gb", "value": "565741", "ts": 1770980400, "unit": "MB"}
+{"id": "st-00051", "customer": "C02", "metric": "storage_gb", "value": "568066", "ts": 1771239600000, "unit": "MB"}
+{"id": "st-00052", "customer": "C02", "metric": "storage_gb", "value": "571.306", "ts": 1771498800, "unit": "GB"}
+{"id": "st-00053", "customer": "C02", "metric": "storage_gb", "value": "574.420", "ts": "2026-02-22T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00054", "customer": "C02", "metric": "storage_gb", "value": "576.645", "ts": "2026-02-25T12:00:00+01:00"}
+{"id": "st-00055", "customer": "C02", "metric": "storage_gb", "value": "579982", "ts": 1772276400000, "unit": "MB"}
+{"id": "st-00056", "customer": "C02", "metric": "storage_gb", "value": "581.988", "ts": 1772535600}
+{"id": "st-00057", "customer": "C02", "metric": "storage_gb", "value": "585.514", "ts": 1772794800}
+{"id": "st-00058", "customer": "C02", "metric": "storage_gb", "value": "588.136", "ts": 1773054000000, "unit": "GB"}
+{"id": "st-00059", "customer": "C02", "metric": "storage_gb", "value": "591.266", "ts": 1773313200, "unit": "GB"}
+{"id": "st-00060", "customer": "C02", "metric": "storage_gb", "value": "593493", "ts": 1773572400, "unit": "MB"}
+{"id": "st-00061", "customer": "C02", "metric": "storage_gb", "value": "596.574", "ts": "2026-03-18T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00062", "customer": "C02", "metric": "storage_gb", "value": "599.339", "ts": "2026-03-21T12:00:00+01:00"}
+{"id": "st-00063", "customer": "C02", "metric": "storage_gb", "value": "602.260", "ts": 1774350000, "unit": "GB"}
+{"id": "st-00064", "customer": "C02", "metric": "storage_gb", "value": "605.258", "ts": "2026-03-27T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00065", "customer": "C02", "metric": "storage_gb", "value": "607.548", "ts": 1774864800, "unit": "GB"}
+{"id": "st-00066", "customer": "C02", "metric": "storage_gb", "value": "610701", "ts": 1775124000, "unit": "MB"}
+{"id": "st-00067", "customer": "C03", "metric": "storage_gb", "value": "200.409", "ts": 1766865600}
+{"id": "st-00068", "customer": "C03", "metric": "storage_gb", "value": "212.597", "ts": 1767124800, "unit": "GB"}
+{"id": "st-00069", "customer": "C03", "metric": "storage_gb", "value": "224.403", "ts": 1767384000000, "unit": "GB"}
+{"id": "st-00070", "customer": "C03", "metric": "storage_gb", "value": "235.914", "ts": 1767643200, "unit": "GB"}
+{"id": "st-00071", "customer": "C03", "metric": "storage_gb", "value": "248.408", "ts": 1767902400, "unit": "GB"}
+{"id": "st-00072", "customer": "C03", "metric": "storage_gb", "value": "259.466", "ts": 1768161600, "unit": "GB"}
+{"id": "st-00073", "customer": "C03", "metric": "storage_gb", "value": "272.000", "ts": 1768420800, "unit": "GB"}
+{"id": "st-00074", "customer": "C03", "metric": "storage_gb", "value": "283572", "ts": 1768680000000, "unit": "MB"}
+{"id": "st-00075", "customer": "C03", "metric": "storage_gb", "value": "296.052", "ts": 1768939200000, "unit": "GB"}
+{"id": "st-00076", "customer": "C03", "metric": "storage_gb", "value": "307108", "ts": 1769198400, "unit": "MB"}
+{"id": "st-00077", "customer": "C03", "metric": "storage_gb", "value": "319.588", "ts": "2026-01-26T12:00:00-08:00", "unit": "GB"}
+{"id": "st-00078", "customer": "C03", "metric": "storage_gb", "value": "331314", "ts": 1769716800, "unit": "MB"}
+{"id": "st-00079", "customer": "C03", "metric": "storage_gb", "value": "342.709", "ts": 1769976000}
+{"id": "st-00080", "customer": "C03", "metric": "storage_gb", "value": "355441", "ts": "2026-02-04T12:00:00-08:00", "unit": "MB"}
+{"id": "st-00081", "customer": "C03", "metric": "storage_gb", "value": "366554", "ts": 1770494400000, "unit": "MB"}
+{"id": "st-00082", "customer": "C03", "metric": "storage_gb", "value": "378390", "ts": 1770753600000, "unit": "MB"}
+{"id": "st-00083", "customer": "C03", "metric": "storage_gb", "value": "390.371", "ts": 1771012800000, "unit": "GB"}
+{"id": "st-00084", "customer": "C03", "metric": "storage_gb", "value": "402.756", "ts": "2026-02-16T12:00:00-08:00", "unit": "GB"}
+{"id": "st-00085", "customer": "C03", "metric": "storage_gb", "value": "414.192", "ts": 1771531200, "unit": "GB"}
+{"id": "st-00086", "customer": "C03", "metric": "storage_gb", "value": "426.354", "ts": 1771790400000, "unit": "GB"}
+{"id": "st-00087", "customer": "C03", "metric": "storage_gb", "value": "438.670", "ts": 1772049600, "unit": "GB"}
+{"id": "st-00088", "customer": "C03", "metric": "storage_gb", "value": "450.184", "ts": 1772308800}
+{"id": "st-00089", "customer": "C03", "metric": "storage_gb", "value": "462.034", "ts": 1772568000, "unit": "GB"}
+{"id": "st-00090", "customer": "C03", "metric": "storage_gb", "value": "474.215", "ts": 1772827200000, "unit": "GB"}
+{"id": "st-00091", "customer": "C03", "metric": "storage_gb", "value": "486.002", "ts": "2026-03-09T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00092", "customer": "C03", "metric": "storage_gb", "value": "498.256", "ts": "2026-03-12T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00093", "customer": "C03", "metric": "storage_gb", "value": "509.778", "ts": "2026-03-15T12:00:00-07:00"}
+{"id": "st-00094", "customer": "C03", "metric": "storage_gb", "value": "521101", "ts": 1773860400, "unit": "MB"}
+{"id": "st-00095", "customer": "C03", "metric": "storage_gb", "value": "533.961", "ts": 1774119600}
+{"id": "st-00096", "customer": "C03", "metric": "storage_gb", "value": "544907", "ts": 1774378800000, "unit": "MB"}
+{"id": "st-00097", "customer": "C03", "metric": "storage_gb", "value": "557292", "ts": 1774638000000, "unit": "MB"}
+{"id": "st-00098", "customer": "C03", "metric": "storage_gb", "value": "569.147", "ts": "2026-03-30T12:00:00-07:00"}
+{"id": "st-00099", "customer": "C03", "metric": "storage_gb", "value": "581.451", "ts": 1775156400000}
+{"id": "st-00100", "customer": "C03", "metric": "storage_gb", "value": "593.164", "ts": 1775415600, "unit": "GB"}
+{"id": "st-00101", "customer": "C03", "metric": "storage_gb", "value": "604659", "ts": "2026-04-08T12:00:00-07:00", "unit": "MB"}
+{"id": "st-00102", "customer": "C03", "metric": "storage_gb", "value": "617.161", "ts": 1775934000000, "unit": "GB"}
+{"id": "st-00103", "customer": "C03", "metric": "storage_gb", "value": "628.409", "ts": 1776193200000, "unit": "GB"}
+{"id": "st-00104", "customer": "C03", "metric": "storage_gb", "value": "640.096", "ts": "2026-04-17T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00105", "customer": "C04", "metric": "storage_gb", "value": "90.310", "ts": 1766836800}
+{"id": "st-00106", "customer": "C04", "metric": "storage_gb", "value": "91.920", "ts": 1767096000000, "unit": "GB"}
+{"id": "st-00107", "customer": "C04", "metric": "storage_gb", "value": "94.044", "ts": "2026-01-02T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00108", "customer": "C04", "metric": "storage_gb", "value": "95056", "ts": 1767614400, "unit": "MB"}
+{"id": "st-00109", "customer": "C04", "metric": "storage_gb", "value": "96.447", "ts": 1767873600000, "unit": "GB"}
+{"id": "st-00110", "customer": "C04", "metric": "storage_gb", "value": "98428", "ts": "2026-01-11T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00111", "customer": "C04", "metric": "storage_gb", "value": "99.887", "ts": 1768392000, "unit": "GB"}
+{"id": "st-00112", "customer": "C04", "metric": "storage_gb", "value": "101.844", "ts": 1768651200, "unit": "GB"}
+{"id": "st-00113", "customer": "C04", "metric": "storage_gb", "value": "103048", "ts": 1768910400000, "unit": "MB"}
+{"id": "st-00114", "customer": "C04", "metric": "storage_gb", "value": "104.368", "ts": 1769169600}
+{"id": "st-00115", "customer": "C04", "metric": "storage_gb", "value": "106.482", "ts": 1769428800, "unit": "GB"}
+{"id": "st-00116", "customer": "C04", "metric": "storage_gb", "value": "107970", "ts": 1769688000000, "unit": "MB"}
+{"id": "st-00117", "customer": "C04", "metric": "storage_gb", "value": "109.192", "ts": 1769947200, "unit": "GB"}
+{"id": "st-00118", "customer": "C04", "metric": "storage_gb", "value": "110.412", "ts": 1770206400, "unit": "GB"}
+{"id": "st-00119", "customer": "C04", "metric": "storage_gb", "value": "112.147", "ts": 1770465600, "unit": "GB"}
+{"id": "st-00120", "customer": "C04", "metric": "storage_gb", "value": "113588", "ts": 1770724800, "unit": "MB"}
+{"id": "st-00121", "customer": "C04", "metric": "storage_gb", "value": "115.354", "ts": 1770984000, "unit": "GB"}
+{"id": "st-00122", "customer": "C04", "metric": "storage_gb", "value": "117.270", "ts": 1771243200000, "unit": "GB"}
+{"id": "st-00123", "customer": "C04", "metric": "storage_gb", "value": "118.958", "ts": "2026-02-19T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00124", "customer": "C04", "metric": "storage_gb", "value": "119.748", "ts": 1771761600000, "unit": "GB"}
+{"id": "st-00125", "customer": "C04", "metric": "storage_gb", "value": "121340", "ts": 1772020800, "unit": "MB"}
+{"id": "st-00126", "customer": "C04", "metric": "storage_gb", "value": "123672", "ts": 1772280000, "unit": "MB"}
+{"id": "st-00127", "customer": "C04", "metric": "storage_gb", "value": "124477", "ts": 1772539200000, "unit": "MB"}
+{"id": "st-00128", "customer": "C04", "metric": "storage_gb", "value": "126086", "ts": 1772798400, "unit": "MB"}
+{"id": "st-00129", "customer": "C04", "metric": "storage_gb", "value": "128321", "ts": "2026-03-09T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00130", "customer": "C04", "metric": "storage_gb", "value": "129.112", "ts": "2026-03-12T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00131", "customer": "C04", "metric": "storage_gb", "value": "131198", "ts": 1773576000, "unit": "MB"}
+{"id": "st-00132", "customer": "C04", "metric": "storage_gb", "value": "132.588", "ts": 1773835200, "unit": "GB"}
+{"id": "st-00133", "customer": "C04", "metric": "storage_gb", "value": "134.152", "ts": 1774094400}
+{"id": "st-00134", "customer": "C04", "metric": "storage_gb", "value": "136118", "ts": "2026-03-24T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00135", "customer": "C04", "metric": "storage_gb", "value": "137.490", "ts": 1774612800, "unit": "GB"}
+{"id": "st-00136", "customer": "C04", "metric": "storage_gb", "value": "138634", "ts": 1774868400, "unit": "MB"}
+{"id": "st-00137", "customer": "C04", "metric": "storage_gb", "value": "140.889", "ts": 1775127600, "unit": "GB"}
+{"id": "st-00138", "customer": "C05", "metric": "storage_gb", "value": "60.709", "ts": 1766804400}
+{"id": "st-00139", "customer": "C05", "metric": "storage_gb", "value": "60.727", "ts": 1767063600, "unit": "GB"}
+{"id": "st-00140", "customer": "C05", "metric": "storage_gb", "value": "61.766", "ts": "2026-01-02T12:00:00+09:00", "unit": "GB"}
+{"id": "st-00141", "customer": "C05", "metric": "storage_gb", "value": "61675", "ts": 1767582000, "unit": "MB"}
+{"id": "st-00142", "customer": "C05", "metric": "storage_gb", "value": "61837", "ts": 1767841200, "unit": "MB"}
+{"id": "st-00143", "customer": "C05", "metric": "storage_gb", "value": "62.767", "ts": 1768100400, "unit": "GB"}
+{"id": "st-00144", "customer": "C05", "metric": "storage_gb", "value": "63.398", "ts": 1768359600, "unit": "GB"}
+{"id": "st-00145", "customer": "C05", "metric": "storage_gb", "value": "63.911", "ts": 1768618800, "unit": "GB"}
+{"id": "st-00146", "customer": "C05", "metric": "storage_gb", "value": "64.416", "ts": 1768878000, "unit": "GB"}
+{"id": "st-00147", "customer": "C05", "metric": "storage_gb", "value": "63.907", "ts": 1769137200, "unit": "GB"}
+{"id": "st-00148", "customer": "C05", "metric": "storage_gb", "value": "64773", "ts": 1769396400, "unit": "MB"}
+{"id": "st-00149", "customer": "C05", "metric": "storage_gb", "value": "65.531", "ts": 1769655600000}
+{"id": "st-00150", "customer": "C05", "metric": "storage_gb", "value": "65.301", "ts": 1769914800, "unit": "GB"}
+{"id": "st-00151", "customer": "C05", "metric": "storage_gb", "value": "66151", "ts": 1770174000000, "unit": "MB"}
+{"id": "st-00152", "customer": "C05", "metric": "storage_gb", "value": "66.408", "ts": 1770433200, "unit": "GB"}
+{"id": "st-00153", "customer": "C05", "metric": "storage_gb", "value": "66.582", "ts": 1770692400, "unit": "GB"}
+{"id": "st-00154", "customer": "C05", "metric": "storage_gb", "value": "67.522", "ts": 1770951600, "unit": "GB"}
+{"id": "st-00155", "customer": "C05", "metric": "storage_gb", "value": "67766", "ts": "2026-02-16T12:00:00+09:00", "unit": "MB"}
+{"id": "st-00156", "customer": "C05", "metric": "storage_gb", "value": "68.066", "ts": 1771470000, "unit": "GB"}
+{"id": "st-00157", "customer": "C05", "metric": "storage_gb", "value": "68919", "ts": 1771729200000, "unit": "MB"}
+{"id": "st-00158", "customer": "C05", "metric": "storage_gb", "value": "68.807", "ts": 1771988400000, "unit": "GB"}
+{"id": "st-00159", "customer": "C05", "metric": "storage_gb", "value": "69.217", "ts": "2026-02-28T12:00:00+09:00", "unit": "GB"}
+{"id": "st-00160", "customer": "C05", "metric": "storage_gb", "value": "69.849", "ts": 1772506800000, "unit": "GB"}
+{"id": "st-00161", "customer": "C05", "metric": "storage_gb", "value": "70.269", "ts": 1772766000, "unit": "GB"}
+{"id": "st-00162", "customer": "C05", "metric": "storage_gb", "value": "70.848", "ts": "2026-03-09T12:00:00+09:00", "unit": "GB"}
+{"id": "st-00163", "customer": "C05", "metric": "storage_gb", "value": "71.093", "ts": "2026-03-12T12:00:00+09:00", "unit": "GB"}
+{"id": "st-00164", "customer": "C05", "metric": "storage_gb", "value": "71.852", "ts": "2026-03-15T12:00:00+09:00", "unit": "GB"}
+{"id": "st-00165", "customer": "C05", "metric": "storage_gb", "value": "72543", "ts": 1773802800, "unit": "MB"}
+{"id": "st-00166", "customer": "C05", "metric": "storage_gb", "value": "72.929", "ts": 1774062000}
+{"id": "st-00167", "customer": "C05", "metric": "storage_gb", "value": "72489", "ts": 1774321200, "unit": "MB"}
+{"id": "st-00168", "customer": "C05", "metric": "storage_gb", "value": "73779", "ts": "2026-03-27T12:00:00+09:00", "unit": "MB"}
+{"id": "st-00169", "customer": "C05", "metric": "storage_gb", "value": "73.503", "ts": 1774839600, "unit": "GB"}
+{"id": "st-00170", "customer": "C05", "metric": "storage_gb", "value": "74.380", "ts": 1775098800, "unit": "GB"}
+{"id": "st-00171", "customer": "C05", "metric": "storage_gb", "value": "74264", "ts": 1775358000000, "unit": "MB"}
+{"id": "st-00172", "customer": "C05", "metric": "storage_gb", "value": "75155", "ts": "2026-04-08T12:00:00+09:00", "unit": "MB"}
+{"id": "st-00173", "customer": "C05", "metric": "storage_gb", "value": "75.380", "ts": 1775876400, "unit": "GB"}
+{"id": "st-00174", "customer": "C06", "metric": "storage_gb", "value": "700.163", "ts": 1766833200}
+{"id": "st-00175", "customer": "C06", "metric": "storage_gb", "value": "709731", "ts": 1767092400, "unit": "MB"}
+{"id": "st-00176", "customer": "C06", "metric": "storage_gb", "value": "717.939", "ts": 1767351600}
+{"id": "st-00177", "customer": "C06", "metric": "storage_gb", "value": "727.030", "ts": "2026-01-05T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00178", "customer": "C06", "metric": "storage_gb", "value": "735605", "ts": 1767870000, "unit": "MB"}
+{"id": "st-00179", "customer": "C06", "metric": "storage_gb", "value": "744.126", "ts": 1768129200000, "unit": "GB"}
+{"id": "st-00180", "customer": "C06", "metric": "storage_gb", "value": "752.538", "ts": 1768388400, "unit": "GB"}
+{"id": "st-00181", "customer": "C06", "metric": "storage_gb", "value": "761.485", "ts": 1768647600, "unit": "GB"}
+{"id": "st-00182", "customer": "C06", "metric": "storage_gb", "value": "770.106", "ts": 1768906800, "unit": "GB"}
+{"id": "st-00183", "customer": "C06", "metric": "storage_gb", "value": "779.098", "ts": 1769166000, "unit": "GB"}
+{"id": "st-00184", "customer": "C06", "metric": "storage_gb", "value": "788318", "ts": 1769425200, "unit": "MB"}
+{"id": "st-00185", "customer": "C06", "metric": "storage_gb", "value": "796682", "ts": 1769684400, "unit": "MB"}
+{"id": "st-00186", "customer": "C06", "metric": "storage_gb", "value": "805809", "ts": "2026-02-01T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00187", "customer": "C06", "metric": "storage_gb", "value": "813.849", "ts": "2026-02-04T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00188", "customer": "C06", "metric": "storage_gb", "value": "823.053", "ts": "2026-02-07T12:00:00+01:00"}
+{"id": "st-00189", "customer": "C06", "metric": "storage_gb", "value": "831626", "ts": 1770721200, "unit": "MB"}
+{"id": "st-00190", "customer": "C06", "metric": "storage_gb", "value": "840.663", "ts": 1770980400000}
+{"id": "st-00191", "customer": "C06", "metric": "storage_gb", "value": "848887", "ts": 1771239600, "unit": "MB"}
+{"id": "st-00192", "customer": "C06", "metric": "storage_gb", "value": "858078", "ts": 1771498800, "unit": "MB"}
+{"id": "st-00193", "customer": "C06", "metric": "storage_gb", "value": "867.208", "ts": "2026-02-22T12:00:00+01:00"}
+{"id": "st-00194", "customer": "C06", "metric": "storage_gb", "value": "875.932", "ts": "2026-02-25T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00195", "customer": "C06", "metric": "storage_gb", "value": "884.427", "ts": 1772276400000, "unit": "GB"}
+{"id": "st-00196", "customer": "C06", "metric": "storage_gb", "value": "893.058", "ts": 1772535600, "unit": "GB"}
+{"id": "st-00197", "customer": "C06", "metric": "storage_gb", "value": "902.023", "ts": 1772794800, "unit": "GB"}
+{"id": "st-00198", "customer": "C06", "metric": "storage_gb", "value": "910.716", "ts": 1773054000}
+{"id": "st-00199", "customer": "C06", "metric": "storage_gb", "value": "919.280", "ts": 1773313200, "unit": "GB"}
+{"id": "st-00200", "customer": "C06", "metric": "storage_gb", "value": "928.049", "ts": 1773572400}
+{"id": "st-00201", "customer": "C06", "metric": "storage_gb", "value": "936625", "ts": 1773831600000, "unit": "MB"}
+{"id": "st-00202", "customer": "C06", "metric": "storage_gb", "value": "945.847", "ts": 1774090800000, "unit": "GB"}
+{"id": "st-00203", "customer": "C06", "metric": "storage_gb", "value": "954.173", "ts": 1774350000, "unit": "GB"}
+{"id": "st-00204", "customer": "C06", "metric": "storage_gb", "value": "963147", "ts": "2026-03-27T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00205", "customer": "C06", "metric": "storage_gb", "value": "971.866", "ts": "2026-03-30T12:00:00+02:00"}
+{"id": "st-00206", "customer": "C06", "metric": "storage_gb", "value": "980.439", "ts": 1775124000000, "unit": "GB"}
+{"id": "st-00207", "customer": "C07", "metric": "storage_gb", "value": "30.875", "ts": 1766858400000, "unit": "GB"}
+{"id": "st-00208", "customer": "C07", "metric": "storage_gb", "value": "33.165", "ts": 1767117600000, "unit": "GB"}
+{"id": "st-00209", "customer": "C07", "metric": "storage_gb", "value": "37131", "ts": 1767376800, "unit": "MB"}
+{"id": "st-00210", "customer": "C07", "metric": "storage_gb", "value": "39520", "ts": 1767636000, "unit": "MB"}
+{"id": "st-00211", "customer": "C07", "metric": "storage_gb", "value": "42416", "ts": 1767895200, "unit": "MB"}
+{"id": "st-00212", "customer": "C07", "metric": "storage_gb", "value": "45.748", "ts": 1768154400000, "unit": "GB"}
+{"id": "st-00213", "customer": "C07", "metric": "storage_gb", "value": "49.127", "ts": 1768413600, "unit": "GB"}
+{"id": "st-00214", "customer": "C07", "metric": "storage_gb", "value": "52011", "ts": 1768672800000, "unit": "MB"}
+{"id": "st-00215", "customer": "C07", "metric": "storage_gb", "value": "55.087", "ts": 1768932000}
+{"id": "st-00216", "customer": "C07", "metric": "storage_gb", "value": "58.576", "ts": 1769191200, "unit": "GB"}
+{"id": "st-00217", "customer": "C07", "metric": "storage_gb", "value": "61.195", "ts": 1769450400000, "unit": "GB"}
+{"id": "st-00218", "customer": "C07", "metric": "storage_gb", "value": "64122", "ts": 1769709600000, "unit": "MB"}
+{"id": "st-00219", "customer": "C07", "metric": "storage_gb", "value": "67915", "ts": "2026-02-01T12:00:00-06:00", "unit": "MB"}
+{"id": "st-00220", "customer": "C07", "metric": "storage_gb", "value": "70749", "ts": 1770228000000, "unit": "MB"}
+{"id": "st-00221", "customer": "C07", "metric": "storage_gb", "value": "73.587", "ts": 1770487200, "unit": "GB"}
+{"id": "st-00222", "customer": "C07", "metric": "storage_gb", "value": "77027", "ts": 1770746400, "unit": "MB"}
+{"id": "st-00223", "customer": "C07", "metric": "storage_gb", "value": "79.820", "ts": "2026-02-13T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00224", "customer": "C07", "metric": "storage_gb", "value": "82.850", "ts": "2026-02-16T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00225", "customer": "C07", "metric": "storage_gb", "value": "86.530", "ts": 1771524000}
+{"id": "st-00226", "customer": "C07", "metric": "storage_gb", "value": "89.162", "ts": "2026-02-22T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00227", "customer": "C07", "metric": "storage_gb", "value": "92600", "ts": "2026-02-25T12:00:00-06:00", "unit": "MB"}
+{"id": "st-00228", "customer": "C07", "metric": "storage_gb", "value": "95.369", "ts": "2026-02-28T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00229", "customer": "C07", "metric": "storage_gb", "value": "98.751", "ts": 1772560800}
+{"id": "st-00230", "customer": "C07", "metric": "storage_gb", "value": "101.373", "ts": 1772820000, "unit": "GB"}
+{"id": "st-00231", "customer": "C07", "metric": "storage_gb", "value": "105.041", "ts": 1773075600, "unit": "GB"}
+{"id": "st-00232", "customer": "C07", "metric": "storage_gb", "value": "107.781", "ts": "2026-03-12T12:00:00-05:00"}
+{"id": "st-00233", "customer": "C07", "metric": "storage_gb", "value": "110.952", "ts": "2026-03-15T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00234", "customer": "C07", "metric": "storage_gb", "value": "113598", "ts": 1773853200, "unit": "MB"}
+{"id": "st-00235", "customer": "C07", "metric": "storage_gb", "value": "116.904", "ts": 1774112400000, "unit": "GB"}
+{"id": "st-00236", "customer": "C07", "metric": "storage_gb", "value": "120.214", "ts": 1774371600000, "unit": "GB"}
+{"id": "st-00237", "customer": "C07", "metric": "storage_gb", "value": "123.062", "ts": 1774630800000, "unit": "GB"}
+{"id": "st-00238", "customer": "C07", "metric": "storage_gb", "value": "126.012", "ts": 1774890000, "unit": "GB"}
+{"id": "st-00239", "customer": "C07", "metric": "storage_gb", "value": "129.588", "ts": 1775149200, "unit": "GB"}
+{"id": "st-00240", "customer": "C07", "metric": "storage_gb", "value": "132.620", "ts": 1775408400, "unit": "GB"}
+{"id": "st-00241", "customer": "C07", "metric": "storage_gb", "value": "135.534", "ts": "2026-04-08T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00242", "customer": "C07", "metric": "storage_gb", "value": "138654", "ts": 1775926800000, "unit": "MB"}
+{"id": "st-00243", "customer": "C07", "metric": "storage_gb", "value": "141.747", "ts": 1776186000, "unit": "GB"}
+{"id": "st-00244", "customer": "C07", "metric": "storage_gb", "value": "145.302", "ts": 1776445200, "unit": "GB"}
+{"id": "st-00245", "customer": "C07", "metric": "storage_gb", "value": "148.418", "ts": 1776704400, "unit": "GB"}
+{"id": "st-00246", "customer": "C07", "metric": "storage_gb", "value": "150897", "ts": "2026-04-23T12:00:00-05:00", "unit": "MB"}
+{"id": "st-00247", "customer": "C07", "metric": "storage_gb", "value": "154.627", "ts": "2026-04-26T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00248", "customer": "C07", "metric": "storage_gb", "value": "157.078", "ts": 1777482000000, "unit": "GB"}
+{"id": "st-00249", "customer": "C08", "metric": "storage_gb", "value": "400.399", "ts": 1766797200}
+{"id": "st-00250", "customer": "C08", "metric": "storage_gb", "value": "402.754", "ts": 1767056400000, "unit": "GB"}
+{"id": "st-00251", "customer": "C08", "metric": "storage_gb", "value": "404.437", "ts": 1767315600, "unit": "GB"}
+{"id": "st-00252", "customer": "C08", "metric": "storage_gb", "value": "407.326", "ts": 1767574800, "unit": "GB"}
+{"id": "st-00253", "customer": "C08", "metric": "storage_gb", "value": "409.206", "ts": 1767834000, "unit": "GB"}
+{"id": "st-00254", "customer": "C08", "metric": "storage_gb", "value": "411.504", "ts": 1768093200, "unit": "GB"}
+{"id": "st-00255", "customer": "C08", "metric": "storage_gb", "value": "413.228", "ts": "2026-01-14T12:00:00+11:00", "unit": "GB"}
+{"id": "st-00256", "customer": "C08", "metric": "storage_gb", "value": "416.282", "ts": 1768611600, "unit": "GB"}
+{"id": "st-00257", "customer": "C08", "metric": "storage_gb", "value": "417.687", "ts": "2026-01-20T12:00:00+11:00"}
+{"id": "st-00258", "customer": "C08", "metric": "storage_gb", "value": "420.552", "ts": "2026-01-23T12:00:00+11:00", "unit": "GB"}
+{"id": "st-00259", "customer": "C08", "metric": "storage_gb", "value": "422689", "ts": "2026-01-26T12:00:00+11:00", "unit": "MB"}
+{"id": "st-00260", "customer": "C08", "metric": "storage_gb", "value": "424.708", "ts": 1769648400, "unit": "GB"}
+{"id": "st-00261", "customer": "C08", "metric": "storage_gb", "value": "426824", "ts": 1769907600, "unit": "MB"}
+{"id": "st-00262", "customer": "C08", "metric": "storage_gb", "value": "429.156", "ts": 1770166800}
+{"id": "st-00263", "customer": "C08", "metric": "storage_gb", "value": "431290", "ts": "2026-02-07T12:00:00+11:00", "unit": "MB"}
+{"id": "st-00264", "customer": "C08", "metric": "storage_gb", "value": "433.042", "ts": 1770685200, "unit": "GB"}
+{"id": "st-00265", "customer": "C08", "metric": "storage_gb", "value": "435.330", "ts": 1770944400, "unit": "GB"}
+{"id": "st-00266", "customer": "C08", "metric": "storage_gb", "value": "437.256", "ts": 1771203600}
+{"id": "st-00267", "customer": "C08", "metric": "storage_gb", "value": "439.577", "ts": 1771462800000}
+{"id": "st-00268", "customer": "C08", "metric": "storage_gb", "value": "441810", "ts": 1771722000, "unit": "MB"}
+{"id": "st-00269", "customer": "C08", "metric": "storage_gb", "value": "444685", "ts": 1771981200, "unit": "MB"}
+{"id": "st-00270", "customer": "C08", "metric": "storage_gb", "value": "446.136", "ts": "2026-02-28T12:00:00+11:00", "unit": "GB"}
+{"id": "st-00271", "customer": "C08", "metric": "storage_gb", "value": "449.044", "ts": 1772499600, "unit": "GB"}
+{"id": "st-00272", "customer": "C08", "metric": "storage_gb", "value": "450692", "ts": 1772758800, "unit": "MB"}
+{"id": "st-00273", "customer": "C08", "metric": "storage_gb", "value": "453326", "ts": 1773018000, "unit": "MB"}
+{"id": "st-00274", "customer": "C08", "metric": "storage_gb", "value": "454.898", "ts": 1773277200, "unit": "GB"}
+{"id": "st-00275", "customer": "C08", "metric": "storage_gb", "value": "457.016", "ts": 1773536400000, "unit": "GB"}
+{"id": "st-00276", "customer": "C08", "metric": "storage_gb", "value": "459.424", "ts": 1773795600, "unit": "GB"}
+{"id": "st-00277", "customer": "C08", "metric": "storage_gb", "value": "462.007", "ts": 1774054800, "unit": "GB"}
+{"id": "st-00278", "customer": "C08", "metric": "storage_gb", "value": "463.678", "ts": 1774314000000, "unit": "GB"}
+{"id": "st-00279", "customer": "C08", "metric": "storage_gb", "value": "465.822", "ts": "2026-03-27T12:00:00+11:00", "unit": "GB"}
+{"id": "st-00280", "customer": "C08", "metric": "storage_gb", "value": "467932", "ts": 1774832400000, "unit": "MB"}
+{"id": "st-00281", "customer": "C08", "metric": "storage_gb", "value": "470.522", "ts": "2026-04-02T12:00:00+11:00", "unit": "GB"}
+{"id": "st-00282", "customer": "C09", "metric": "storage_gb", "value": "380.408", "ts": 1766833200000, "unit": "GB"}
+{"id": "st-00283", "customer": "C09", "metric": "storage_gb", "value": "383.307", "ts": "2025-12-30T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00284", "customer": "C09", "metric": "storage_gb", "value": "385.012", "ts": 1767351600, "unit": "GB"}
+{"id": "st-00285", "customer": "C09", "metric": "storage_gb", "value": "387.536", "ts": 1767610800000, "unit": "GB"}
+{"id": "st-00286", "customer": "C09", "metric": "storage_gb", "value": "389.441", "ts": 1767870000, "unit": "GB"}
+{"id": "st-00287", "customer": "C09", "metric": "storage_gb", "value": "391.961", "ts": 1768129200, "unit": "GB"}
+{"id": "st-00288", "customer": "C09", "metric": "storage_gb", "value": "394.286", "ts": 1768388400000, "unit": "GB"}
+{"id": "st-00289", "customer": "C09", "metric": "storage_gb", "value": "397.216", "ts": 1768647600000, "unit": "GB"}
+{"id": "st-00290", "customer": "C09", "metric": "storage_gb", "value": "399.506", "ts": 1768906800000, "unit": "GB"}
+{"id": "st-00291", "customer": "C09", "metric": "storage_gb", "value": "401462", "ts": 1769166000000, "unit": "MB"}
+{"id": "st-00292", "customer": "C09", "metric": "storage_gb", "value": "404274", "ts": 1769425200, "unit": "MB"}
+{"id": "st-00293", "customer": "C09", "metric": "storage_gb", "value": "405.941", "ts": 1769684400000, "unit": "GB"}
+{"id": "st-00294", "customer": "C09", "metric": "storage_gb", "value": "409.006", "ts": 1769943600000}
+{"id": "st-00295", "customer": "C09", "metric": "storage_gb", "value": "410.579", "ts": 1770202800, "unit": "GB"}
+{"id": "st-00296", "customer": "C09", "metric": "storage_gb", "value": "413578", "ts": "2026-02-07T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00297", "customer": "C09", "metric": "storage_gb", "value": "416034", "ts": 1770721200, "unit": "MB"}
+{"id": "st-00298", "customer": "C09", "metric": "storage_gb", "value": "418.156", "ts": 1770980400}
+{"id": "st-00299", "customer": "C09", "metric": "storage_gb", "value": "420210", "ts": 1771239600000, "unit": "MB"}
+{"id": "st-00300", "customer": "C09", "metric": "storage_gb", "value": "422554", "ts": 1771498800, "unit": "MB"}
+{"id": "st-00301", "customer": "C09", "metric": "storage_gb", "value": "425.491", "ts": "2026-02-22T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00302", "customer": "C09", "metric": "storage_gb", "value": "427.749", "ts": 1772017200000}
+{"id": "st-00303", "customer": "C09", "metric": "storage_gb", "value": "429.973", "ts": 1772276400, "unit": "GB"}
+{"id": "st-00304", "customer": "C09", "metric": "storage_gb", "value": "432442", "ts": 1772535600, "unit": "MB"}
+{"id": "st-00305", "customer": "C09", "metric": "storage_gb", "value": "434.712", "ts": "2026-03-06T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00306", "customer": "C09", "metric": "storage_gb", "value": "437.148", "ts": 1773054000}
+{"id": "st-00307", "customer": "C09", "metric": "storage_gb", "value": "438.649", "ts": 1773313200000, "unit": "GB"}
+{"id": "st-00308", "customer": "C09", "metric": "storage_gb", "value": "441.778", "ts": 1773572400}
+{"id": "st-00309", "customer": "C09", "metric": "storage_gb", "value": "443407", "ts": 1773831600, "unit": "MB"}
+{"id": "st-00310", "customer": "C09", "metric": "storage_gb", "value": "446.463", "ts": 1774090800}
+{"id": "st-00311", "customer": "C09", "metric": "storage_gb", "value": "448.793", "ts": 1774350000000, "unit": "GB"}
+{"id": "st-00312", "customer": "C09", "metric": "storage_gb", "value": "450934", "ts": 1774609200, "unit": "MB"}
+{"id": "st-00313", "customer": "C09", "metric": "storage_gb", "value": "453.319", "ts": 1774864800, "unit": "GB"}
+{"id": "st-00314", "customer": "C09", "metric": "storage_gb", "value": "455.097", "ts": 1775124000}
+{"id": "st-00315", "customer": "C10", "metric": "storage_gb", "value": "20.350", "ts": 1766854800000, "unit": "GB"}
+{"id": "st-00316", "customer": "C10", "metric": "storage_gb", "value": "21826", "ts": 1767114000, "unit": "MB"}
+{"id": "st-00317", "customer": "C10", "metric": "storage_gb", "value": "23454", "ts": "2026-01-02T12:00:00-05:00", "unit": "MB"}
+{"id": "st-00318", "customer": "C10", "metric": "storage_gb", "value": "25422", "ts": 1767632400, "unit": "MB"}
+{"id": "st-00319", "customer": "C10", "metric": "storage_gb", "value": "26.393", "ts": 1767891600, "unit": "GB"}
+{"id": "st-00320", "customer": "C10", "metric": "storage_gb", "value": "27.974", "ts": "2026-01-11T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00321", "customer": "C10", "metric": "storage_gb", "value": "29.894", "ts": 1768410000, "unit": "GB"}
+{"id": "st-00322", "customer": "C10", "metric": "storage_gb", "value": "31478", "ts": 1768669200, "unit": "MB"}
+{"id": "st-00323", "customer": "C10", "metric": "storage_gb", "value": "32.990", "ts": 1768928400000}
+{"id": "st-00324", "customer": "C10", "metric": "storage_gb", "value": "34.238", "ts": 1769187600, "unit": "GB"}
+{"id": "st-00325", "customer": "C10", "metric": "storage_gb", "value": "36.196", "ts": 1769446800000}
+{"id": "st-00326", "customer": "C10", "metric": "storage_gb", "value": "37716", "ts": 1769706000, "unit": "MB"}
+{"id": "st-00327", "customer": "C10", "metric": "storage_gb", "value": "39679", "ts": "2026-02-01T12:00:00-05:00", "unit": "MB"}
+{"id": "st-00328", "customer": "C10", "metric": "storage_gb", "value": "40.696", "ts": 1770224400, "unit": "GB"}
+{"id": "st-00329", "customer": "C10", "metric": "storage_gb", "value": "42.703", "ts": 1770483600, "unit": "GB"}
+{"id": "st-00330", "customer": "C10", "metric": "storage_gb", "value": "43658", "ts": "2026-02-10T12:00:00-05:00", "unit": "MB"}
+{"id": "st-00331", "customer": "C10", "metric": "storage_gb", "value": "45.615", "ts": 1771002000, "unit": "GB"}
+{"id": "st-00332", "customer": "C10", "metric": "storage_gb", "value": "46.998", "ts": "2026-02-16T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00333", "customer": "C10", "metric": "storage_gb", "value": "49097", "ts": 1771520400, "unit": "MB"}
+{"id": "st-00334", "customer": "C10", "metric": "storage_gb", "value": "50.564", "ts": "2026-02-22T12:00:00-05:00", "unit": "GB"}
+{"id": "st-00335", "customer": "C10", "metric": "storage_gb", "value": "51.497", "ts": 1772038800000, "unit": "GB"}
+{"id": "st-00336", "customer": "C10", "metric": "storage_gb", "value": "53.754", "ts": "2026-02-28T12:00:00-05:00"}
+{"id": "st-00337", "customer": "C10", "metric": "storage_gb", "value": "54.737", "ts": "2026-03-03T12:00:00-05:00"}
+{"id": "st-00338", "customer": "C10", "metric": "storage_gb", "value": "56566", "ts": 1772816400000, "unit": "MB"}
+{"id": "st-00339", "customer": "C10", "metric": "storage_gb", "value": "58207", "ts": 1773072000, "unit": "MB"}
+{"id": "st-00340", "customer": "C10", "metric": "storage_gb", "value": "59.692", "ts": 1773331200, "unit": "GB"}
+{"id": "st-00341", "customer": "C10", "metric": "storage_gb", "value": "61.131", "ts": "2026-03-15T12:00:00-04:00", "unit": "GB"}
+{"id": "st-00342", "customer": "C10", "metric": "storage_gb", "value": "63048", "ts": 1773849600, "unit": "MB"}
+{"id": "st-00343", "customer": "C10", "metric": "storage_gb", "value": "64070", "ts": "2026-03-21T12:00:00-04:00", "unit": "MB"}
+{"id": "st-00344", "customer": "C10", "metric": "storage_gb", "value": "66.086", "ts": "2026-03-24T12:00:00-04:00"}
+{"id": "st-00345", "customer": "C10", "metric": "storage_gb", "value": "67.649", "ts": "2026-03-27T12:00:00-04:00"}
+{"id": "st-00346", "customer": "C10", "metric": "storage_gb", "value": "69348", "ts": 1774886400000, "unit": "MB"}
+{"id": "st-00347", "customer": "C10", "metric": "storage_gb", "value": "70123", "ts": 1775145600, "unit": "MB"}
+{"id": "st-00348", "customer": "C11", "metric": "storage_gb", "value": "250.269", "ts": 1766833200, "unit": "GB"}
+{"id": "st-00349", "customer": "C11", "metric": "storage_gb", "value": "252.064", "ts": 1767092400000, "unit": "GB"}
+{"id": "st-00350", "customer": "C11", "metric": "storage_gb", "value": "255008", "ts": 1767351600000, "unit": "MB"}
+{"id": "st-00351", "customer": "C11", "metric": "storage_gb", "value": "256.200", "ts": "2026-01-05T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00352", "customer": "C11", "metric": "storage_gb", "value": "258.528", "ts": "2026-01-08T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00353", "customer": "C11", "metric": "storage_gb", "value": "260.780", "ts": 1768129200, "unit": "GB"}
+{"id": "st-00354", "customer": "C11", "metric": "storage_gb", "value": "262.843", "ts": "2026-01-14T12:00:00+01:00"}
+{"id": "st-00355", "customer": "C11", "metric": "storage_gb", "value": "264.491", "ts": 1768647600, "unit": "GB"}
+{"id": "st-00356", "customer": "C11", "metric": "storage_gb", "value": "267.305", "ts": 1768906800000}
+{"id": "st-00357", "customer": "C11", "metric": "storage_gb", "value": "269.170", "ts": 1769166000, "unit": "GB"}
+{"id": "st-00358", "customer": "C11", "metric": "storage_gb", "value": "270650", "ts": 1769425200, "unit": "MB"}
+{"id": "st-00359", "customer": "C11", "metric": "storage_gb", "value": "273.515", "ts": 1769684400, "unit": "GB"}
+{"id": "st-00360", "customer": "C11", "metric": "storage_gb", "value": "274.708", "ts": 1769943600, "unit": "GB"}
+{"id": "st-00361", "customer": "C11", "metric": "storage_gb", "value": "277.646", "ts": "2026-02-04T12:00:00+01:00"}
+{"id": "st-00362", "customer": "C11", "metric": "storage_gb", "value": "279216", "ts": 1770462000000, "unit": "MB"}
+{"id": "st-00363", "customer": "C11", "metric": "storage_gb", "value": "281090", "ts": 1770721200, "unit": "MB"}
+{"id": "st-00364", "customer": "C11", "metric": "storage_gb", "value": "283.712", "ts": 1770980400}
+{"id": "st-00365", "customer": "C11", "metric": "storage_gb", "value": "285.193", "ts": 1771239600000, "unit": "GB"}
+{"id": "st-00366", "customer": "C11", "metric": "storage_gb", "value": "287.268", "ts": "2026-02-19T12:00:00+01:00"}
+{"id": "st-00367", "customer": "C11", "metric": "storage_gb", "value": "289.494", "ts": 1771758000, "unit": "GB"}
+{"id": "st-00368", "customer": "C11", "metric": "storage_gb", "value": "291.934", "ts": "2026-02-25T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00369", "customer": "C11", "metric": "storage_gb", "value": "293.870", "ts": 1772276400000}
+{"id": "st-00370", "customer": "C11", "metric": "storage_gb", "value": "295.414", "ts": 1772535600, "unit": "GB"}
+{"id": "st-00371", "customer": "C11", "metric": "storage_gb", "value": "298.108", "ts": 1772794800, "unit": "GB"}
+{"id": "st-00372", "customer": "C11", "metric": "storage_gb", "value": "299732", "ts": 1773054000, "unit": "MB"}
+{"id": "st-00373", "customer": "C11", "metric": "storage_gb", "value": "302243", "ts": "2026-03-12T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00374", "customer": "C11", "metric": "storage_gb", "value": "304096", "ts": "2026-03-15T12:00:00+01:00", "unit": "MB"}
+{"id": "st-00375", "customer": "C11", "metric": "storage_gb", "value": "305680", "ts": 1773831600, "unit": "MB"}
+{"id": "st-00376", "customer": "C11", "metric": "storage_gb", "value": "308.427", "ts": "2026-03-21T12:00:00+01:00", "unit": "GB"}
+{"id": "st-00377", "customer": "C11", "metric": "storage_gb", "value": "309522", "ts": 1774350000, "unit": "MB"}
+{"id": "st-00378", "customer": "C11", "metric": "storage_gb", "value": "311.765", "ts": 1774609200, "unit": "GB"}
+{"id": "st-00379", "customer": "C11", "metric": "storage_gb", "value": "314.561", "ts": 1774864800000, "unit": "GB"}
+{"id": "st-00380", "customer": "C11", "metric": "storage_gb", "value": "316.330", "ts": 1775124000, "unit": "GB"}
+{"id": "st-00381", "customer": "C11", "metric": "storage_gb", "value": "317.728", "ts": "2026-04-05T12:00:00+02:00"}
+{"id": "st-00382", "customer": "C11", "metric": "storage_gb", "value": "319.811", "ts": 1775642400, "unit": "GB"}
+{"id": "st-00383", "customer": "C11", "metric": "storage_gb", "value": "321.960", "ts": 1775901600000, "unit": "GB"}
+{"id": "st-00384", "customer": "C11", "metric": "storage_gb", "value": "324.834", "ts": 1776160800}
+{"id": "st-00385", "customer": "C11", "metric": "storage_gb", "value": "326.154", "ts": 1776420000, "unit": "GB"}
+{"id": "st-00386", "customer": "C11", "metric": "storage_gb", "value": "328.678", "ts": "2026-04-20T12:00:00+02:00", "unit": "GB"}
+{"id": "st-00387", "customer": "C11", "metric": "storage_gb", "value": "330461", "ts": 1776938400000, "unit": "MB"}
+{"id": "st-00388", "customer": "C12", "metric": "storage_gb", "value": "150940", "ts": 1766862000, "unit": "MB"}
+{"id": "st-00389", "customer": "C12", "metric": "storage_gb", "value": "152.384", "ts": 1767121200, "unit": "GB"}
+{"id": "st-00390", "customer": "C12", "metric": "storage_gb", "value": "154.925", "ts": "2026-01-02T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00391", "customer": "C12", "metric": "storage_gb", "value": "157220", "ts": 1767639600, "unit": "MB"}
+{"id": "st-00392", "customer": "C12", "metric": "storage_gb", "value": "159.462", "ts": 1767898800, "unit": "GB"}
+{"id": "st-00393", "customer": "C12", "metric": "storage_gb", "value": "162.526", "ts": 1768158000, "unit": "GB"}
+{"id": "st-00394", "customer": "C12", "metric": "storage_gb", "value": "164.369", "ts": 1768417200000}
+{"id": "st-00395", "customer": "C12", "metric": "storage_gb", "value": "166.810", "ts": 1768676400, "unit": "GB"}
+{"id": "st-00396", "customer": "C12", "metric": "storage_gb", "value": "169060", "ts": 1768935600, "unit": "MB"}
+{"id": "st-00397", "customer": "C12", "metric": "storage_gb", "value": "171.517", "ts": 1769194800}
+{"id": "st-00398", "customer": "C12", "metric": "storage_gb", "value": "174.356", "ts": 1769454000000, "unit": "GB"}
+{"id": "st-00399", "customer": "C12", "metric": "storage_gb", "value": "175.941", "ts": 1769713200, "unit": "GB"}
+{"id": "st-00400", "customer": "C12", "metric": "storage_gb", "value": "178.768", "ts": 1769972400, "unit": "GB"}
+{"id": "st-00401", "customer": "C12", "metric": "storage_gb", "value": "181.202", "ts": 1770231600, "unit": "GB"}
+{"id": "st-00402", "customer": "C12", "metric": "storage_gb", "value": "183.473", "ts": "2026-02-07T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00403", "customer": "C12", "metric": "storage_gb", "value": "185.555", "ts": 1770750000, "unit": "GB"}
+{"id": "st-00404", "customer": "C12", "metric": "storage_gb", "value": "188.468", "ts": 1771009200, "unit": "GB"}
+{"id": "st-00405", "customer": "C12", "metric": "storage_gb", "value": "190635", "ts": 1771268400000, "unit": "MB"}
+{"id": "st-00406", "customer": "C12", "metric": "storage_gb", "value": "192789", "ts": 1771527600000, "unit": "MB"}
+{"id": "st-00407", "customer": "C12", "metric": "storage_gb", "value": "194.737", "ts": 1771786800, "unit": "GB"}
+{"id": "st-00408", "customer": "C12", "metric": "storage_gb", "value": "197.388", "ts": 1772046000000, "unit": "GB"}
+{"id": "st-00409", "customer": "C12", "metric": "storage_gb", "value": "200.023", "ts": "2026-02-28T12:00:00-07:00", "unit": "GB"}
+{"id": "st-00410", "customer": "C12", "metric": "storage_gb", "value": "202743", "ts": 1772564400000, "unit": "MB"}
+{"id": "st-00411", "customer": "C12", "metric": "storage_gb", "value": "204906", "ts": 1772823600, "unit": "MB"}
+{"id": "st-00412", "customer": "C12", "metric": "storage_gb", "value": "207071", "ts": 1773079200, "unit": "MB"}
+{"id": "st-00413", "customer": "C12", "metric": "storage_gb", "value": "209186", "ts": "2026-03-12T12:00:00-06:00", "unit": "MB"}
+{"id": "st-00414", "customer": "C12", "metric": "storage_gb", "value": "211.727", "ts": 1773597600, "unit": "GB"}
+{"id": "st-00415", "customer": "C12", "metric": "storage_gb", "value": "213.832", "ts": 1773856800, "unit": "GB"}
+{"id": "st-00416", "customer": "C12", "metric": "storage_gb", "value": "216621", "ts": 1774116000, "unit": "MB"}
+{"id": "st-00417", "customer": "C12", "metric": "storage_gb", "value": "218.387", "ts": 1774375200, "unit": "GB"}
+{"id": "st-00418", "customer": "C12", "metric": "storage_gb", "value": "221.046", "ts": "2026-03-27T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00419", "customer": "C12", "metric": "storage_gb", "value": "223158", "ts": "2026-03-30T12:00:00-06:00", "unit": "MB"}
+{"id": "st-00420", "customer": "C12", "metric": "storage_gb", "value": "226.043", "ts": 1775152800}
+{"id": "st-00421", "customer": "C12", "metric": "storage_gb", "value": "228.183", "ts": "2026-04-05T12:00:00-06:00", "unit": "GB"}
+{"id": "st-00422", "customer": "C12", "metric": "storage_gb", "value": "230309", "ts": "2026-04-08T12:00:00-06:00", "unit": "MB"}
+{"id": "st-00423", "customer": "C02", "metric": "storage_gb", "value": "702.250", "ts": "2026-04-01T00:30:00+02:00", "unit": "GB"}
+{"id": "st-00424", "customer": "C02", "metric": "storage_gb", "value": "611.875", "ts": "2026-03-31T23:30:00+02:00", "unit": "GB"}
+{"id": "st-00425", "customer": "C09", "metric": "storage_gb", "value": "447120", "ts": "2026-03-31T22:00:00+02:00", "unit": "MB"}
+{"id": "st-00426", "customer": "C13", "metric": "storage_gb", "value": "410.000", "ts": 1772211600, "unit": "GB"}
+{"id": "st-00427", "customer": "C14", "metric": "storage_gb", "value": "40007", "ts": 1766836800, "unit": "MB"}
+{"id": "st-00428", "customer": "C14", "metric": "storage_gb", "value": "42.855", "ts": "2025-12-30T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00429", "customer": "C14", "metric": "storage_gb", "value": "45.378", "ts": 1767355200, "unit": "GB"}
+{"id": "st-00430", "customer": "C14", "metric": "storage_gb", "value": "47.588", "ts": "2026-01-05T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00431", "customer": "C14", "metric": "storage_gb", "value": "50197", "ts": 1767873600, "unit": "MB"}
+{"id": "st-00432", "customer": "C14", "metric": "storage_gb", "value": "51908", "ts": 1768132800, "unit": "MB"}
+{"id": "st-00433", "customer": "C14", "metric": "storage_gb", "value": "55256", "ts": 1768392000, "unit": "MB"}
+{"id": "st-00434", "customer": "C14", "metric": "storage_gb", "value": "57.263", "ts": 1768651200000, "unit": "GB"}
+{"id": "st-00435", "customer": "C14", "metric": "storage_gb", "value": "59.840", "ts": "2026-01-20T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00436", "customer": "C14", "metric": "storage_gb", "value": "61850", "ts": "2026-01-23T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00437", "customer": "C14", "metric": "storage_gb", "value": "64.291", "ts": 1769428800000, "unit": "GB"}
+{"id": "st-00438", "customer": "C14", "metric": "storage_gb", "value": "66.389", "ts": "2026-01-29T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00439", "customer": "C14", "metric": "storage_gb", "value": "69332", "ts": "2026-02-01T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00440", "customer": "C14", "metric": "storage_gb", "value": "71.091", "ts": "2026-02-04T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00441", "customer": "C14", "metric": "storage_gb", "value": "73.528", "ts": 1770465600, "unit": "GB"}
+{"id": "st-00442", "customer": "C14", "metric": "storage_gb", "value": "76.323", "ts": 1770724800, "unit": "GB"}
+{"id": "st-00443", "customer": "C14", "metric": "storage_gb", "value": "78.262", "ts": 1770984000, "unit": "GB"}
+{"id": "st-00444", "customer": "C14", "metric": "storage_gb", "value": "81.017", "ts": 1771243200000, "unit": "GB"}
+{"id": "st-00445", "customer": "C14", "metric": "storage_gb", "value": "82.983", "ts": "2026-02-19T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00446", "customer": "C14", "metric": "storage_gb", "value": "85.374", "ts": 1771761600, "unit": "GB"}
+{"id": "st-00447", "customer": "C14", "metric": "storage_gb", "value": "88.428", "ts": 1772020800}
+{"id": "st-00448", "customer": "C14", "metric": "storage_gb", "value": "10.936", "ts": "2026-03-01T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00449", "customer": "C14", "metric": "storage_gb", "value": "12.178", "ts": "2026-03-04T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00450", "customer": "C14", "metric": "storage_gb", "value": "13815", "ts": "2026-03-07T12:00:00+00:00", "unit": "MB"}
+{"id": "st-00451", "customer": "C14", "metric": "storage_gb", "value": "16.321", "ts": 1773144000}
+{"id": "st-00452", "customer": "C14", "metric": "storage_gb", "value": "18.052", "ts": 1773403200000, "unit": "GB"}
+{"id": "st-00453", "customer": "C14", "metric": "storage_gb", "value": "19141", "ts": 1773662400000, "unit": "MB"}
+{"id": "st-00454", "customer": "C14", "metric": "storage_gb", "value": "21489", "ts": 1773921600000, "unit": "MB"}
+{"id": "st-00455", "customer": "C14", "metric": "storage_gb", "value": "23.003", "ts": 1774180800000, "unit": "GB"}
+{"id": "st-00456", "customer": "C14", "metric": "storage_gb", "value": "24879", "ts": 1774440000, "unit": "MB"}
+{"id": "st-00457", "customer": "C14", "metric": "storage_gb", "value": "26.564", "ts": "2026-03-28T12:00:00+00:00", "unit": "GB"}
+{"id": "st-00458", "customer": "C14", "metric": "storage_gb", "value": "28.301", "ts": 1774954800}
+{"id": "st-00459", "customer": "C14", "metric": "storage_gb", "value": "30.290", "ts": 1775214000}
+{"id": "st-90001", "customer": "C02", "metric": "storage_gb", "value": 12.5, "ts": 1773000000}
+not json at all

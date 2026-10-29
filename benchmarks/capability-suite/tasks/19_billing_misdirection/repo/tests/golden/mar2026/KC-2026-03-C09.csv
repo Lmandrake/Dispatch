@@ -1,0 +1,10 @@
+invoice,customer,kind,description,quantity,unit,amount,currency
+KC-2026-03-C09,C09,base,"Business (EU) plan, Mar 1-Mar 31",1,period,438.02,CHF
+KC-2026-03-C09,C09,usage,API calls,1907349,calls,509.65,CHF
+KC-2026-03-C09,C09,usage,Storage,447.12,GB,5.01,CHF
+KC-2026-03-C09,C09,usage,Seats,50,seats,396.03,CHF
+KC-2026-03-C09,C09,subtotal,,,,1348.71,CHF
+KC-2026-03-C09,C09,tax,CH 8.1%,,,109.25,CHF
+KC-2026-03-C09,C09,total,,,,1457.96,CHF
+KC-2026-03-C09,C09,credit,G-2310,,,-114.51,CHF
+KC-2026-03-C09,C09,due,,,,1343.45,CHF

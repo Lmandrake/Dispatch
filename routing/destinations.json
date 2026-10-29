@@ -1,0 +1,28 @@
+{
+  "_doc": "The router's destination registry. Each destination repo owns its probe (docs/PROBE_CONTRACT.md); the router only runs it. `exposure` is where the material goes, lifted from a table that used to live in one skill. `ranked: false` means listed by `where`, dispatched by name, never ranked. A private destination (an enterprise model service) is registered by the private overlay, not here.",
+  "contract": "dispatch-probe/1",
+  "exposure_classes": {
+    "on-machine": "nowhere: stays on this machine",
+    "enterprise-internal": "a private enterprise model service registered by a plugin; its data-handling terms are set by whoever runs it",
+    "gateway": "a managed Anthropic-compatible gateway; whether sensitive material may go there is not established here",
+    "external": "a third party; public material only"
+  },
+  "destinations": {
+    "chatgpt": {"kind": "consult", "exposure": "external", "ranked": false,
+                "repo": "providers/chatgpt", "skill": "chatgpt-consult",
+                "probe": ["bin/probe.py", "--json", "--repo", "{caller}"],
+                "for": "a second model reading the work cold, and open-web research"},
+    "jev": {"kind": "consult", "exposure": "external", "ranked": false,
+            "repo": "providers/jev", "skill": "consult-jev",
+            "probe": ["bin/probe.py", "--json"],
+            "for": "a commercial API second opinion with typed answers"},
+    "nemotron": {"kind": "consult", "exposure": "external", "ranked": false,
+                 "repo": "providers/nemotron", "skill": "nemotron-delegate",
+                 "probe": ["bin/probe.py", "--json"],
+                 "for": "NVIDIA's free hosted models; public data only"},
+    "fetcher": {"kind": "web", "exposure": "external", "ranked": false,
+                "repo": "<fetcher checkout>", "skill": "fetcher",
+                "probe": ["bin/probe.py", "--json"],
+                "for": "web retrieval, not a model: queries and URLs leave the organisation"}
+  }
+}

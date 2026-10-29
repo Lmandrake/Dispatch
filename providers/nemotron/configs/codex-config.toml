@@ -1,0 +1,12 @@
+# OpenAI Codex CLI provider for NVIDIA's free models. No proxy needed.
+# Merge into ~/.codex/config.toml. `wire_api = "chat"` is required because
+# NVIDIA serves Chat Completions, not the OpenAI Responses API.
+
+model = "nvidia/nemotron-3-super-120b-a12b"
+model_provider = "nvidia"
+
+[model_providers.nvidia]
+name = "NVIDIA NIM (free)"
+base_url = "https://integrate.api.nvidia.com/v1"
+env_key = "NVIDIA_API_KEY"
+wire_api = "chat"

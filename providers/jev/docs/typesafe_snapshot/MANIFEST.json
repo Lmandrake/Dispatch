@@ -1,0 +1,17 @@
+{
+  "fetched_utc": "2026-09-28T23:46:39Z",
+  "fetched_by": "Fetcher 1.0.0, request id 2026-09-28_jev_llms",
+  "note": "Pinned snapshot of TypeSafe AI's own documentation. Authoritative source is the live URL; this copy exists for provenance and offline work. If a sha256 here no longer matches the live file, the docs moved and anything derived from this snapshot must be re-checked.",
+  "files": {
+    "llms.txt": {
+      "source_url": "https://docs.typesafe.ai/llms.txt",
+      "bytes": 16019,
+      "sha256": "3bad966207794ce900ebc81759fd48185cd2d1f287df13a08ae4d601e96450fd"
+    },
+    "llms-full.txt": {
+      "source_url": "https://docs.typesafe.ai/llms-full.txt",
+      "bytes": 919958,
+      "sha256": "f86c669fc0cd60a342b8e501d38a2ed41bdaa8605c6c08a54732ceeaa256ce84"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+id,name,timezone,anchor_day,currency,jurisdiction,tax_id,email,terms_days,service_region,tax_override,status
+C01,Acme Robotics Inc.,America/New_York,1,USD,US-NY,,ap@acme-robotics.example,30,,,active
+C02,Brightline GmbH,Europe/Berlin,1,EUR,DE,DE 811 907 980,rechnung@brightline.example,14,,,active
+C03,Cobalt Analytics LLC,America/Los_Angeles,15,USD,US-CA,,billing@cobalt.example,30,,,active
+C04,Dunmore Ltd,Europe/London,1,GBP,GB,,accounts@dunmore.example,30,,,active
+C05,Eastgate Studio KK,Asia/Tokyo,10,JPY,JP,,keiri@eastgate.example,30,,,active
+C06,Fjallbacka Data AB,Europe/Stockholm,1,SEK,SE,,faktura@fjallbacka.example,30,,,active
+C07,Granite Health Partners,America/Chicago,28,USD,US-TX,,ap@granitehealth.example,45,,,active
+C08,Harbour & Co Pty Ltd,Australia/Sydney,1,AUD,AU,,accounts@harbour.example,30,,,active
+C09,Ironwood SA,Europe/Zurich,1,CHF,CH,,finance@ironwood.example,30,,,active
+C10,Juniper Labs Inc.,America/New_York,1,USD,US-NY,,ap@juniperlabs.example,30,,,active
+C11,Lumen BV,Europe/Amsterdam,20,EUR,NL,NL 8533.67.432.B01,facturen@lumen.example,30,,,active
+C12,Meridian Outfitters Corp.,America/Denver,5,USD,US-CO,,billing@meridian.example,30,,,active
+C13,Mercer Bio Inc.,America/New_York,1,USD,US-NY,,ap@mercerbio.example,30,US-CA,,closed
+C14,Orchard Lane Ltd,Europe/London,1,USD,GB,,ap@orchardlane.example,30,US-TX,,active

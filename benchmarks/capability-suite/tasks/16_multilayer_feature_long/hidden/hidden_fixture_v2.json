@@ -1,0 +1,254 @@
+{
+  "version": 2,
+  "users": [
+    {
+      "username": "dee",
+      "display_name": "Dee Ortiz",
+      "email": "dee@example.org",
+      "created_at": "2024-11-01T08:00:00Z"
+    },
+    {
+      "username": "eli",
+      "display_name": "Eli Brandt",
+      "email": "eli@example.org",
+      "created_at": "2024-11-01T08:01:00Z"
+    },
+    {
+      "username": "fay",
+      "display_name": "Fay Chen",
+      "email": "",
+      "created_at": "2024-11-02T08:00:00Z"
+    },
+    {
+      "username": "gus",
+      "display_name": "Gus Moe",
+      "email": "",
+      "created_at": "2024-11-02T08:30:00Z"
+    }
+  ],
+  "projects": [
+    {
+      "key": "APP",
+      "name": "Mobile app",
+      "description": "iOS and Android",
+      "next_number": 11,
+      "created_at": "2024-11-01T09:00:00Z"
+    },
+    {
+      "key": "INFRA",
+      "name": "Infrastructure",
+      "description": "",
+      "next_number": 3,
+      "created_at": "2024-11-03T09:00:00Z"
+    }
+  ],
+  "memberships": [
+    {
+      "project": "APP",
+      "username": "dee",
+      "role": "admin"
+    },
+    {
+      "project": "APP",
+      "username": "eli",
+      "role": "member"
+    },
+    {
+      "project": "APP",
+      "username": "fay",
+      "role": "member"
+    },
+    {
+      "project": "APP",
+      "username": "gus",
+      "role": "viewer"
+    },
+    {
+      "project": "INFRA",
+      "username": "eli",
+      "role": "admin"
+    },
+    {
+      "project": "INFRA",
+      "username": "dee",
+      "role": "member"
+    }
+  ],
+  "issues": [
+    {
+      "project": "APP",
+      "number": 2,
+      "title": "Crash on launch",
+      "description": "iOS 17 only",
+      "type": "bug",
+      "status": "open",
+      "priority": "urgent",
+      "reporter": "eli",
+      "assignee": "fay",
+      "deadline": "2024-11-20",
+      "created_at": "2024-11-05T10:00:00Z",
+      "updated_at": "2024-11-05T10:00:00Z",
+      "closed_at": "",
+      "labels": [
+        "crash",
+        "ios"
+      ],
+      "watchers": []
+    },
+    {
+      "project": "APP",
+      "number": 5,
+      "title": "Monthly dependency bump",
+      "description": "",
+      "type": "chore",
+      "status": "done",
+      "priority": "low",
+      "reporter": "dee",
+      "assignee": "dee",
+      "deadline": "2024-11-30",
+      "created_at": "2024-11-07T10:00:00Z",
+      "updated_at": "2024-11-29T10:00:00Z",
+      "closed_at": "2024-11-29T10:00:00Z",
+      "labels": [],
+      "watchers": []
+    },
+    {
+      "project": "APP",
+      "number": 10,
+      "title": "Dark mode",
+      "description": "",
+      "type": "story",
+      "status": "review",
+      "priority": "normal",
+      "reporter": "dee",
+      "assignee": "eli",
+      "deadline": "",
+      "created_at": "2024-11-06T10:00:00Z",
+      "updated_at": "2024-11-09T10:00:00Z",
+      "closed_at": "",
+      "labels": [
+        "ui"
+      ],
+      "watchers": []
+    },
+    {
+      "project": "INFRA",
+      "number": 1,
+      "title": "Patch kernel",
+      "description": "",
+      "type": "task",
+      "status": "blocked",
+      "priority": "high",
+      "reporter": "eli",
+      "assignee": "dee",
+      "deadline": "2024-12-01",
+      "created_at": "2024-11-03T10:00:00Z",
+      "updated_at": "2024-11-04T10:00:00Z",
+      "closed_at": "",
+      "labels": [
+        "security"
+      ],
+      "watchers": []
+    },
+    {
+      "project": "INFRA",
+      "number": 2,
+      "title": "Audit firewall rules",
+      "description": "",
+      "type": "task",
+      "status": "wontfix",
+      "priority": "normal",
+      "reporter": "eli",
+      "assignee": "",
+      "deadline": "",
+      "created_at": "2024-11-03T11:00:00Z",
+      "updated_at": "2024-11-04T11:00:00Z",
+      "closed_at": "2024-11-04T11:00:00Z",
+      "labels": [
+        "network",
+        "security"
+      ],
+      "watchers": []
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "timestamp": "2024-11-01T09:00:00Z",
+      "action": "project.created",
+      "subject": "APP",
+      "details": {
+        "name": "Mobile app"
+      }
+    },
+    {
+      "seq": 2,
+      "timestamp": "2024-11-03T09:00:00Z",
+      "action": "project.created",
+      "subject": "INFRA",
+      "details": {
+        "name": "Infrastructure"
+      }
+    },
+    {
+      "seq": 3,
+      "timestamp": "2024-11-05T10:00:00Z",
+      "action": "issue.created",
+      "subject": "APP-2",
+      "details": {
+        "title": "Crash on launch",
+        "type": "bug",
+        "priority": "urgent"
+      }
+    },
+    {
+      "seq": 4,
+      "timestamp": "2024-11-29T10:00:00Z",
+      "action": "issue.transitioned",
+      "subject": "APP-5",
+      "details": {
+        "from": "open",
+        "to": "done"
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "issue": "APP-2",
+      "author": "fay",
+      "body": "Repro'd",
+      "created_at": "2024-11-05T11:00:00Z"
+    },
+    {
+      "id": 2,
+      "issue": "APP-10",
+      "author": "dee",
+      "body": "Looks good",
+      "created_at": "2024-11-09T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "issue": "APP-10",
+      "author": "eli",
+      "body": "Merging @dee",
+      "created_at": "2024-11-09T11:00:00Z"
+    },
+    {
+      "id": 4,
+      "issue": "APP-10",
+      "author": "gus",
+      "body": "nice",
+      "created_at": "2024-11-09T12:00:00Z"
+    },
+    {
+      "id": 5,
+      "issue": "INFRA-2",
+      "author": "eli",
+      "body": "Out of scope",
+      "created_at": "2024-11-04T11:00:00Z"
+    }
+  ],
+  "next_comment_id": 6,
+  "format": "trellis"
+}

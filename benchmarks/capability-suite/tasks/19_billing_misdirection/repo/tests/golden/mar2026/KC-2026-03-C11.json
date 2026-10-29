@@ -1,0 +1,105 @@
+{
+  "amount_due": "1935.83",
+  "credits": [],
+  "currency": "EUR",
+  "customer": {
+    "id": "C11",
+    "name": "Lumen BV",
+    "tax_id": "NL8533.67.432.B01"
+  },
+  "discounts": [],
+  "due_date": "2026-05-20",
+  "issued": "2026-04-20",
+  "late_fees": "0.00",
+  "lines": [
+    {
+      "amount": "268.04",
+      "description": "Business plan, Mar 20-Apr 6 (18/31 days)",
+      "kind": "base",
+      "plan": "business",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "546.86",
+      "description": "API calls, Mar 20-Apr 6",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "business",
+      "quantity": "1970471",
+      "unit": "calls"
+    },
+    {
+      "amount": "3.52",
+      "description": "Storage, Mar 20-Apr 6",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "business",
+      "quantity": "317.728",
+      "unit": "GB"
+    },
+    {
+      "amount": "258.10",
+      "description": "Seats, Mar 20-Apr 6",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "business",
+      "quantity": "31",
+      "unit": "seats"
+    },
+    {
+      "amount": "77.20",
+      "description": "Team plan, Apr 7-Apr 19 (13/31 days)",
+      "kind": "base",
+      "plan": "team",
+      "quantity": "1",
+      "unit": "period"
+    },
+    {
+      "amount": "553.75",
+      "description": "API calls, Apr 7-Apr 19",
+      "kind": "usage",
+      "metric": "api_calls",
+      "plan": "team",
+      "quantity": "1794333",
+      "unit": "calls"
+    },
+    {
+      "amount": "6.34",
+      "description": "Storage, Apr 7-Apr 19",
+      "kind": "usage",
+      "metric": "storage_gb",
+      "plan": "team",
+      "quantity": "326.154",
+      "unit": "GB"
+    },
+    {
+      "amount": "222.02",
+      "description": "Seats, Apr 7-Apr 19",
+      "kind": "usage",
+      "metric": "seats",
+      "plan": "team",
+      "quantity": "24",
+      "unit": "seats"
+    }
+  ],
+  "notes": [
+    "Reverse charge: VAT to be accounted for by the recipient."
+  ],
+  "number": "KC-2026-03-C11",
+  "period": {
+    "cycle": "2026-03",
+    "end": "2026-04-19",
+    "start": "2026-03-20",
+    "timezone": "Europe/Amsterdam"
+  },
+  "subtotal": "1935.83",
+  "tax": {
+    "amount": "0.00",
+    "jurisdiction": "NL",
+    "rate": "0",
+    "reverse_charge": true,
+    "taxable": "1935.83"
+  },
+  "total": "1935.83"
+}

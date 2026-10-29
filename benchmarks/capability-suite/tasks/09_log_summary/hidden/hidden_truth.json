@@ -1,0 +1,42 @@
+{
+ "total_lines": 2944,
+ "parsed": 2754,
+ "corrupt": 190,
+ "by_level": {
+  "DEBUG": 693,
+  "INFO": 1344,
+  "WARN": 470,
+  "ERROR": 247
+ },
+ "by_service": {
+  "api": 464,
+  "auth": 449,
+  "billing": 446,
+  "cache": 446,
+  "db": 452,
+  "worker": 497
+ },
+ "latency_ms": {
+  "count": 1669,
+  "min": 1.0,
+  "max": 2498.0,
+  "mean": 1231.85,
+  "p95": 2381.0
+ },
+ "first_ts": "2026-03-01T23:50:07Z",
+ "last_ts": "2026-03-02T03:36:55Z",
+ "top_errors": [
+  [
+   "db",
+   50
+  ],
+  [
+   "auth",
+   43
+  ],
+  [
+   "worker",
+   42
+  ]
+ ]
+}

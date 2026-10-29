@@ -1,0 +1,9 @@
+# The capability snapshot describes ONE machine at ONE moment; committing it would make
+# the spawn guard read another machine's gateway catalogue as this one's.
+routing/capability.local.json
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+# local per-project consultation state
+.consult/

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# `nemo` — convenience wrapper so the CLI runs in its venv from anywhere.
+# Symlink onto PATH:  ln -s ~/dev/Nemotron/bin/nemo ~/.local/bin/nemo
+set -euo pipefail
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PY="$REPO/.venv/bin/python"
+if [[ ! -x "$PY" ]]; then
+  echo "nemo: venv missing at $PY (run: cd $REPO && uv venv --python 3.11 .venv && uv pip install -e .)" >&2
+  exit 1
+fi
+exec "$PY" "$REPO/cli.py" "$@"
