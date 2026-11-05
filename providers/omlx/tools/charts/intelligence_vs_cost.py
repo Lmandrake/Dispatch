@@ -66,11 +66,16 @@ GROUP_STYLE = {
     C.OUTSIDE: ("var(--g-out)",  "circle",   "paid, outside only"),
     C.LOCAL:   ("var(--g-loc)",  "triangle", "local, installed"),
     C.LOCAL_CANDIDATE: ("var(--g-loc)", "triangle", "local, could install"),
+    # Square for a not-yet-served server; its own colour because it is not served yet.
+    C.ONPREM_SOON: ("var(--g-hpc)", "square", "Coming soon"),
 }
 #: The frontier group is deliberately grey and semi-transparent: it is context for
 #: our fleet, not a fourth thing competing for attention. Named separately from
 #: GROUP_STYLE so it cannot be picked up by the fleet-drawing loop.
 FRONTIER_COLOUR = "var(--mut)"
+#: Spotlit vendors (`C.SPOTLIGHT_PATTERNS`): not ours, but drawn in their own colour
+#: with a cross, the "unreachable" glyph, so colour says WHO and shape says NOT OURS.
+SPOTLIGHT_STYLE = {"DeepSeek": "var(--v-ds)"}
 #: Linear dollars. Few and coarse on purpose -- at 3x font size only a handful
 #: of tick labels fit without colliding.
 #: Per-axis configuration. The whole renderer works off `p.x`, so a second chart is
@@ -318,14 +323,17 @@ def place_labels(items, sy_top, sy_bot, reserved=()):
 
 # ---------------------------------------------------------------------- build --
 
-def build(published, fleet, frontier, ladders, watch, summary, spec) -> str:
+def build(published, fleet, frontier, ladders, watch, summary, spec,
+          spot=None) -> str:
+    spot = spot or {}
     sx, sy, xlo, xhi, ytop = make_scales(published, fleet)
     # Both the fleet and the named frontier come out of the background cloud, or
     # they would be drawn twice -- once faint, once solid, half a pixel apart.
     aa_shown = ({p.aa_name for p in fleet if p.aa_name}
                 | {p.label for p in frontier}
                 | {r.aa_name for v in ladders.values() for r in v if r.aa_name}
-                | {p.label for p in watch})
+                | {p.label for p in watch}
+                | {p.label for v in spot.values() for p in v})
     parts: list[str] = []
 
     parts.append(f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="'
@@ -410,6 +418,21 @@ def build(published, fleet, frontier, ladders, watch, summary, spec) -> str:
         label_items.append((2, cx, cy, short_name(p.label), FRONTIER_COLOUR,
                             cx, cx, "lbf"))
         marker_boxes.append((cx - 5, cy - 5, cx + 5, cy + 5))
+    parts.append('</g>')
+
+    # --- spotlit vendors: their own colour, labelled like our fleet
+    parts.append('<g class="spot">')
+    for vendor, pts in spot.items():
+        colour = SPOTLIGHT_STYLE[vendor]
+        for p in pts:
+            cx, cy = sx(p.x), sy(p.y)
+            parts.append(
+                f'<g><title>{esc(p.label)}\nindex {p.y:.1f} · ${p.x:,.3f}/task\n'
+                f'latest {esc(vendor)}, not available to us</title>'
+                f'{mark(cx, cy, "cross", colour, C.MEASURED, r=5.0)}</g>')
+            label_items.append((1, cx, cy, short_name(p.label), colour,
+                                cx, cx, "lb"))
+            marker_boxes.append((cx - 6, cy - 6, cx + 6, cy + 6))
     parts.append('</g>')
 
     # --- the frontier we are not on: named, but grey and recessive
@@ -591,7 +614,8 @@ def build(published, fleet, frontier, ladders, watch, summary, spec) -> str:
                  f'text-anchor="end">Source: artificialanalysis.ai &#183; '
                  f'retrieved {C.corpus_date()}</text>')
     parts.append(legend_svg(PX1 - 452, PY1 - 96,
-                            present={p.group for p in fleet}))
+                            present={p.group for p in fleet},
+                            vendors=[v for v, pts in spot.items() if pts]))
     # Direction-of-good markers at the far end of each axis, so which way is worse
     # needs no caption.
     parts.append(f'<text x="{PX1 + 14:.0f}" y="{PY1 + 12:.0f}" '
@@ -625,7 +649,8 @@ def project_to_time(points):
     return out
 
 
-def prose(summary, published, frontier, fleet, ladders, watch) -> tuple[str, str]:
+def prose(summary, published, frontier, fleet, ladders, watch,
+          spot=None) -> tuple[str, str]:
     s = summary
     gap = s["best_paid_y"] - s["best_local_y"]
     # Telegraphic on purpose. An earlier version ran five prose lines and took as
@@ -639,10 +664,13 @@ def prose(summary, published, frontier, fleet, ladders, watch) -> tuple[str, str
             f'{s["n_by_group"][g]} {lbl}' for g, lbl in (
                 (C.GATEWAY, "gateway-only"), (C.BOTH, "both"),
                 (C.OUTSIDE, "paid outside"), (C.LOCAL, "local installed"),
-                (C.LOCAL_CANDIDATE, "could install"))
+                (C.LOCAL_CANDIDATE, "could install"),
+                (C.ONPREM_SOON, "Coming soon"))
             if s["n_by_group"].get(g))
         + f' &nbsp;·&nbsp; {len(frontier)} unreachable'
         + f' &nbsp;·&nbsp; {len(watch)} watched (Gemini)'
+        + "".join(f' &nbsp;·&nbsp; {len(v)} latest {k}'
+                  for k, v in (spot or {}).items() if v)
         + f' &nbsp;·&nbsp; {sum(len(v) for v in ladders.values())} effort settings'
         + f' &nbsp;·&nbsp; AA corpus {C.corpus_date()}<br>'
         # "Hollow = estimate. Bar = computed axis." was cut: the legend says
@@ -662,7 +690,8 @@ def prose(summary, published, frontier, fleet, ladders, watch) -> tuple[str, str
     # purchasable rung, not just each model's flagship.
     best_local = max((p for p in fleet if p.group == C.LOCAL),
                      key=lambda p: p.y, default=None)
-    buyable = [p for p in fleet if p.group != C.LOCAL and p.tier == C.MEASURED]
+    buyable = [p for p in fleet if p.group not in (C.LOCAL, *C.NOT_YET)
+               and p.tier == C.MEASURED]
     buyable += [r for v in ladders.values() for r in v]
     # DOMINATING option: meaningfully cheaper AND better, picked for the largest
     # score advantage rather than the lowest price.
@@ -704,9 +733,9 @@ def prose(summary, published, frontier, fleet, ladders, watch) -> tuple[str, str
 
 CSS = """
 :root{--s:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--mut:#898781;--mut2:#6f6d68;--line:rgba(137,135,129,.32);
-  --g-gw:#1f6fb4;--g-both:#1b7837;--g-out:#9a6a00;--g-loc:#6a3d9a}
+  --g-gw:#1f6fb4;--g-both:#1b7837;--g-out:#9a6a00;--g-loc:#6a3d9a;--g-hpc:#b0306a;--v-ds:#00838f}
 @media(prefers-color-scheme:dark){:root{--s:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--mut:#8f8d86;--mut2:#a9a7a0;--line:rgba(160,158,150,.3);
-  --g-gw:#5fa8e8;--g-both:#4caf6d;--g-out:#e0a33c;--g-loc:#b088e0}}
+  --g-gw:#5fa8e8;--g-both:#4caf6d;--g-out:#e0a33c;--g-loc:#b088e0;--g-hpc:#f07aa8;--v-ds:#4dd0e1}}
 *{box-sizing:border-box}
 body{background:var(--s);color:var(--ink);font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;padding:12px 18px 16px;max-width:1320px}
 h1{font:700 32px/1.15 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0 0 2px;letter-spacing:-.02em}
@@ -766,7 +795,8 @@ svg{width:100%;height:auto;overflow:visible;display:block;margin:0}
 """
 
 
-def legend_svg(x: float, y: float, present=frozenset(GROUP_STYLE)) -> str:
+def legend_svg(x: float, y: float, present=frozenset(GROUP_STYLE),
+               vendors=()) -> str:
     """The key, drawn INSIDE the plot in its empty upper-left corner.
 
     That corner is structurally empty -- nothing is both cheap and clever, so no
@@ -784,6 +814,8 @@ def legend_svg(x: float, y: float, present=frozenset(GROUP_STYLE)) -> str:
     """
     rows = [(shape, colour, what) for g, (colour, shape, what)
             in GROUP_STYLE.items() if g in present]
+    rows += [("cross", SPOTLIGHT_STYLE[v], f"{v}, latest (not ours)")
+             for v in vendors]
     rows.append(("cross", FRONTIER_COLOUR, "frontier, unreachable"))
     out = [f'<g class="key" transform="translate({x:.0f},{y:.0f})">']
     dy = 13.0
@@ -892,19 +924,24 @@ def main(argv: list[str]) -> int:
     fleet = C.load_fleet()
     ladders = C.load_ladders(fleet)
     fleet = fleet + C.local_candidates()
-    frontier = C.frontier_not_ours(published, fleet, ladders)
+    spot = C.spotlit(published, fleet)
+    spot_names = {p.label for v in spot.values() for p in v}
+    # A spotlit row is drawn once, in its vendor's colour, never also as grey frontier.
+    frontier = [p for p in C.frontier_not_ours(published, fleet, ladders)
+                if p.label not in spot_names]
     watch = C.watched(published, fleet, ladders)
     summary = C.fleet_summary(fleet)
-    lede, take = prose(summary, published, frontier, fleet, ladders, watch)
+    lede, take = prose(summary, published, frontier, fleet, ladders, watch, spot)
 
     for key, spec in AXES.items():
-        pub, flt, fro, wat, lad, sub = (published, fleet, frontier, watch,
-                                        ladders, SUBTITLE)
+        pub, flt, fro, wat, lad, sub, spt = (published, fleet, frontier, watch,
+                                             ladders, SUBTITLE, spot)
         if key == "time":
             # Projected onto seconds. Models with no published time are DROPPED, so
             # this chart is a subset -- said out loud rather than left to be noticed.
             pub, flt = project_to_time(published), project_to_time(fleet)
             fro, wat = project_to_time(frontier), project_to_time(watch)
+            spt = {k: project_to_time(v) for k, v in spot.items()}
             lad = {k: v for k, v in
                    ((k, project_to_time(v)) for k, v in ladders.items())
                    if len(v) > 1}
@@ -921,7 +958,7 @@ def main(argv: list[str]) -> int:
             f"<h1>{esc(spec['title'])}</h1>\n<h2>{sub}</h2>\n"
             f"<p class=lede>{lede}</p>\n"
             f"<p class=take>{take}</p>\n"
-            f"{build(pub, flt, fro, lad, wat, summary, spec)}\n"
+            f"{build(pub, flt, fro, lad, wat, summary, spec, spt)}\n"
             f"{notes(summary)}\n")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(doc)

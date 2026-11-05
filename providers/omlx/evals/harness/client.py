@@ -21,6 +21,7 @@ placeholder number -- reporting ttft_s == total_s is the honest statement of
 what was actually measured for a non-streaming call.
 """
 import json
+import os
 import pathlib
 import time
 import urllib.error
@@ -28,7 +29,7 @@ import urllib.request
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
-DEFAULT_SETTINGS_PATH = pathlib.Path.home() / ".omlx" / "settings.json"
+DEFAULT_SETTINGS_PATH = pathlib.Path(os.environ.get("OMLX_SETTINGS") or (pathlib.Path.home() / ".omlx" / "settings.json"))
 
 
 def _load_settings(path: pathlib.Path) -> dict:

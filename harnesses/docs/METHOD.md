@@ -42,6 +42,6 @@ Local CPU is separated from model latency by construction: CPU-seconds are only 
 ## Known limits
 
 - No `powermetrics` (needs sudo; none available), so no energy or P/E-core split. CPU-seconds are not watts.
-- The test laptop was busy during the pilot (high load average, a VM, security software that inspects each exec). Every exec costs extra under it; this inflates all harnesses but most those that spawn more processes. Load is logged per run.
+- The test laptop was busy during the pilot (high load average, background services that add cost to each exec). Every exec costs extra under it; this inflates all harnesses but most those that spawn more processes. Load is logged per run.
 - Model/network variance moves wall time and slightly moves CPU (longer streams render more). Pilot N is small; medians and ranges are reported, not significance tests.
 - Idle measured over 45 s on fresh sessions; the literature reports Claude Code idle CPU growing over hours, which this pilot does not test.

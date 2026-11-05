@@ -47,7 +47,7 @@ RETRYABLE = (429, 529)
 # typed value rather than generated text. Re-check before quoting it; it is their number.
 USD_PER_MILLION_INPUT_TOKENS = 0.042
 
-# Measured on the CoverageMap battery: ~940 input tokens for a risk statement, a passage of
+# Measured on the project battery: ~940 input tokens for a risk statement, a passage of
 # a few hundred words, and four questions. Used only for pre-flight estimates.
 TYPICAL_INPUT_TOKENS = 940
 

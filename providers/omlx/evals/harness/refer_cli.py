@@ -36,7 +36,7 @@ def cmd_models(_args) -> int:
     for mid in known_models():
         pub, prec, basis = ALIASES[mid]
         print(f"  {mid:38s} -> {pub:34s} {prec:5s} {basis}")
-    print("\nNOT resolvable, deliberately: remote-118b-128k (remote enterprise service). It has no "
+    print("\nNOT resolvable, deliberately: remote-large-128k (remote enterprise service). It has no "
           "published\nleaderboard entry under that name. A guess would be worse than UNKNOWN.")
     return 0
 

@@ -202,7 +202,7 @@ def harvest(slugs=SLUGS) -> dict[str, dict]:
 
 
 def carry_forward(models: dict, prior: dict, prior_date: str) -> list[str]:
-    """OPCD-2: never let a refresh silently lose a model or its cost.
+    """Never let a refresh silently lose a model or its cost.
 
     A live pull sometimes omits `costPerTask` (or a whole row) that the previous snapshot
     had, and the chart then drops the model with no gate failing. Fill the gap from the

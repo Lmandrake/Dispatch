@@ -16,7 +16,7 @@ cd ~/dev/Dispatch
 ./bin/delegate where                  # what this machine can reach, and why
 ./bin/delegate route E3               # the decision, with the evidence behind it
 ./bin/delegate route E3 --want best --within 8 --expect-output 150
-./bin/delegate tier code --check "python3 -m pytest -q"   # haiku, sonnet or opus for a spawn
+./bin/delegate tier code --check "python3 -m pytest -q"   # sonnet or opus for a spawn
 ./bin/delegate ledger                 # the record, and where prior and reality differ
 ./bin/delegate coverage               # is the guard running, and does the router see anything
 ```
@@ -25,23 +25,23 @@ cd ~/dev/Dispatch
 else only reads, so it runs anywhere — including from Cowork, where the local server
 is unreachable.
 
-## Choosing haiku, sonnet or opus for a subagent: ask `tier`
+## Choosing sonnet or opus for a subagent: ask `tier`
 
-**A cheaper tier earns work when a wrong answer will be CAUGHT, not when the task looks
-simple.** Measured 2026-10-20 (`docs/research/2026-10-20-model-ladder/FINDINGS.md`): on
-factual recall, which nothing mechanical can check, Haiku was wrong more often than
-right; on code with a check it matched Opus at under a third of the cost. Left to
-itself, Opus sends recall to Haiku every time. Run `./bin/delegate tier KIND` before
-passing `model:` to a spawn; it prints the rule and the evidence. In short:
+**Haiku is banned everywhere (owner, 2026-10-31: "Ban it everywhere"; "Sonnet 5.5 is the
+lowest model to consider, due to Haiku's error rate."). Sonnet is the floor.** This
+reverses the 2026-10-20 restoration of that rung. A tier earns work when a wrong answer
+will be CAUGHT, not when the task looks simple (`docs/research/2026-10-20-model-ladder/FINDINGS.md`).
+Run `./bin/delegate tier KIND` before passing `model:` to a spawn; it prints the rule
+and the evidence. In short:
 
-- **No check, no Haiku.** A check is mechanical and can fail: tests, schema, compiler,
-  exact match, a re-runnable command. A model agreeing is not a check.
-- **A failed check escalates, never ships:** Haiku gets a few tries, then Opus.
-- **Never Haiku** for recall, summaries, extraction someone will trust, or judgment.
+- **A failed check escalates, never ships:** Sonnet, then Opus. A check is mechanical and
+  can fail: tests, schema, compiler, exact match, a re-runnable command. A model agreeing
+  is not a check.
+- **Opus** for recall, summaries, extraction someone will trust, or judgment.
 - **High stakes means Opus** even when a check passes; checks miss some errors.
 - **To save money on uncheckable work, lower Opus's effort** rather than the tier.
 - **Sonnet** is the step down for well-specified work with no check.
-- **Never Haiku as an agentic solver, and price the review before delegating drafting** (rule 8, kinds `agentic`, `draft`; E9 2026-10-24: Haiku solver 0 of 4 at $6-8 a trial vs Sonnet 4 of 4 at $0.5-1.3; Sonnet review of a cheap producer's drafts cost 63-85% of Sonnet drafting directly, Haiku route 117%). E9 batch3: laguna-s through OpenCode's tool loop passed 0 of 8 on the E5 grouping unit (clean loop, failed the geometry gate: capability, not tooling; Sonnet 2/2 with the item). Do not hand agentic multi-step geospatial solving to laguna-s. Caveat: one unit, reasoning off.
+- **Agentic solving and drafting stay on Sonnet, and price the review before delegating drafting** (rule 8, kinds `agentic`, `draft`; E9 2026-10-24: Sonnet review of a cheap producer's drafts cost 63-85% of Sonnet drafting directly, Haiku route 117%). E9 batch3: laguna-s through OpenCode's tool loop passed 0 of 8 on the E5 grouping unit (clean loop, failed the geometry gate: capability, not tooling; Sonnet 2/2 with the item). Do not hand agentic multi-step geospatial solving to laguna-s. Caveat: one unit, reasoning off.
 - **Speed alone never drops a tier.**
 
 ## The one ruling that outranks the score
@@ -106,11 +106,11 @@ A `PreToolUse` hook on `Agent`/`Task`
 gateway cannot serve. It **resolves the alias through the environment and then checks
 the catalogue** — which matters, because the obvious implementation is wrong:
 
-- **Whether `model: haiku` works depends on where `ANTHROPIC_DEFAULT_HAIKU_MODEL`
-  currently points, never on a literal id written here.** It can be remapped
-  to a Sonnet id, and a haiku subagent then returns normally. A
-  blanket instruction saying "never pass `model: haiku`" is stale; `capability.resolve_model`
-  is what actually knows, for the account that is active right now.
+- **Whether an alias works depends on where its `ANTHROPIC_DEFAULT_*_MODEL` currently
+  points, never on a literal id written here.** `capability.resolve_model` is what
+  actually knows, for the account that is active right now. That an alias resolves
+  says nothing about whether it is allowed: the Haiku ban holds even where the alias
+  works.
 - **`model: fable` dies.** The harness expands it to `claude-fable-5-1`, no env key can
   retarget it, and the gateway answers HTTP 400 *after the agent launches* — so it
   reads as a successful dispatch and then a dead agent.
@@ -193,6 +193,37 @@ question a route silently answers wrongly if you forget it.
 - **Availability is not capacity.** oMLX runs serially. Five concurrent routes each
   reading "idle" will each predict the single-job time, and the fifth job will not meet
   it.
+
+## Dated observations: GPT (consult) versus Anthropic models
+
+These are **measurements, not rules**, and models, effort settings and gateways change under
+them. **Every entry carries the date it was measured, the sample size, and a re-measure-by
+date; an entry past its re-measure-by date is a hint to test again, not a fact.** Add a new
+entry (newest first) when you measure something, and when a later measurement contradicts an
+entry, mark the old one `SUPERSEDED <date>` rather than deleting it, so the drift stays visible.
+Entry shape: *date · what was compared · sample · result · caveats · re-measure by · raw files*.
+
+### 2026-10-30 · blind code review of a builder's diff: Opus 5.5 subagent versus `gpt_consult` (GPT, default effort)
+- **Sample:** 4 builder diffs (85 to 118 lines each) whose real defects were found later by
+  an independent tester or a review round, 9 known defects in all. Same prompt, same diff,
+  both reviewers run at once. The prompt asked for confirmed defects only.
+- **Recall of the known defects:** Opus 8 of 9, GPT 2 of 9. GPT answered "NONE" on one diff
+  that held a real race. Opus also reported extra findings on two diffs; GPT's one extra
+  (stale baseline after an offline switch) was real and Opus found it too.
+- **Wall time:** Opus 33 to 59 s (mean 48 s, includes subagent startup and reading), GPT 20
+  to 53 s (mean 38 s). Opus was **not** faster; the model-to-model call is not what made GPT slow.
+- **GPT's real cost is failure, not slowness** (`gpt_calls.jsonl`, 48 logged calls, 2026-10-29
+  to 10-30): median 172 s for a completed answer, p90 326 s, but 7 calls (15%) hit the
+  500 s timeout with no answer and 3 more returned almost nothing.
+- **How to use it:** treat Opus as the **fallback when a GPT call times out or returns
+  nothing**, and as a **second reader** on anything where a missed defect is costly. Do not
+  swap GPT out wholesale on this evidence, and do not read it as "Opus is faster".
+- **Caveats:** n is 4. The ground truth came from testers and from GPT's own review rounds,
+  which may favour GPT in the other direction. One Opus run read git history, so it was not
+  fully blind. GPT saw diffs only; on whole files with more context it did better.
+- **Re-measure by:** 2026-11-27, or sooner if the GPT model, its effort default, or the
+  Opus model changes. Raw prompts, diffs and both reviewers' answers are kept
+  in the owner's private store.
 
 ## Related skills
 

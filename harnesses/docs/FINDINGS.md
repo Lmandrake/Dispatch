@@ -1,6 +1,6 @@
 # Findings: pilot 2026-10-23
 
-Raw data (91 runs) is not published; the tables here are the record. Method: `docs/METHOD.md`. Versions: Claude Code 2.1.292, Pi 1.4.0 (Node 26.12), OMP 18.12.6 (Bun 1.4.4). Model: the env's haiku id on all three. a laptop on battery under heavy background load (load avg 23-32 at start, 5.5 at end; a VM using several cores).
+Raw data (91 runs) is not published; the tables here are the record. Method: `docs/METHOD.md`. Versions: Claude Code 2.1.292, Pi 1.4.0 (Node 26.12), OMP 18.12.6 (Bun 1.4.4). Model: the env's haiku id on all three. a laptop on battery under heavy background load (load avg 23-32 at start, 5.5 at end).
 
 ## Verdict
 
@@ -46,7 +46,7 @@ Same cells at n=3 on the same model. Config: browser MCP removed; one plugin off
 | 8 at once, total CPU-s | 30.18 | 20.74 |
 | peak memory headless / interactive / 8 at once, MB | 429 / 525 / 3401 | 356 / 495 / 2718 |
 
-Trimming cut per-task CPU by 25-36% and memory by 6-20%. Idle and streaming in the TUI did not improve (within noise at n=3). The bonus "Trimmed+superpowers" run (2.63 / 3.06 / 21.20 CPU-s) shows superpowers costs little; **almost all of the gain is browser MCP**, whose `npx` launch-and-fail ran on every session start. Trimmed Claude Code (2.5 CPU-s a reply) is still about 6x Pi bare (0.41), and its remaining overhead over Claude `--bare` (0.47) is mostly the large set of hooks plus email MCP startup (inferred; not profiled per hook).
+Trimming cut per-task CPU by 25-36% and memory by 6-20%. Idle and streaming in the TUI did not improve (within noise at n=3). The bonus "Trimmed+superpowers" run (2.63 / 3.06 / 21.20 CPU-s) shows superpowers costs little; **almost all of the gain is browser MCP**, whose `npx` launch-and-fail ran on every session start. Trimmed Claude Code (2.5 CPU-s a reply) is still about 6x Pi bare (0.41), and its remaining overhead over Claude `--bare` (0.47) is mostly the large set of hooks plus MCP server startup (inferred; not profiled per hook).
 
 ## Failures and anomalies
 

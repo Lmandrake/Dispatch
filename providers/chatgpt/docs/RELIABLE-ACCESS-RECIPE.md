@@ -1,5 +1,7 @@
 # Getting a GPT consult through reliably — a working recipe
 
+> **2026-10-29: superseded transport.** This provider owns no websocket and no presser any more: `bin/cdp_client.py` and the broker reach Chrome only through Machinist's shared `tools/chrome_access.py` (the Machinist extension, no Allow sheet; a loud, logged ws fallback). `bin/keep-allowing.sh` is retired. Sheet and presser material below is history. Architecture: Machinist `knowledge/browser-automation.md`.
+
 Written from a session on a **fully set-up Mac** that completed two consults
 end to end, including one long deep-research reply, after the tool's own reply-collection failed
 both times.

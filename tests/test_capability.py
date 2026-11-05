@@ -165,11 +165,8 @@ def test_an_alias_resolves_through_the_environment():
 
 
 def test_haiku_resolves_to_sonnet_here_and_therefore_works():
-    """🔴 With `ANTHROPIC_DEFAULT_HAIKU_MODEL` remapped to a Sonnet id, a
-    `model: haiku` spawn works, so a "never pass model: haiku" rule would be STALE.
-
-    A guard that hardcoded "block haiku" would block a valid spawn while letting the
-    id that actually 400s through. Resolve first, then check the catalogue."""
+    """Availability only: resolving says nothing about whether a spawn is allowed.
+    The Haiku ban (owner, 2026-10-31) lives in Machinist route-agent-spawn.py."""
     res = cap.resolve_model("haiku", ENV)
     assert res["wire_id"] == "region.anthropic.claude-sonnet-5"
     assert res["via"] == "alias"

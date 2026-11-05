@@ -318,8 +318,8 @@ def _tier(args) -> int:
         return 0
     wire = cap.resolve_model(dec["model"])["wire_id"]
     print(f"\n  -> model: {dec['model']}"
-          + (f"   up to {dec['tries']} tries; a failed check escalates to "
-             f"{dec['escalate_to']}, never ships" if dec["escalate_to"] else ""))
+          + (f"   a failed check escalates to {dec['escalate_to']}, never ships"
+             if dec["escalate_to"] else ""))
     print(f"     {dec['reason']}")
     print(f"     resolves to: {wire or 'UNSET -- ' + cap.ALIAS_ENV_KEYS[dec['model']] + ' is not in the environment'}")
     if dec["check"] and not dec["check_mechanical"]:
@@ -327,8 +327,6 @@ def _tier(args) -> int:
     rebind = cap.proxy_rebind()
     if rebind:
         print(f"  ⚠️  {rebind['why']}")
-    if dec["refused_haiku"]:
-        print(f"     haiku refused: {dec['refused_haiku']}")
     if dec["model"] == T.OPUS and 5 in dec["rules"]:
         print("     to save money here, lower Opus's effort rather than the tier")
     print()
@@ -337,13 +335,10 @@ def _tier(args) -> int:
     print("\n  A check is mechanical and can fail: tests, schema, compiler, exact match,"
           "\n  a re-runnable command. A model agreeing is not a check.")
     if args.record:
-        rejected = ([{"destination": "tier/haiku",
-                      "why": "no-check" if dec["refused_haiku"] == "no check named"
-                      else "never-cheap-tier"}] if dec["refused_haiku"] else [])
         did = L.record_decision(task_kind=f"spawn-{args.kind}",
                                 destination=f"tier/{dec['model']}",
                                 machine=cap.machine_key(), reason="tier-rule",
-                                rejected=rejected, note=args.note)
+                                rejected=[], note=args.note)
         print(f"\n  DECISION {did}")
         print(f"  each try:  bin/delegate attempt {did} --status completed --n K "
               f"--check pass|fail")
@@ -499,12 +494,12 @@ def main(argv=None) -> int:
     r.add_argument("--json", action="store_true")
     r.set_defaults(fn=_route)
 
-    t = sub.add_parser("tier", help="which Claude tier (haiku/sonnet/opus) a "
+    t = sub.add_parser("tier", help="which Claude tier (sonnet/opus) a "
                                     "subagent spawn gets")
     t.add_argument("kind", choices=list(T.KINDS))
     t.add_argument("--check", metavar="CMD",
-                   help="the mechanical check that will run on the output. Without "
-                        "one, Haiku is refused (rule 1)")
+                   help="the mechanical check that will run on the output. With "
+                        "one, a failure escalates to Opus (rule 2)")
     t.add_argument("--stakes", choices=["normal", "high"], default="normal",
                    help="high = a wrong answer that slips past the check is costly")
     t.add_argument("--fast", action="store_true",

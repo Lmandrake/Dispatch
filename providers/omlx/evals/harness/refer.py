@@ -244,11 +244,11 @@ ALIASES = {
     # here -- VERIFY 60% and 54% on B5, above everything that does exist. An alias is
     # not an inventory, and nothing in this module reads the served fleet, so a dead
     # alias is indistinguishable from a live one. Removed rather than annotated.
-    # `remote-gemma-31b-128k` below is NOT part of that retirement: it is a model on a
+    # `remote-gemma-31b` below is NOT part of that retirement: it is a model on a
     # remote enterprise endpoint, never on this disk.
     # --- remote enterprise model service ---------------------------------
-    "remote-gemma-31b-128k": ("Gemma 4 31B (Non-reasoning)", "8bit", "estimated"),
-    # remote-118b is an example of a model with no public leaderboard entry
+    "remote-gemma-31b": ("Gemma 4 31B (Non-reasoning)", "8bit", "estimated"),
+    # remote-large is an example of a model with no public leaderboard entry
     # under that name. Deliberately NOT
     # aliased: a guess here would be worse than UNKNOWN. It has no published evidence.
 }

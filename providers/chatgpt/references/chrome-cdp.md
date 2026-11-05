@@ -1,5 +1,7 @@
 # Driving the user's Chrome to reach ChatGPT
 
+> **2026-10-29: superseded transport.** This provider owns no websocket and no presser any more: `bin/cdp_client.py` and the broker reach Chrome only through Machinist's shared `tools/chrome_access.py` (the Machinist extension, no Allow sheet; a loud, logged ws fallback). `bin/keep-allowing.sh` is retired. Sheet and presser material below is history. Architecture: Machinist `knowledge/browser-automation.md`.
+
 Everything here was measured on one Mac (Chrome 144+). **Every single
 item fails silently if done the obvious way** — no exception raised, no error logged, just a wrong
 or empty result that looks like the model said nothing. That is why this file exists instead of a

@@ -1,25 +1,38 @@
 # Dispatch
 
-One router that decides, per task, **which model and which agent harness** should do the work,
-from evidence measured here rather than from a leaderboard or a hunch. It answers four questions:
+Dispatch is a command-line router for people who run many AI coding agents and need to decide, per
+task, which model and which agent harness should do the work. It replaces a leaderboard or a hunch
+with a small set of rules backed by experiments run in this repo, and it carries the provider code,
+benchmarks and Claude Code skills those rules came from.
 
-- **Which Claude tier** a subagent gets (`delegate tier`): Haiku only when a mechanical check runs on
-  the output, Sonnet as the no-check step down, Opus when a miss is costly.
+It answers four questions:
+
+- **Which Claude tier** a subagent gets (`delegate tier`): Sonnet is the floor, a failed mechanical
+  check escalates to Opus, Opus when a miss is costly. Haiku is banned (owner, 2026-10-31).
 - **Which harness** drives it (`delegate harness`): Claude Code, Pi or OMP, per task class.
 - **Which second opinion** a review gets (`delegate second-opinion`): a cross-provider GPT pass, a
   second Opus, or a Sonnet critic.
 - **Which destination** can take the job on this machine right now (`delegate where`, `route`):
   local, free, enterprise and external models, each behind its own readiness probe.
 
-Every figure the router prints is computed at call time from committed result files, and the tests
-fail if a direction a rule rests on reverses. Probes are three-valued (ready, not ready, unknown),
-and unknown never blocks anything.
+## What is different here
+
+- **Rules that are re-checked.** Every figure the router prints is computed at call time from
+  committed result files, and the tests fail if a direction a rule rests on reverses.
+- **Three-valued probes.** A destination is ready, not ready or unknown, and unknown never blocks a
+  spawn. Nothing mirrors another component's state; the router asks each destination's own probe.
+- **Rule 0.** If a task is deterministic (parsing, formatting), `delegate tier parse` answers
+  "no model: write Python".
+- **One tree, five former projects.** ChatGPT consulting, Jev (TypeSafe) typed judgments, the
+  Nemotron/NIM bridge, the Pi/OMP harness study and the local oMLX evaluation were separate
+  repositories. They now live under `providers/` and `harnesses/` so the router runs from a single
+  clone.
 
 ## Providers
 
 | destination | what it is for | where | private part |
 |---|---|---|---|
-| Claude tiers (Haiku, Sonnet, Opus) | the default workers; tier chosen by checkability | an enterprise gateway, model ids read from the environment | none in code |
+| Claude tiers (Sonnet, Opus) | the default workers; tier chosen by checkability | an enterprise gateway, model ids read from the environment | none in code |
 | oMLX local | on-machine models; nothing leaves the laptop | `providers/omlx/` (code, fixtures, measured throughput) | none |
 | Nemotron / NIM | NVIDIA's free hosted models, public data only | `providers/nemotron/` | key file outside the repo |
 | Jev (TypeSafe) | calibrated typed judgments: choice, score, P(yes) | `providers/jev/` | key-file pointer, account note |
@@ -29,7 +42,7 @@ and unknown never blocks anything.
 
 Private material (account pointers, ledgers with thread URLs, internal hostnames) lives in an overlay
 outside this repo, found by `dispatchlib/providers.py`: `$DISPATCH_OVERLAY` (one directory per provider),
-else a private store beside the checkout. With no overlay every
+else a private directory you point it at. With no overlay every
 provider reports "not configured" or "not cloned" and the router still answers.
 
 ## Measured results
@@ -38,7 +51,8 @@ provider reports "not configured" or "not cloned" and the router still answers.
    Code with a check (LiveCodeBench v6, 175 problems): Haiku up to 3 tries until the public tests pass,
    else Opus, scored 0.84 against Opus alone at 0.82, at 29% of Opus's cost. Factual recall with no
    check (SimpleQA, n=400): Haiku was wrong 46% of the time, and a confidence-gated cascade had to
-   escalate 91% of items, at 98% of Opus's cost.
+   escalate 91% of items, at 98% of Opus's cost. The owner banned Haiku everywhere on 2026-10-31
+   for its error rate, so that saving is no longer on offer: Sonnet is the floor.
    Source: `docs/research/2026-10-20-model-ladder/FINDINGS.md`, data in `.../data/`.
 2. **A second independent review pass pays. A cross-provider pass ties on recall and wins on false
    alarms; its main value is independence.** On 42 real escaped bugs (14 snapshots, 7 repos, 3 runs
@@ -68,14 +82,14 @@ provider reports "not configured" or "not cloned" and the router still answers.
    Code whenever guards are needed and prints what the measurements alone would pick.
    Source: `harnesses/docs/FEATURES.md`; counts in `docs/MEASURED_RESULTS.md`.
 
-## 60-second quickstart (no private overlay needed)
+## Quick start (no private overlay needed)
 
 Python 3.9+ and nothing else; the router is stdlib only.
 
-    git clone <this repo> Dispatch && cd Dispatch
+    git clone https://github.com/Lmandrake/Dispatch.git && cd Dispatch
     python3 bin/delegate where --no-probe              # what this machine declares, no network
-    python3 bin/delegate tier code --check "pytest -q" # Haiku, 3 tries, then Opus, with evidence
-    python3 bin/delegate tier judgment                 # never Haiku: no mechanical check exists
+    python3 bin/delegate tier code --check "pytest -q" # Sonnet, then Opus, with evidence
+    python3 bin/delegate tier judgment                 # Opus: no mechanical check exists
     python3 bin/delegate tier parse                    # no model: deterministic Python (rule 0)
     python3 bin/delegate harness hard-coding           # Claude Code / Pi / OMP, with the table
     python3 bin/delegate harness metered --no-guards   # what the measurements alone pick
@@ -88,12 +102,26 @@ overlay they report "not configured" or "not cloned" rather than failing.
 
 - `bin/delegate` the CLI and the single source of the ladder; `dispatchlib/` the router
   (`tiers`, `harness`, `second_opinion`, `capability`, `delegate`, `ledger`, `prior`, `providers`).
-- `routing/destinations.json` the destination registry; `routing/dispositions.jsonl` the ledger of
-  what was routed and what the caller did with it.
-- `providers/{nemotron,jev,chatgpt}/` folded in with `git subtree` (history kept); each keeps its own
-  probe (`docs/PROBE_CONTRACT.md`), tests and docs. `harnesses/` likewise (was NewHarness).
-- `skills/` the Claude Code skills for each route. `benchmarks/capability-suite/` the frozen coding
-  suite the harness results come from.
+- `routing/destinations.json` the destination registry.
+- `providers/chatgpt/` (was ChatGPTConsult) second-opinion consulting through a logged-in browser.
+  `providers/jev/` (was ConsultJev) the Jev client, question battery and benchmark.
+  `providers/nemotron/` (was Nemotron_Bridge) the NVIDIA NIM accessor, registry and assessment
+  harness. `providers/omlx/` (was DispatchOpenCode) local-model routing code and measured
+  throughput. Each keeps its own probe (`docs/PROBE_CONTRACT.md`), README and tests.
+- `harnesses/` (was NewHarness) the Pi and OMP launchers, method and findings under
+  `harnesses/docs/`. The raw run results are not published; `docs/MEASURED_RESULTS.md` holds the
+  summary tables.
+- `skills/` the Claude Code skills for each route.
+- `benchmarks/capability-suite/` the frozen coding task suite the harness results come from.
+  Reference solutions are deliberately withheld from this public copy, so only the tasks and
+  the frozen-manifest check run here.
+- `docs/research/2026-10-20-model-ladder/` the tier study behind result 1.
+
+## Status and limits
+
+Sample sizes are small throughout and are stated beside each result. Some destinations (GPT,
+Jev, enterprise endpoints) need your own accounts and keys, which this repo does not contain. The
+harness results come from one machine and one model family, and are a snapshot, not a ranking.
 
 ## Tests
 

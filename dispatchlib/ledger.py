@@ -61,7 +61,7 @@ is not an executable rule, so `cells()` computes rates and LABELS the cell, and
 🔴 NO PROMPT TEXT AND NO OUTPUT TEXT, EVER -- INCLUDING ON THE ERROR PATH.
 
 Standing rule for this repo: result files are committed and the original corpus was
-private material naming individuals. A row carries identifiers, enums,
+not public. A row carries identifiers, enums,
 counts and timings. `check_row` enforces it by ALLOWLIST, because the dangerous
 direction is a new field quietly carrying text. Review finding A6 is why the error path
 matters as much as the happy one: an exception handler that serialises a hook payload

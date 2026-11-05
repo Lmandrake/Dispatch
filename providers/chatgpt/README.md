@@ -53,6 +53,32 @@ python3 ~/dev/Dispatch/providers/chatgpt/bin/consult.py --ledger
 Sends by default; `--draft` composes without submitting. Threads live in the `Consults` ChatGPT
 Project, one per repo, titled `Consult_<Project>`, so context accumulates across sessions and days.
 
+## More than one user
+
+Two people can share this repo and one ChatGPT account and still keep separate records. Each user can
+put a `~/.config/chatgpt-consult/config.json` on each machine they consult from:
+
+```json
+{
+  "ledger": "ledger/consults-user.jsonl",
+  "chatgpt_project": "ClaudeConsultUser",
+  "thread_prefix": "ConsultUser_"
+}
+```
+
+- `ledger`: that user's ledger. Relative paths resolve against this repo. Keep it in `ledger/`, so the
+  files can be read separately or together.
+- `chatgpt_project`: the ChatGPT Project where that user's new threads are created. The user creates it
+  by hand; the tool never creates Projects.
+- `thread_prefix`: threads are titled `<prefix><repo>`. **This, not the Project, is what keeps two
+  users' threads apart.** Thread recovery searches titles across the whole account, so a shared prefix
+  would let one user's `Machinist` recover the other's thread.
+
+With no file, every value keeps its original default (`ledger/consults.jsonl`, `ClaudeConsult`,
+`Consult_`). An unreadable file stops the tool rather than falling back to those defaults.
+`CHATGPT_CONSULT_CONFIG` points at a different file. Codex consults are ephemeral and never touch a
+Project or a thread; for them, only `ledger` matters.
+
 ## The rule that keeps it useful
 
 A second model's answer is **guidance, never authority**. It may not serve as a grading key, may not

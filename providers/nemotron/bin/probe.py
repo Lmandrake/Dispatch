@@ -22,7 +22,7 @@ import urllib.request
 CONTRACT = "dispatch-probe/1"
 DESTINATION = "nemotron"
 ENDPOINT = "https://integrate.api.nvidia.com/v1/models"
-ENV_FILE = pathlib.Path.home() / ".config" / "nvidia" / "env"
+ENV_FILE = pathlib.Path(os.environ.get("NVIDIA_ENV_FILE") or (pathlib.Path.home() / ".config" / "nvidia" / "env"))
 KEY_NAMES = ("NVIDIA_API_KEY", "NGC_API_KEY")
 TIMEOUT_S = 8
 EXPOSURE_NOTE = "external: NVIDIA cloud, public data only"

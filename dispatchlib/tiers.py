@@ -1,23 +1,24 @@
-"""Which Anthropic tier a subagent spawn should get: haiku, sonnet or opus.
+"""Which Anthropic tier a subagent spawn should get: sonnet or opus.
 
 `delegate.route` ranks LOCAL models on a published per-job corpus. This module answers
 the other question every session actually faces -- which `model:` to pass to a spawn on
 the sanctioned gateway -- and it answers it from our own measurement, because no
-published corpus ranks the three Claude tiers on the work we hand them.
+published corpus ranks the Claude tiers on the work we hand them.
 
-🔴 THE PRINCIPLE, MEASURED 2026-10-20 (`docs/research/2026-10-20-model-ladder/`):
-**a cheaper tier earns work when a wrong answer will be CAUGHT, not when the task looks
-simple.** On factual recall, which nothing mechanical can check, Haiku 5.5 was wrong
-more often than right; on code with a check it matched Opus at a third of the cost. And
-Opus, left to choose, sent factual recall to Haiku in every trial -- it routes by
-apparent simplicity, which is the rule this module replaces.
+🔴 HAIKU IS BANNED EVERYWHERE (owner, 2026-10-31: "Ban it everywhere"; "Sonnet 5.5 is
+the lowest model to consider, due to Haiku's error rate."). Sonnet is the floor. This
+reverses the 2026-10-20 restoration of the Haiku rung, so no path here returns it.
 
-The seven rules, owner-approved 2026-10-20 ("All seven, as written"):
+The principle, measured 2026-10-20 (`docs/research/2026-10-20-model-ladder/`): a tier
+earns work when a wrong answer will be CAUGHT, not when the task looks simple.
 
-  1. No check, no Haiku. A Haiku route must name its check.
-  2. A failed check escalates, never ships: Haiku up to 3 tries, then Opus.
-  3. Never Haiku, check or not: factual recall, summaries, extraction a person will
-     trust, judgments and reviews. None has a mechanical check.
+The rules, owner-approved 2026-10-20 and amended by the ban (numbers are stable, because
+recorded decisions cite them):
+
+  1. Haiku is banned; Sonnet is the floor.
+  2. A failed check escalates, never ships: Sonnet, then Opus.
+  3. Opus for factual recall, summaries, extraction a person will trust, judgments and
+     reviews. None has a mechanical check.
   4. A passed check is not proof: when a wrong answer that slips past is costly, Opus.
   5. To save money on uncheckable work, lower Opus's effort; do not drop a tier.
   6. Sonnet is the step down when there is no check, for well-specified work.
@@ -42,7 +43,7 @@ import json
 import pathlib
 import re
 
-HAIKU, SONNET, OPUS = "haiku", "sonnet", "opus"
+SONNET, OPUS = "sonnet", "opus"
 #: Rung 1 of the ladder (the operating rules): no model at all. Not an alias, so
 #: it resolves to no wire id and a spawn guard never sees it.
 PYTHON = "python"
@@ -58,8 +59,8 @@ DETERMINISTIC = frozenset({"parse"})
 
 #: Words that mark a "check" as a reader rather than a mechanism (rule 1's definition).
 #: A check naming one of these is recorded but treated as no check: it cannot fail on
-#: its own. Coarse on purpose; a false refusal costs a Sonnet spawn, a false accept
-#: ships an unchecked Haiku answer.
+#: its own. Coarse on purpose; a false refusal costs an escalation path, a false accept
+#: promises one that will never fire.
 _NOT_MECHANICAL = re.compile(
     r"\b(model|llm|gpt|claude|opus|sonnet|haiku|judge|review(?:er|s)?|reads?|"
     r"looks?|agrees?|eyeball|confiden(?:t|ce)|vibe|human|manual(?:ly)?)\b", re.I)
@@ -74,25 +75,24 @@ def is_mechanical(check: str | None) -> bool:
     check = (check or "").strip()
     return bool(check) and not _NOT_MECHANICAL.search(check)
 
-#: Rule 8 (E9, 2026-10-24, a break-even experiment). Kinds where a cheap tier loses even WITH a check.
-#: `agentic` = a solver running a tool loop: Haiku 5.5 passed 0 of 4 E6t trials at
-#: $6-8 each while Sonnet passed 4 of 4 at $0.5-1.3. `draft` = producing candidates that
-#: a stronger model must then review: Sonnet review of cheap drafts alone cost 63-85% of
-#: Sonnet drafting directly (Haiku route 117%), so review overhead caps the saving
-#: whatever the producer. Both go to Sonnet, check or not. E9 batch3: a remote enterprise model, remote-118b,
-#: through OpenCode's tool loop also passed 0 of 8 on the E5 grouping unit (capability,
-#: not tooling), so agentic multi-step geospatial solving is DO NOT for remote-118b too.
+#: Rule 8 (E9, 2026-10-24, a break-even experiment). `agentic` = a solver running a tool
+#: loop: Haiku 5.5 passed 0 of 4 E6t trials at $6-8 each while Sonnet passed 4 of 4 at
+#: $0.5-1.3. `draft` = producing candidates that a stronger model must then review:
+#: Sonnet review of cheap drafts alone cost 63-85% of Sonnet drafting directly (Haiku
+#: route 117%), so review overhead caps the saving whatever the producer. Both stay on
+#: Sonnet, check or not. E9 batch3: a remote enterprise model, remote-large, through
+#: OpenCode's tool loop also passed 0 of 8 on the E5 grouping unit (capability, not
+#: tooling), so agentic multi-step geospatial solving is DO NOT for remote-large too.
 SONNET_ONLY = frozenset({"agentic", "draft"})
 
-#: Rule 3. These never go to Haiku even with a "check", because what passes for a
-#: check on them is a reader agreeing, which is not mechanical.
-NEVER_HAIKU = frozenset({"recall", "summary", "extraction", "judgment"})
+#: Rule 3. These go to Opus even with a "check", because what passes for a check on
+#: them is a reader agreeing, which is not mechanical.
+OPUS_ONLY = frozenset({"recall", "summary", "extraction", "judgment"})
 
 #: Rule 6. Well-specified kinds where Sonnet is the no-check step down.
 SONNET_OK = frozenset({"search", "code", "transform", "other"}) | SONNET_ONLY
 
-#: Rule 2. Chosen from the measured curve: 3 tries recovered nearly all of what 5 did.
-HAIKU_TRIES = 3
+#: Rule 2. Where a failed check goes.
 ESCALATE_TO = OPUS
 
 DATA = (pathlib.Path(__file__).resolve().parents[1] / "docs" / "research"
@@ -100,23 +100,22 @@ DATA = (pathlib.Path(__file__).resolve().parents[1] / "docs" / "research"
 
 RULES = {
     0: "Parseable work is deterministic Python: no model, no tier.",
-    1: "No check, no Haiku: a Haiku route must name its check.",
-    2: f"A failed check escalates, never ships: Haiku up to {HAIKU_TRIES} tries, "
-       f"then {ESCALATE_TO}.",
-    3: "Never Haiku for recall, summaries, trusted extraction, judgment or review.",
+    1: "Haiku is banned everywhere (owner, 2026-10-31); Sonnet is the floor.",
+    2: f"A failed check escalates, never ships: Sonnet, then {ESCALATE_TO}.",
+    3: "Opus for recall, summaries, trusted extraction, judgment or review.",
     4: "A passed check is not proof: when a missed error is costly, Opus.",
     5: "To save money on uncheckable work, lower Opus's effort; do not drop a tier.",
     6: "Sonnet is the no-check step down, for well-specified work only.",
     7: "Speed alone never drops a tier.",
-    8: "Never Haiku as an agentic solver, and never delegate drafting to a cheap producer "
-       "without pricing the review: Sonnet.",
+    8: "Agentic solving and drafting stay on Sonnet; never delegate drafting to a cheap "
+       "producer without pricing the review.",
 }
 
 
 def decide(kind: str, *, check: str | None = None, stakes: str = "normal",
            fast: bool = False) -> dict:
-    """The tier for one spawn. Returns {model, effort, tries, escalate_to, check,
-    rules, reason, refused_haiku}.
+    """The tier for one spawn. Returns {model, effort, escalate_to, check, rules,
+    reason}.
 
     `check` is the command (or named mechanical test) that will run on the output.
     `stakes='high'` means a wrong answer that slips past the check is costly.
@@ -128,39 +127,33 @@ def decide(kind: str, *, check: str | None = None, stakes: str = "normal",
         raise ValueError("stakes must be 'normal' or 'high'")
     check = (check or "").strip() or None
     out = {"kind": kind, "check": check, "stakes": stakes, "model": None,
-           "effort": None, "tries": 1, "escalate_to": None, "rules": [],
-           "reason": "", "refused_haiku": None,
+           "effort": None, "escalate_to": None, "rules": [], "reason": "",
            "check_mechanical": is_mechanical(check)}
     if fast:
         out["rules"].append(7)
 
     if kind in DETERMINISTIC:
-        out.update(model=PYTHON, refused_haiku="deterministic: no model at all",
+        out.update(model=PYTHON,
                    reason="parseable input: write the Python, spend no model call")
         out["rules"].append(0)
         return out
 
     if check is not None and not out["check_mechanical"]:
-        out["refused_haiku"] = "named check is a reader, not a mechanism"
         check = None
 
     if stakes == "high":
         out.update(model=OPUS, reason="a missed error is costly, so the strongest "
                                       "tier, whether or not a check runs")
         out["rules"].append(4)
-        if check is None:
-            out["rules"].append(1)
         return out
 
     if kind in SONNET_ONLY:
-        out["refused_haiku"] = "agentic solver or review-capped drafting (rule 8)"
-        out.update(model=SONNET, reason=f"{kind}: a cheap tier fails or saves nothing "
+        out.update(model=SONNET, reason=f"{kind}: a cheaper producer fails or saves nothing "
                                         f"once review is priced, check or not")
         out["rules"].append(8)
         return out
 
-    if kind in NEVER_HAIKU:
-        out["refused_haiku"] = "never-haiku kind"
+    if kind in OPUS_ONLY:
         out["rules"].append(3)
         out.update(model=OPUS, reason=f"{kind} has no mechanical check, and Sonnet "
                                       f"is not the step down for it either")
@@ -168,12 +161,11 @@ def decide(kind: str, *, check: str | None = None, stakes: str = "normal",
         return out
 
     if check is None:
-        out["refused_haiku"] = out["refused_haiku"] or "no check named"
         out.update(model=SONNET, reason="well-specified work with no mechanical check")
         out["rules"] += [1, 6]
         return out
 
-    out.update(model=HAIKU, tries=HAIKU_TRIES, escalate_to=ESCALATE_TO,
+    out.update(model=SONNET, escalate_to=ESCALATE_TO,
                reason=f"a mechanical check runs on the output ({check})")
     out["rules"] += [1, 2]
     return out
@@ -206,13 +198,6 @@ def evidence() -> dict:
                         s["sonnet x1 unchecked"]["cost_per_problem"]),
         "code_haiku_unchecked": (s["haiku x1 unchecked"]["correct"],
                                  s["haiku x1 unchecked"]["cost_per_problem"]),
-        "code_haiku_checked": {k: (s[f"haiku up to {k}, check=public tests, else opus"]
-                                   ["correct"],
-                                   s[f"haiku up to {k}, check=public tests, else opus"]
-                                   ["cost_per_problem"],
-                                   s[f"haiku up to {k}, check=public tests, else opus"]
-                                   ["latency_per_problem_s"])
-                               for k in (1, 3, 5)},
         "code_false_accept": {m: pm[m]["false_accept_given_public_pass"] for m in pm},
         "code_median_latency": {m: pm[m]["median_latency_s"] for m in pm},
         "recall_median_latency": {k: a[k]["median_latency_s"] for k in a},
@@ -222,16 +207,14 @@ def evidence() -> dict:
 def evidence_lines(rule_ids) -> list[str]:
     e = evidence()
     h, o = e["recall_haiku"], e["recall_opus"]
-    ck = e["code_haiku_checked"][HAIKU_TRIES]
     lines = {
-        1: (f"recall, no check: Haiku {h[0]:.2f} correct / {h[1]:.2f} WRONG; "
-            f"code without a check: Haiku {e['code_haiku_unchecked'][0]:.2f} vs Opus "
-            f"{e['code_opus'][0]:.2f}"),
-        2: (f"code, Haiku up to {HAIKU_TRIES} tries until the check passes, else Opus: "
-            f"{ck[0]:.2f} correct at {ck[1] / e['code_opus'][1]:.0%} of Opus's cost "
-            f"(Opus alone {e['code_opus'][0]:.2f})"),
-        3: (f"recall: Haiku wrong {h[1]:.0%} of the time; a confidence-gated cascade "
-            f"had to escalate {e['recall_confidence_cascade'][0]:.0%} of items, at "
+        1: (f"owner ban, 2026-10-31, for Haiku's error rate. Recall, no check: Haiku "
+            f"{h[0]:.2f} correct / {h[1]:.2f} WRONG; code without a check: Haiku "
+            f"{e['code_haiku_unchecked'][0]:.2f} vs Opus {e['code_opus'][0]:.2f}"),
+        2: (f"code, unchecked: Sonnet {e['code_sonnet'][0]:.2f} vs Opus "
+            f"{e['code_opus'][0]:.2f}; the gap is what the escalation exists to catch"),
+        3: (f"recall: a cheap tier was wrong {h[1]:.0%} of the time; a confidence-gated "
+            f"cascade had to escalate {e['recall_confidence_cascade'][0]:.0%} of items, at "
             f"{e['recall_confidence_cascade'][2]:.0%} of Opus's cost"),
         4: ("check passed but answer wrong: " + ", ".join(
             f"{m} {v:.1%}" for m, v in sorted(e["code_false_accept"].items(),
@@ -242,14 +225,13 @@ def evidence_lines(rule_ids) -> list[str]:
         6: (f"code: Sonnet {e['code_sonnet'][0]:.2f} vs Opus {e['code_opus'][0]:.2f} at "
             f"{e['code_sonnet'][1] / e['code_opus'][1]:.0%} of the cost"),
         7: ("median seconds per call on code: " + ", ".join(
-            f"{m} {v:.0f}" for m, v in e["code_median_latency"].items())
-            + f"; the {HAIKU_TRIES}-try loop took {ck[2]:.0f}s per problem on average"),
+            f"{m} {v:.0f}" for m, v in e["code_median_latency"].items())),
     }
     lines[0] = ("ladder rung 1 (owner rule): a parser costs no tokens "
                 "and is exactly reproducible; no model measurement is needed or claimed")
     lines[8] = ("E9 2026-10-24: Haiku solver 0 of 4 at $6-8 a trial vs Sonnet 4 of 4 at "
                 "$0.5-1.3; Sonnet review of cheap drafts cost 63-85% of Sonnet drafting "
-                "directly (Haiku route 117%); remote-118b as OpenCode tool-loop solver 0 of 8 on E5 (Sonnet 2/2 with item); token counts priced at plan rates "
+                "directly (Haiku route 117%); remote-large as OpenCode tool-loop solver 0 of 8 on E5 (Sonnet 2/2 with item); token counts priced at plan rates "
                 "(E9 break-even experiment)")
     return [f"rule {i}: {RULES[i]}\n           evidence: {lines[i]}"
             for i in sorted(set(rule_ids))]

@@ -29,12 +29,13 @@ thread, `Input.insertText` and the trusted Enter, its own socket and idle exit.
 Its tabs are in the user's own profile (their chatgpt.com cookies apply) but live in the extension's own
 unfocused window, and `Target.getTargets` lists ONLY those tabs: `reuse_page` reuses the
 extension's chatgpt.com tab and can no longer see, or navigate, one of the user's. A background agent keeps
-that bridge up; if the extension is not connected the connect fails by name (EXT_NOT_CONNECTED)
-and does NOT fall back to the sheet-raising route.
+that bridge up. Connecting goes through Machinist's shared `tools/chrome_access.py` (2026-10-29:
+one Chrome access layer for every tool), which, only if the extension route fails, falls back to
+the websocket bridge once, loudly (`cdp: FALLBACK TO WS`, logged to cdp-fallback.log.jsonl).
 
-**Opt-in fallback: `CDP_TRANSPORT=ws`** selects the websocket bridge
-(`tools/cdp-bridge.mjs`, `cdp-bridge.sock` in your state dir): sees all of the user's tabs, costs an Allow sheet
-per bridge lifetime and can activate Chrome. `$CDP_BRIDGE_SOCK` overrides either socket.
+**`CDP_TRANSPORT=ws`** forces the websocket bridge (`tools/cdp-bridge.mjs`, `cdp-bridge.sock`):
+sees all of the user's tabs, costs an Allow sheet per bridge lifetime and can activate Chrome.
+`CDP_TRANSPORT=ext` forces the extension and disables the fallback. `$CDP_BRIDGE_SOCK` overrides.
 
 Both bridges have the `session {targetId, method, params}` command. The non-flattened
 `Target.sendMessageToTarget` fallback below is kept for an old ws bridge without it (ws only; the
@@ -77,7 +78,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import shutil
 import socket
 import stat
 import subprocess
@@ -89,7 +89,7 @@ from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from cdp_client import CDPError, CDPSession  # noqa: E402
+from cdp_client import CDPError, CDPSession, chrome_access  # noqa: E402
 
 RUN_DIR = Path.home() / ".cache/chatgpt-consult"
 SOCK = RUN_DIR / "broker.sock"
@@ -161,10 +161,6 @@ def allowed_url(url: str) -> bool:
 
 # ---------------------------------------------------------------------- the bridge transport
 
-def machinist_tools() -> Path:
-    return Path(os.environ.get("MACHINIST_TOOLS") or Path("Machinist-tools"))
-
-
 def bridge_transport() -> str:
     """`ext` (default) or `ws`, from CDP_TRANSPORT, read at call time. Anything else is refused."""
     t = os.environ.get("CDP_TRANSPORT") or "ext"
@@ -173,12 +169,17 @@ def bridge_transport() -> str:
     return t
 
 
-def bridge_sock() -> Path:
-    """Same resolution as cdp-client.cjs, read at call time so a test can point it elsewhere."""
-    if os.environ.get("CDP_BRIDGE_SOCK"):
-        return Path(os.environ["CDP_BRIDGE_SOCK"])
-    name = "chrome-ext-bridge.sock" if bridge_transport() == "ext" else "cdp-bridge.sock"
-    return Path(os.environ.get("LODESTAR_STATE_DIR", ".lodestar")) / name
+def bridge_sock(transport: str | None = None) -> Path:
+    """The bridge socket, resolved by Machinist's chrome_access (same rule as cdp-client.cjs).
+    Falls back to the same rule locally only so status and tests work without Machinist."""
+    t = transport or bridge_transport()
+    try:
+        return Path(chrome_access().sock_for(t))
+    except CDPError:
+        if os.environ.get("CDP_BRIDGE_SOCK"):
+            return Path(os.environ["CDP_BRIDGE_SOCK"])
+        return Path(os.environ.get("CDP_BRIDGE_DIR") or (Path.home() / "dev" / ".lodestar")) / (
+            "chrome-ext-bridge.sock" if t == "ext" else "cdp-bridge.sock")
 
 
 # The fallback route sends session methods blind (Target.sendMessageToTarget), so give Chrome a
@@ -196,6 +197,7 @@ class BridgeCDP:
 
     def __init__(self, wait: float = 60.0):
         self.wait = wait
+        self.sock: Path | None = None                # chosen by connect(); default until then
         self.has_session_cmd: bool | None = None     # learned on the first session-scoped call
         self._blind: dict[str, str] = {}             # targetId -> non-flattened sessionId
 
@@ -204,7 +206,7 @@ class BridgeCDP:
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.settimeout(wait or self.wait)
         try:
-            s.connect(str(bridge_sock()))
+            s.connect(str(self.sock or bridge_sock()))
             fh = s.makefile("rwb")
             fh.write(json.dumps({"id": 1, **req}).encode() + b"\n")
             fh.flush()
@@ -212,7 +214,7 @@ class BridgeCDP:
         except socket.timeout as e:
             raise CDPError(f"bridge request {req.get('cmd')} timed out") from e
         except OSError as e:
-            raise CDPError(f"bridge socket {bridge_sock()} unreachable: {e}") from e
+            raise CDPError(f"bridge socket {self.sock or bridge_sock()} unreachable: {e}") from e
         finally:
             s.close()
         if not line:
@@ -239,32 +241,26 @@ class BridgeCDP:
             return False
 
     def connect(self) -> None:
-        """Get the bridge up and holding an accepted Chrome connection.
+        """Get a bridge up and holding a Chrome connection, through Machinist's chrome_access.
 
-        Already connected: nothing to do, no sheet. Otherwise the bridge's own client does it
-        (`tools/cdp connect`, on the same transport and socket: over ext it starts the bridge if
-        needed and waits for the extension, failing by name; over ws it runs the presser).
-        The broker never presses a sheet itself, so two pressers can no longer race one sheet.
+        Already connected: nothing to do. Otherwise chrome_access.ensure_connected() does it: the
+        extension bridge, and only if that route fails, its one loud, logged ws fallback. The broker
+        then talks to whichever bridge came up. It never presses a sheet or opens a websocket.
         """
         self.has_session_cmd = None
         self._blind.clear()
+        forced = os.environ.get("CDP_TRANSPORT") or None
+        self.sock = bridge_sock(forced or "ext")
         if self.alive() and self.connected():
             return
-        cli = machinist_tools() / "cdp"
-        node = shutil.which("node")
-        if not node or not cli.exists():
-            raise CDPError(f"cannot reach the extension bridge: node={node!r}, {cli} "
-                           f"exists={cli.exists()}")
+        ca = chrome_access()
         try:
-            env = {**os.environ, "CDP_TRANSPORT": bridge_transport(),
-                   "CDP_BRIDGE_SOCK": str(bridge_sock())}
-            r = subprocess.run([node, str(cli), "connect"], capture_output=True, text=True,
-                               timeout=150, stdin=subprocess.DEVNULL, env=env)
-        except subprocess.TimeoutExpired as e:
-            raise CDPError("`tools/cdp connect` did not finish in 150s") from e
-        if r.returncode != 0 or not self.connected():
-            raise CDPError(f"`tools/cdp connect` failed (rc={r.returncode}): "
-                           f"{(r.stderr or r.stdout).strip()[-300:]}")
+            used = ca.ensure_connected(forced)
+        except ca.CDPError as e:
+            raise CDPError(f"chrome_access could not connect: {e}") from e
+        self.sock = bridge_sock(used)
+        if not self.connected():
+            raise CDPError(f"chrome_access reported {used} connected but {self.sock} says not")
 
     def close(self) -> None:
         self._blind.clear()

@@ -6,8 +6,7 @@ The local-model destination's code and evidence, re-homed from DispatchOpenCode
 - `evals/harness/` the published-evidence ranking (`refer`), the served-model probe
   (`router`), the cost map (`costmap`) and the client/roster modules they import.
 - `references/` the published-benchmark corpus (see `references/README.md`).
-- `routing/throughput.json` measured local throughput; `routing/routing-table.json` the
-  retired sweep table, shown on request only.
+- `routing/throughput.json` measured local throughput.
 - `evals/suites/`, `evals/fixtures/` the measured job fixtures the skill table cites.
 - `bin/route`, `bin/roster`, `bin/refer` the destination's own commands.
 

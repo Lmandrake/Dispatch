@@ -1,132 +1,43 @@
-"""Minimal CDP-over-WebSocket client, stdlib only.
+"""The CDP flow this provider needs (tab reuse, origin waits), independent of how bytes reach Chrome.
 
-Chrome 144+ enables remote debugging at runtime and exposes ONLY the websocket named in
-`<profile>/DevToolsActivePort`. All four `/json*` HTTP endpoints return 404 (verified
-2026-09-26), so `--browserUrl`-style discovery cannot work and neither can any HTTP-based CDP
-client. Hence this: a hand-rolled websocket good enough for Runtime.evaluate, with no new
-dependency in the project venv.
-
-Deliberately NOT a general websocket implementation. It speaks exactly the subset CDP needs:
-masked client text frames, reassembled server frames, ping/pong, and id-routed responses.
+No websocket here (2026-10-29, owner: one Chrome access layer, so a change of access method is
+made in one place). Bytes reach Chrome through Machinist's shared client, tools/chrome_access.py
+(the Machinist extension bridge; its loud ws fallback lives there). `CDP` below is a thin shim over
+it for `consult.py --direct` and the probes; the broker's `BridgeCDP` rides the same bridge.
+Machinist is found at $MACHINIST_TOOLS, else $MACHINIST/tools, else a sibling Machinist checkout;
+its absence is a CDPError naming the path.
 """
 from __future__ import annotations
 
-import base64
-import json
+import importlib
 import os
-import socket
-import struct
 import subprocess
-import threading
+import sys
 from pathlib import Path
 
-CHROME_PROFILE = Path(os.environ.get("CHATGPT_CHROME_PROFILE") or Path.home() / "Library/Application Support/Google/Chrome")
+
+def machinist_tools() -> Path:
+    t = os.environ.get("MACHINIST_TOOLS")
+    if t:
+        return Path(t)
+    m = os.environ.get("MACHINIST")
+    if m:
+        return Path(m) / "tools"
+    return Path(__file__).resolve().parents[4] / "Machinist" / "tools"
+
+
+def chrome_access():
+    """Machinist's chrome_access module, by stable path. Raises CDPError naming the path."""
+    t = machinist_tools()
+    if not (t / "chrome_access.py").is_file():
+        raise CDPError(f"Machinist chrome_access.py not found in {t}: set MACHINIST_TOOLS")
+    if str(t) not in sys.path:
+        sys.path.insert(0, str(t))
+    return importlib.import_module("chrome_access")
 
 
 class CDPError(RuntimeError):
     pass
-
-
-def read_debug_endpoint(profile: Path = CHROME_PROFILE) -> tuple[int, str]:
-    """Port and browser ws path from DevToolsActivePort. Raises with a remedy, never guesses."""
-    f = profile / "DevToolsActivePort"
-    if not f.exists():
-        raise CDPError(
-            f"No DevToolsActivePort at {f}. Chrome is not serving remote debugging. "
-            "Enable it at chrome://inspect/#remote-debugging, then retry."
-        )
-    parts = f.read_text().strip().split("\n")
-    if len(parts) < 2:
-        raise CDPError(f"DevToolsActivePort malformed: {parts!r}")
-    return int(parts[0]), parts[1]
-
-
-class WS:
-    """Just enough RFC6455 for CDP."""
-
-    def __init__(self, host: str, port: int, path: str, timeout: float = 120.0):
-        self.sock = socket.create_connection((host, port), timeout=timeout)
-        key = base64.b64encode(os.urandom(16)).decode()
-        req = (
-            f"GET {path} HTTP/1.1\r\n"
-            f"Host: {host}:{port}\r\n"
-            "Upgrade: websocket\r\nConnection: Upgrade\r\n"
-            f"Sec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n"
-        )
-        self.sock.sendall(req.encode())
-        buf = b""
-        while b"\r\n\r\n" not in buf:
-            chunk = self.sock.recv(4096)
-            if not chunk:
-                raise CDPError("socket closed during websocket handshake")
-            buf += chunk
-        if b" 101 " not in buf.split(b"\r\n", 1)[0]:
-            raise CDPError(f"handshake refused: {buf.split(chr(13).encode())[0]!r}")
-        self._rest = buf.split(b"\r\n\r\n", 1)[1]
-        self._lock = threading.Lock()
-
-    def _recv_exact(self, n: int) -> bytes:
-        out = self._rest[:n]
-        self._rest = self._rest[n:]
-        while len(out) < n:
-            chunk = self.sock.recv(min(65536, n - len(out)))
-            if not chunk:
-                raise CDPError("socket closed mid-frame")
-            out += chunk
-        return out
-
-    def send_text(self, s: str) -> None:
-        payload = s.encode()
-        header = bytearray([0x81])
-        n = len(payload)
-        if n < 126:
-            header.append(0x80 | n)
-        elif n < 65536:
-            header.append(0x80 | 126)
-            header += struct.pack(">H", n)
-        else:
-            header.append(0x80 | 127)
-            header += struct.pack(">Q", n)
-        mask = os.urandom(4)
-        header += mask
-        masked = bytes(b ^ mask[i % 4] for i, b in enumerate(payload))
-        with self._lock:
-            self.sock.sendall(bytes(header) + masked)
-
-    def recv_text(self) -> str:
-        """Reassemble one complete text message, handling fragments and control frames."""
-        chunks: list[bytes] = []
-        while True:
-            b0, b1 = self._recv_exact(2)
-            fin, opcode = b0 & 0x80, b0 & 0x0F
-            length = b1 & 0x7F
-            if length == 126:
-                length = struct.unpack(">H", self._recv_exact(2))[0]
-            elif length == 127:
-                length = struct.unpack(">Q", self._recv_exact(8))[0]
-            if b1 & 0x80:  # server frames must not be masked, but tolerate it
-                mask = self._recv_exact(4)
-                data = bytes(c ^ mask[i % 4]
-                             for i, c in enumerate(self._recv_exact(length)))
-            else:
-                data = self._recv_exact(length)
-            if opcode == 0x9:           # ping -> pong
-                with self._lock:
-                    self.sock.sendall(bytes([0x8A, 0x80]) + os.urandom(4))
-                continue
-            if opcode == 0xA:           # pong
-                continue
-            if opcode == 0x8:
-                raise CDPError("websocket closed by peer")
-            chunks.append(data)
-            if fin:
-                return b"".join(chunks).decode("utf-8", "replace")
-
-    def close(self) -> None:
-        try:
-            self.sock.close()
-        except OSError:
-            pass
 
 
 CHROME_BUNDLE = "com.google.Chrome"
@@ -164,9 +75,8 @@ def activate_app(bundle_id: str) -> None:
 class CDPSession:
     """The CDP operations this tool needs, independent of how the bytes reach Chrome.
 
-    Two transports implement `call`: `CDP`, which owns a websocket and therefore costs one approval
-    sheet per instance, and `BrokerClient`, which borrows a shared broker's connection and costs
-    none. Everything above `call` lives here precisely so the broker is a **transport swap** rather
+    Two transports implement `call`: `CDP`, a private session over Machinist's chrome_access, and
+    `BrokerClient`, which borrows the shared broker's session and its machine-wide lease. Everything above `call` lives here precisely so the broker is a **transport swap** rather
     than a second implementation of the flow — two copies of the tab-reuse and origin-waiting rules
     would drift, and the rules are the expensive part.
     """
@@ -309,78 +219,26 @@ class CDPSession:
 
 
 class CDP(CDPSession):
-    """Id-routed CDP session over its own websocket.
+    """A private session over Machinist's chrome_access (no broker lease). Owns no websocket.
 
-    Connecting steals focus, and it is the ONLY step that does. Measured 2026-09-26 over six
-    rounds: the websocket connect raises Chrome to frontmost every time — once per connection,
-    not once per session — because Chrome activates itself to show the "Allow remote debugging?"
-    sheet. Attach, navigate, insertText, a trusted Enter and closeTarget were each measured and
-    steal nothing, and nothing re-steals while a connection sits idle.
-
-    So the app the user was in is captured before the socket opens and restored after, turning a
-    steal into a ~1s flicker. `restore_focus=False` opts out when the caller is already frontmost
-    or wants the focus left alone.
-
-    Restoration is **compare-and-restore, not unconditional**: it fires only when the app that is
-    frontmost afterwards is Chrome itself. If anything else is frontmost, the user acted during
-    that second and yanking the user back would be worse than the steal it repairs.
-
-    Chromium's own source says this cannot be avoided on the user's normal profile. The runtime toggle at
-    chrome://inspect starts the server in `kWithApprovalOnly`, which requires approval per incoming
-    connection, and the dialog code calls `Activate()` on the browser window before showing the
-    sheet. `--remote-debugging-port` does start in the no-approval mode, but since Chrome 136 that
-    switch is ignored unless Chrome runs on a non-default `--user-data-dir` — which would mean a
-    different profile and not the logged-in session. So the flicker is the price of using your own
-    browser; the way to pay it less often is fewer connections, not a cleverer restore.
+    Kept for `consult.py --direct` and the probes. Legacy kwargs (restore_focus, press_consent) are
+    accepted and ignored: over the extension there is no sheet to press and focus never moves.
     """
 
-    def __init__(self, timeout: float = 120.0, restore_focus: bool = True,
-                 press_consent: bool = True):
-        """Open the connection, pressing Chrome's approval sheet ourselves.
-
-        Pressing that sheet belongs HERE, to the code that opens the socket, rather than to every
-        caller. Chrome raises it on each connection, and an unanswered sheet does not error — the
-        websocket handshake BLOCKS in `recv` until the deadline. So a caller who forgets the presser
-        does not get a clear failure; it gets a 120 s hang that looks like a dead browser, and leaves
-        a modal sitting on the user's screen for the user to find. That happened twice in one session,
-        once via `--direct` and once from a probe, which is what moved this inside.
-        """
-        was = frontmost_app() if restore_focus else None
-        port, path = read_debug_endpoint()
-        presser = None
-        if press_consent:
-            try:
-                presser = subprocess.Popen(
-                    [str(Path(__file__).resolve().parent / "keep-allowing.sh"), "60"],
-                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                    stdin=subprocess.DEVNULL)
-            except OSError:
-                pass                      # no presser is survivable; a blocked handshake says so
+    def __init__(self, timeout: float = 120.0, **_legacy):
+        ca = chrome_access()
+        self._err = ca.CDPError
         try:
-            self.ws = WS("127.0.0.1", port, path, timeout=timeout)
-        finally:
-            if presser is not None:
-                presser.terminate()
-        self._id = 0
-        if was and was[0] != CHROME_BUNDLE:
-            now = frontmost_app()
-            if now and now[0] == CHROME_BUNDLE:
-                activate_app(was[0])
+            self._s = ca.Session(timeout=timeout)
+        except ca.CDPError as e:
+            raise CDPError(str(e)) from e
 
     def call(self, method: str, params: dict | None = None,
              session_id: str | None = None) -> dict:
-        self._id += 1
-        msg: dict = {"id": self._id, "method": method, "params": params or {}}
-        if session_id:
-            msg["sessionId"] = session_id
-        self.ws.send_text(json.dumps(msg))
-        while True:
-            reply = json.loads(self.ws.recv_text())
-            if reply.get("id") != self._id:
-                continue                      # an event or another session's reply
-            if "error" in reply:
-                raise CDPError(f"{method}: {reply['error']}")
-            return reply.get("result", {})
+        try:
+            return self._s.call(method, params, session_id)
+        except self._err as e:
+            raise CDPError(f"{method}: {e}") from e
 
     def close(self) -> None:
-        self.ws.close()
+        pass                       # the bridge connection is shared; tabs are closed explicitly

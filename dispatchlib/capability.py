@@ -285,7 +285,7 @@ def alias_collapse(env: dict | None = None) -> dict:
     escalation ladder are not actually different models.
 
     🔴 WHY THIS IS WORTH A FUNCTION. Escalation ladders are usually written
-    in aliases: `haiku -> sonnet -> opus`, retry one rung up on failure. The aliases
+    in aliases: `sonnet -> opus`, retry one rung up on failure. The aliases
     are remapped per machine by `ANTHROPIC_DEFAULT_*_MODEL`, and a machine may set BOTH
     `ANTHROPIC_DEFAULT_HAIKU_MODEL` and `ANTHROPIC_DEFAULT_SONNET_MODEL` to the same
     model (one with a `[1m]` context suffix, which is stripped on the wire). So the first escalation step re-runs the
@@ -579,7 +579,7 @@ def proxy_rebind(env: dict | None = None) -> dict | None:
 
     `/nemo-proxy` (providers/nemotron) sets `ANTHROPIC_BASE_URL` to a localhost LiteLLM
     proxy and maps `haiku`/`sonnet`/`opus` onto Nemotron models. Inside such a session
-    `tier` still answers "haiku", and that name now means different weights from the
+    `tier` still answers "sonnet", and that name now means different weights from the
     ones its evidence was measured on. Nothing else notices, so this reports it.
     None when the base URL is not a loopback address.
     """
@@ -589,7 +589,7 @@ def proxy_rebind(env: dict | None = None) -> dict | None:
     host = urllib.parse.urlparse(url).hostname or ""
     if host in ("127.0.0.1", "localhost", "::1"):
         return {"base_url": url,
-                "why": ("ANTHROPIC_BASE_URL is a local proxy, so haiku/sonnet/opus mean "
+                "why": ("ANTHROPIC_BASE_URL is a local proxy, so sonnet/opus mean "
                         "whatever that proxy maps them to (/nemo-proxy maps them to "
                         "Nemotron). The tier rules were measured on Claude models and "
                         "do not hold for those names here.")}

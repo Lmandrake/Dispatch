@@ -48,7 +48,7 @@ import broker as bk  # noqa: E402
 import chatgpt_auth as ca  # noqa: E402
 import outcomes as oc  # noqa: E402
 import overlay as ov  # noqa: E402
-from cdp_client import CDP, CDPError, CDPSession  # noqa: E402
+from cdp_client import CDP, CDPError, CDPSession, machinist_tools  # noqa: E402
 
 HOME = pathlib.Path.home()
 SKILL_ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -56,10 +56,36 @@ SKILL_ROOT = pathlib.Path(__file__).resolve().parent.parent
 #: private overlay when there is one (`ledger/consults.jsonl` there). Without an overlay it is
 #: the git-ignored `ledger/consults.jsonl` beside this file: local, never committed.
 _OVERLAY_DIR = ov.directory()
-LEDGER = (_OVERLAY_DIR / "ledger" / "consults.jsonl") if _OVERLAY_DIR else SKILL_ROOT / "ledger" / "consults.jsonl"
+
+# Per-user settings, so two people sharing one ChatGPT account keep separate records (carried from
+# ChatGPTConsult per-user-ledger-project). Optional; keys: "ledger" (relative paths resolve against the
+# repo root), "chatgpt_project", "thread_prefix". Thread recovery searches titles across the WHOLE
+# account, so two users need distinct prefixes. An unreadable file stops the tool, never falls back.
+USER_CONFIG = pathlib.Path(os.environ.get("CHATGPT_CONSULT_CONFIG",
+                                          HOME / ".config" / "chatgpt-consult" / "config.json"))
+
+
+def _user_config() -> dict:
+    if not USER_CONFIG.exists():
+        return {}
+    try:
+        cfg = json.loads(USER_CONFIG.read_text())
+    except ValueError as e:
+        raise SystemExit(f"unreadable {USER_CONFIG}: {e}")
+    if not isinstance(cfg, dict):
+        raise SystemExit(f"{USER_CONFIG} must hold a JSON object")
+    return cfg
+
+
+_CFG = _user_config()
+if _CFG.get("ledger"):
+    LEDGER = SKILL_ROOT / pathlib.Path(_CFG["ledger"]).expanduser()
+else:
+    LEDGER = (_OVERLAY_DIR / "ledger" / "consults.jsonl") if _OVERLAY_DIR else SKILL_ROOT / "ledger" / "consults.jsonl"
 
 CHATGPT = "https://chatgpt.com/"
-CONTAINER_PROJECT = ov.value("container_project", "Consults")
+CONTAINER_PROJECT = _CFG.get("chatgpt_project") or ov.value("container_project", "Consults")
+THREAD_PREFIX = _CFG.get("thread_prefix") or "Consult_"
 ASSISTANT_SEL = 'div[data-markdown-text-style="assistant-message"]'
 POLL = 1.5
 STABLE_POLLS = 3
@@ -337,13 +363,13 @@ def open_transport(direct: bool, label: str) -> tuple[CDPSession, "bk.BrokerClie
     named remedy, and `--direct` is the deliberate, visible opt-out.
     """
     if direct:
-        log("--direct: private CDP connection, costs one approval sheet and skips the shared lease")
+        log("--direct: private session over Machinist chrome_access, skips the shared lease")
         return CDP(), None
     if bk.ensure() is None:
         raise ConsultError(
             f"the broker would not start, so this consult is refused rather than run unserialized. "
             f"Log: {bk.LOG}. Check with `bin/broker.py --status`; rerun with `--direct` to accept a "
-            f"private connection (one approval sheet, and no cross-instance serialization).")
+            f"private session (no cross-instance serialization).")
     try:
         client = bk.BrokerClient(label=label)
     except (bk.BrokerUnavailable, OSError) as e:
@@ -467,6 +493,21 @@ def opportunities_since_review(rows: list[dict], rule_version: str) -> int:
     return n
 
 
+UTILITY_PAUSE_FILE = "UTILITY_PAUSED"
+
+
+def utility_paused() -> str:
+    """The reason utility bookkeeping is paused, or "". Pausing (owner, 2026-10-26: "not that
+    important anymore") silences the pending-outcomes nag, the unrecorded-consults record gate and
+    the policy-review gate. Consults themselves, the ledger rows and every safety guard (secret
+    scan, enrollment, idempotence) are untouched. Resume: delete ledger/UTILITY_PAUSED."""
+    try:
+        return (pathlib.Path(LEDGER).parent / UTILITY_PAUSE_FILE).read_text(
+            encoding="utf-8").strip() or "paused"
+    except OSError:
+        return ""
+
+
 def review_due(rule_version: str = TRIGGER_RULE_VERSION) -> int:
     """How far past the cadence this rule version is. 0 means not due.
 
@@ -474,6 +515,8 @@ def review_due(rule_version: str = TRIGGER_RULE_VERSION) -> int:
     a yield tolerance would be a number invented before any measurement. So this mechanically
     enforces that the evaluation HAPPENS, and leaves the outcome to evidence.
     """
+    if utility_paused():
+        return 0
     n = opportunities_since_review(read_ledger(), rule_version)
     return n if n >= REVIEW_CADENCE else 0
 
@@ -654,7 +697,7 @@ RENAME_JS = """
 
 
 def thread_title(project: str) -> str:
-    return f"Consult_{project}"
+    return f"{THREAD_PREFIX}{project}"
 
 
 def open_thread(cdp: CDP, root: pathlib.Path, project: str,
@@ -1088,7 +1131,7 @@ def server_posted(cdp: CDP, sid: str, since: float, is_new: bool) -> bool:
 #: instead of the page. Measured 2026-09-28: four consecutive Enters swallowed, twice in a row, with a
 #: healthy connection and a correctly filled composer. The user pressed Allow in person, which is the
 #: one outcome this helper exists to prevent.
-_ALLOW_HELPER = pathlib.Path(os.environ.get("MACHINIST_TOOLS", "Machinist-tools")) / "allow-remote-debugging.sh"
+_ALLOW_HELPER = machinist_tools() / "allow-remote-debugging.sh"
 
 
 def press_consent_sheet(deadline_s: int = 6) -> bool:
@@ -1913,10 +1956,9 @@ def main() -> int:
     ap.add_argument("--deadline", type=float, default=900.0,
                     help="with --transport codex: seconds for lock wait + run, then 'deadline'")
     ap.add_argument("--direct", action="store_true",
-                    help="use a private CDP connection instead of the shared broker. Costs one "
-                         "approval sheet and one focus steal, and skips the machine-wide send "
-                         "lease. Deliberate opt-out only: a broker failure is an error, not a "
-                         "reason to fall back.")
+                    help="use a private session (Machinist chrome_access) instead of the shared "
+                         "broker. Skips the machine-wide send lease. Deliberate opt-out only: a "
+                         "broker failure is an error, not a reason to fall back.")
     ap.add_argument("--cold", action="store_true",
                     help="send to a FRESH conversation with no inherited context. Use for "
                          "measurement/oracle code and major design reviews, where the persistent "
@@ -2056,8 +2098,9 @@ def main() -> int:
     prompt = (pathlib.Path(args.prompt_file).read_text() if args.prompt_file else args.prompt)
 
     # Nag (never block): delivered consults with no outcome record. Bookkeeping must not stop a send.
+    paused = utility_paused()
     try:
-        for line in oc.nag_lines(read_ledger()):
+        for line in ([] if paused else oc.nag_lines(read_ledger())):
             log(line)
     except Exception as e:  # noqa: BLE001
         log(f"(outcome nag unavailable: {e})")
@@ -2066,7 +2109,8 @@ def main() -> int:
     # caller says why not (user_asked and drafts are never blocked, only reminded).
     skip_reason = (args.skip_record_check or "").strip() or None
     try:
-        gate_lines, gate_refuse = oc.record_gate(read_ledger(), repo_identity(root), RECORD_GATE_LIMIT)
+        gate_lines, gate_refuse = ([], False) if paused else oc.record_gate(
+            read_ledger(), repo_identity(root), RECORD_GATE_LIMIT)
     except Exception as e:  # noqa: BLE001
         gate_lines, gate_refuse = [], False
         log(f"(record gate unavailable: {e})")

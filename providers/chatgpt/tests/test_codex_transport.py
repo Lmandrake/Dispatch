@@ -413,3 +413,14 @@ class ProvisioningDefault(unittest.TestCase):
              mock.patch.object(cw, "home_for", return_value=pathlib.Path(d)), \
              mock.patch("shutil.which", return_value=None):
             self.assertFalse(consult.codex_provisioned("research"))
+
+
+class UtilityPauseTests(unittest.TestCase):
+    def test_pause_file_silences_review_due(self):
+        import consult as c
+        real = c.utility_paused
+        try:
+            c.utility_paused = lambda: "paused"
+            self.assertEqual(c.review_due(), 0)
+        finally:
+            c.utility_paused = real

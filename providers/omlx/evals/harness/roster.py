@@ -17,6 +17,7 @@ Two rules carry over from the design and are not negotiable here:
 """
 import datetime
 import hashlib
+import os
 
 from evals.harness.egress import classify
 
@@ -260,7 +261,7 @@ def main() -> int:
     entries: list[dict] = []
     try:
         key = None
-        settings = pathlib.Path.home() / ".omlx" / "settings.json"
+        settings = pathlib.Path(os.environ.get("OMLX_SETTINGS") or (pathlib.Path.home() / ".omlx" / "settings.json"))
         if settings.exists():
             key = (json.loads(settings.read_text()).get("auth") or {}).get("api_key")
         entries += discover_omlx(args.omlx_endpoint, key)

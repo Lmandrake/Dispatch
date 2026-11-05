@@ -7,7 +7,7 @@
 `credentials: 'include'` and no `Authorization` header gets **HTTP 200 and the anonymous
 view** — `plan_type: "guest"`, `has_active_subscription: false`,
 `subscription_plan: "chatgptguestplan"` — from a browser that is perfectly well signed
-in. Measured against live signed-in tabs, including a project thread (a paid-only URL).
+in. Measured against live signed-in tabs, including a project thread.
 The same call with the bearer token from `/api/auth/session` returned a paid
 `plan_type` (`"examplelite"`) and `has_active_subscription: true`.
 

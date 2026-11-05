@@ -38,6 +38,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "bin"))
 from cdp_client import CDP, frontmost_app, activate_app  # noqa: E402
+# 2026-10-29: CDP now rides Machinist's chrome_access (extension tabs live in their own unfocused
+# window), so the per-window active-tab assertions below are about that window, not his.
 
 PROBE_HTML = """<!doctype html><html><body>
 <div id="box" contenteditable="true"></div>

@@ -39,17 +39,13 @@ import json
 import os
 import pathlib
 import platform
-import shutil
-import socket
 import subprocess
 import sys
 
 HOME = pathlib.Path.home()
 CHROME_PROFILE = pathlib.Path(os.environ.get("CHATGPT_CHROME_PROFILE") or HOME / "Library/Application Support/Google/Chrome")
-PORT_FILE = CHROME_PROFILE / "DevToolsActivePort"
 CLAUDE_JSON = HOME / ".claude.json"
 REPO = pathlib.Path(__file__).resolve().parents[1]
-PRESSER = REPO / "bin" / "keep-allowing.sh"
 BROKER = REPO / "bin" / "broker.py"
 
 #: What a missing precondition costs, and who can fix it.
@@ -95,49 +91,28 @@ def check_chrome_running() -> Check:
                  None if out else "Start Chrome (the user's own browser, signed into ChatGPT).")
 
 
-def _chrome_listening() -> list[str]:
-    """Every listening TCP socket owned by a Chrome process.
-
-    🔴 This, not the port file, is the ground truth. A throwaway Chrome launched with an
-    explicit `--remote-debugging-port` was measured LISTENING while writing no port file at
-    all, so the file's absence alone does not prove the server is down -- and a bare
-    `curl 127.0.0.1:9222/json/version` proves even less, because a runtime-enabled Chrome
-    returns 404 on all four `/json*` endpoints by design.
-    """
-    pids = subprocess.run(["pgrep", "-f", "Google Chrome"],
-                          capture_output=True, text=True).stdout.split()
-    found = []
-    for pid in pids:
-        r = subprocess.run(["lsof", "-nP", "-a", "-p", pid, "-iTCP", "-sTCP:LISTEN"],
-                           capture_output=True, text=True)
-        for line in r.stdout.splitlines()[1:]:
-            parts = line.split()
-            if len(parts) >= 9:
-                found.append(parts[8])
-    return found
-
-
 def check_debug_server() -> Check:
-    socks = _chrome_listening()
-    port_file = PORT_FILE.read_text().strip().splitlines() if PORT_FILE.exists() else []
-    ok = bool(socks) or bool(port_file)
-    if ok:
-        detail = (f"bound — port file {port_file[0] if port_file else 'absent'}, "
-                  f"listening {socks or 'none reported'}")
-    else:
-        detail = "NOT bound — no port file and no Chrome process listening on any TCP port"
-    return Check(
-        "debug_server_bound", ok, detail, INFO if ok else HUMAN,
-        None if ok else (
-            "THIS ONE IS NOT YOURS TO FIX. Ask the user, in words, to open "
-            "chrome://inspect/#remote-debugging and tick 'Allow remote debugging for this "
-            "browser instance', then re-run this check. The setting is PER INSTANCE and "
-            "persists in no preference file, so it is lost on every Chrome restart and "
-            "'he enabled it yesterday' is never a reason to skip this. That page also shows "
-            "'Server running at: <address>' — if it reads 'starting…' the toggle is on and "
-            "the server still has not bound, which is a different and unexplained failure "
-            "(see your browser-automation notes). Do NOT debug the "
-            "transport, start the presser, or curl anything until this is bound."))
+    """Is a Machinist bridge up and connected to his Chrome (2026-10-29: the one Chrome layer)?
+
+    Read through Machinist's chrome_access status, which never touches Chrome: the extension
+    bridge is the route; a connected ws bridge means a fallback is in use, which is a defect.
+    The name is kept so callers and the auth check's `debug_ok` are unchanged.
+    """
+    from cdp_client import CDPError, chrome_access  # noqa: PLC0415
+    try:
+        ca = chrome_access()
+    except CDPError as e:
+        return Check("debug_server_bound", False, str(e), HUMAN, "Check out Machinist beside Dispatch, or set MACHINIST_TOOLS.")
+    ext, ws = ca.connected("ext"), ca.connected("ws")
+    if ext:
+        return Check("debug_server_bound", True, f"extension bridge connected ({ca.sock_for('ext')})", INFO)
+    if ws:
+        return Check("debug_server_bound", True,
+                     "ws bridge connected, extension NOT: a fallback is in use; debug the extension "
+                     "(Machinist knowledge/browser-automation.md)", INFO)
+    return Check("debug_server_bound", False, "no Machinist bridge connected to Chrome", AGENT,
+                 "Run `node $MACHINIST_TOOLS/cdp connect`. On EXT_NOT_CONNECTED, re-enable or re-pair "
+                 "the Machinist extension (Machinist tools/chrome-ext/README.md).")
 
 
 def _mcp_servers() -> dict:
@@ -147,29 +122,6 @@ def _mcp_servers() -> dict:
         return {}
 
 
-def check_autoconnect_server() -> Check:
-    """Is a browser MCP declared that ATTACHES to the user's Chrome rather than launching its own?
-
-    Without this the only browser MCP is the plugin's, which declares no args and therefore
-    runs with `autoConnect: false` -- its documented default -- and launches a throwaway
-    profile at ~/.cache/chrome-devtools-mcp/chrome-profile. That browser is not signed into
-    anything, so `list_pages` can never find a ChatGPT tab, and any experiment run through it
-    is an experiment on the wrong browser.
-    """
-    hits = [name for name, cfg in _mcp_servers().items()
-            if any("autoconnect" in str(a).lower() for a in (cfg.get("args") or []))]
-    return Check(
-        "autoconnect_mcp_declared", bool(hits),
-        (f"declared: {hits} — call its tools as mcp__{hits[0]}__*" if hits
-         else "no MCP server declares --autoConnect; the only browser MCP launches its OWN "
-              "throwaway Chrome, which is signed into nothing"),
-        INFO if hits else AGENT,
-        None if hits else (
-            "claude mcp add --scope user chrome-mine -- "
-            "npx -y chrome-devtools-mcp@1.10.1 --autoConnect --channel stable    "
-            "(then RESTART Claude Code: an MCP config change does not take effect in the "
-            "running session). Leave the plugin's copy enabled as a fallback — it is the only "
-            "browser access that works when the toggle above is not bound."))
 
 
 def check_browser_mcps() -> Check:
@@ -198,39 +150,6 @@ def check_enrolled(cwd: pathlib.Path) -> Check:
                  f"{cwd.name}: {'enrolled' if ok else 'NOT enrolled — sends fall back to draft'}",
                  INFO if ok else AGENT,
                  None if ok else f"python3 {REPO}/bin/consult.py --enroll   (run from {cwd})")
-
-
-def check_presser_hook() -> Check:
-    """Is the PreToolUse hook that arms the presser before raw browser-MCP calls registered HERE?
-    ~/.claude/settings.json is in no repo, so a hook registered on one Mac is absent on the others
-    with nothing reporting it. The hook may be absent on one Mac, and a raw browser-MCP call then leaves a sheet for the user to click."""
-    settings = pathlib.Path.home() / ".claude" / "settings.json"
-    try:
-        hooks = json.loads(settings.read_text()).get("hooks", {}).get("PreToolUse", [])
-    except (OSError, ValueError) as e:
-        return Check("presser_hook", False, f"cannot read {settings}: {e}", UNDETERMINED)
-    ok = "arm-allow-presser" in json.dumps(hooks)
-    return Check("presser_hook", ok,
-                 "PreToolUse arm-allow-presser hook " + ("registered" if ok else "NOT registered on this machine"),
-                 INFO, None if ok else (
-                     "Register the arm-allow-presser script as a PreToolUse hook "
-                     "matching mcp__chrome-mine__.*|mcp__plugin_chrome-devtools.* in "
-                     "~/.claude/settings.json (a config change: needs the user's yes)."))
-
-
-def check_presser() -> Check:
-    if not PRESSER.exists():
-        return Check("allow_presser", False, f"{PRESSER} is missing", INFO,
-                     "Expected in this repo; the Allow sheet then has to be pressed another way.")
-    running = bool(subprocess.run(["pgrep", "-f", "keep-allowing.sh"],
-                                  capture_output=True, text=True).stdout.strip())
-    return Check("allow_presser", True,
-                 f"available; currently {'RUNNING' if running else 'not running'}", INFO,
-                 None if running else (
-                     f"{PRESSER} 900 &   — start it BEFORE any CDP call, but only once the "
-                     f"debug server is bound. With nothing bound, no connection is attempted, "
-                     f"so no sheet can ever appear and a run that reports 'no sheet appeared' "
-                     f"is uninformative rather than a failure."))
 
 
 def check_chatgpt_auth(debug_ok: bool) -> Check:
@@ -341,16 +260,7 @@ def apply_fixes(checks, cwd) -> list[str]:
     for c in checks:
         if c.ok or c.user != AGENT:
             continue
-        if c.name == "autoconnect_mcp_declared":
-            if not shutil.which("claude"):
-                done.append("autoconnect_mcp_declared: SKIPPED, `claude` not on PATH")
-                continue
-            r = subprocess.run(
-                ["claude", "mcp", "add", "--scope", "user", "chrome-mine", "--",
-                 "npx", "-y", "chrome-devtools-mcp@1.10.1", "--autoConnect",
-                 "--channel", "stable"], capture_output=True, text=True)
-            done.append(f"autoconnect_mcp_declared: {'declared chrome-mine — RESTART Claude Code' if r.returncode == 0 else 'FAILED: ' + (r.stderr or r.stdout).strip()[:160]}")
-        elif c.name == "repo_enrolled":
+        if c.name == "repo_enrolled":
             r = subprocess.run([sys.executable, str(REPO / "bin" / "consult.py"), "--enroll"],
                                cwd=str(cwd), capture_output=True, text=True)
             done.append(f"repo_enrolled: {'enrolled' if r.returncode == 0 else 'FAILED: ' + (r.stderr or r.stdout).strip()[:160]}")
@@ -359,8 +269,8 @@ def apply_fixes(checks, cwd) -> list[str]:
 
 def run(cwd: pathlib.Path, auth: bool = True):
     debug = check_debug_server()
-    checks = [check_chrome_running(), debug, check_autoconnect_server(),
-              check_browser_mcps(), check_enrolled(cwd), check_presser(), check_presser_hook(), check_broker()]
+    checks = [check_chrome_running(), debug,
+              check_browser_mcps(), check_enrolled(cwd), check_broker()]
     if auth:
         # Last, and given the debug verdict rather than re-deriving it: the session read
         # is downstream of the transport, and a check that silently re-tests its own

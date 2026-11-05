@@ -41,7 +41,7 @@ Per-task tables are in each run's `SUMMARY.md`.
 |---|---|---|---|
 | omp | exits after about 1 s with `SQLiteError: ... agent.db: table settings already exists` | 3 of 216 OMP runs | race when several OMP processes start at once on one agent dir (first-run schema creation). A per-run agent dir or a warm-up run would avoid it. |
 | omp | headless `-p` hangs forever at `readPipedInput` if stdin is not redirected | every time | waits on an inherited stdin. Always pass `</dev/null`. |
-| pi | node is SIGKILLed (rc 137) before it starts when the prompt is passed as an argument | every time for this one prompt (task 09) | **not Pi**: `node /tmp/x.js "<that prompt>"` is also killed, while python, echo and the native Claude binary are not. Likely the test Mac's endpoint protection matching node plus that text (inferred). Piping the prompt on stdin avoids it. |
+| pi | node is SIGKILLed (rc 137) before it starts when the prompt is passed as an argument | every time for this one prompt (task 09) | **not Pi**: `node /tmp/x.js "<that prompt>"` is also killed, while python, echo and the native Claude binary are not. Likely the machine's security tooling matching node plus that text (inferred). Piping the prompt on stdin avoids it. |
 | pi, omp | a stream stalls mid tool call and never finishes (killed at 900 s) | 1 each with Haiku | the same stall the pilot saw in Pi. Cause unknown (gateway or client). Neither harness has a stream idle timeout that caught it. Claude Code had none in its 216 runs today. |
 
 ## Defects found and fixed (why the earlier runs are not load-bearing)

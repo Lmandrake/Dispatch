@@ -2,7 +2,7 @@
 
 The TypeSafe API key is **not** in this repo and must never be committed to it.
 
-It lives at `the consultjev env file`, mode `600`:
+It lives in a local env file outside the repository (path set by you, for example via `TYPESAFE_ENV_FILE`), mode `600`:
 
 ```
 TYPESAFE_API_KEY=apikey_...

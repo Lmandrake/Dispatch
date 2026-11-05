@@ -86,9 +86,8 @@ class Base(unittest.TestCase):
         self.fake = FakeBridge(sock, self.session_cmd)
         self.env = mock.patch.dict(os.environ, {"CDP_BRIDGE_SOCK": sock})
         self.env.start()
-        # Any attempt to open a private websocket or spawn a presser fails the test.
-        self.ws = mock.patch.object(cdp_client, "WS", side_effect=AssertionError("opened a websocket"))
-        self.ws.start()
+        # cdp_client has no websocket code at all now; spawning anything fails the test.
+        self.assertFalse(hasattr(cdp_client, "WS"))
         mock.patch("subprocess.Popen", side_effect=AssertionError("spawned a process")).start()
         mock.patch("subprocess.run", side_effect=AssertionError("ran a process")).start()
         mock.patch.object(B, "BLIND_SETTLE_S", 0).start()
@@ -207,28 +206,35 @@ class SocketSelection(unittest.TestCase):
         with self.env(CDP_TRANSPORT="auto"), self.assertRaises(cdp_client.CDPError):
             B.bridge_sock()
 
-    def test_connect_runs_tools_cdp_on_the_same_transport(self):
-        seen = {}
+    def test_connect_goes_through_machinist_chrome_access(self):
+        seen = []
 
-        def run(argv, **kw):
-            seen.update(kw["env"])
-            return mock.Mock(returncode=0, stdout="", stderr="")
-        with self.env(MACHINIST_TOOLS=str(BIN)), \
+        class FakeCA:
+            CDPError = cdp_client.CDPError
+
+            @staticmethod
+            def ensure_connected(t):
+                seen.append(t)
+                return "ext"
+
+            @staticmethod
+            def sock_for(t):
+                return "/tmp/fake-%s.sock" % t
+        with self.env(), \
+             mock.patch.object(B, "chrome_access", return_value=FakeCA), \
              mock.patch.object(B.BridgeCDP, "alive", return_value=False), \
              mock.patch.object(B.BridgeCDP, "connected", return_value=True), \
-             mock.patch.object(B.shutil, "which", return_value="/usr/bin/node"), \
-             mock.patch.object(pathlib.Path, "exists", return_value=True), \
-             mock.patch("subprocess.run", side_effect=run):
-            B.BridgeCDP().connect()
-        self.assertEqual(seen["CDP_TRANSPORT"], "ext")
-        self.assertTrue(seen["CDP_BRIDGE_SOCK"].endswith("chrome-ext-bridge.sock"))
+             mock.patch("subprocess.run", side_effect=AssertionError("ran a process")):
+            c = B.BridgeCDP()
+            c.connect()
+        self.assertEqual(seen, [None])                 # unforced: chrome_access may fall back
+        self.assertEqual(str(c.sock), "/tmp/fake-ext.sock")
 
 
 class BridgeDown(unittest.TestCase):
     def test_unreachable_bridge_is_a_cdp_error_not_a_private_socket(self):
         with mock.patch.dict(os.environ, {"CDP_BRIDGE_SOCK": "/tmp/nonexistent-bridge.sock",
                                           "MACHINIST_TOOLS": "/nonexistent"}), \
-             mock.patch.object(cdp_client, "WS", side_effect=AssertionError("opened a websocket")), \
              mock.patch("subprocess.run", side_effect=AssertionError("ran a process")) as run:
             # MACHINIST_TOOLS points nowhere, so connect must refuse before running anything.
             with self.assertRaises(cdp_client.CDPError):

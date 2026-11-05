@@ -281,12 +281,12 @@ DEFAULT_MAX_TOKENS = {"nothink": 6000, "think": 12000}
 #: enterprise endpoint. They must never enter a LOCAL-egress candidate set, and the
 #: exclusion has to be declared rather than derived, because the only thing that
 #: records which aliases are remote is `refer.ALIASES`'s own section comment and
-#: `routing/roster.json`, which is gitignored.
+#: the local, gitignored roster.
 #:
 #: An allowlist is a CLAIM, so there is a reverse guard: a stale or mistyped entry
 #: here is inert in the dangerous direction (it would let a remote model through as
 #: local), and `test_every_declared_remote_alias_is_a_real_alias` fails on one.
-REMOTE_ALIASES = frozenset({"remote-gemma-31b-128k"})
+REMOTE_ALIASES = frozenset({"remote-gemma-31b"})
 
 #: Evidence-quality order, used only to break a score tie deterministically.
 _BASIS_RANK = {"measured": 3, "proxy": 2, "estimated": 1, "direct": 0}

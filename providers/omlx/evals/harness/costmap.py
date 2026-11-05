@@ -62,6 +62,7 @@ estimate would be the lie.
 from __future__ import annotations
 
 import dataclasses
+import datetime
 import json
 import pathlib
 import re
@@ -90,7 +91,13 @@ GATEWAY, BOTH, OUTSIDE, LOCAL = "gateway", "both", "outside", "local"
 #: Open weights we could install but have not. Drawn distinctly because their
 #: cost AND speed are estimates, never measurements.
 LOCAL_CANDIDATE = "local_candidate"
-GROUPS = (GATEWAY, BOTH, OUTSIDE, LOCAL, LOCAL_CANDIDATE)
+#: Announced for a shared model server but not yet served. Drawn on the chart so the
+#: arrival is visible, and kept OUT of every "reachable" count and every buyable comparison
+#: until it is actually served.
+ONPREM_SOON = "onprem_soon"
+GROUPS = (GATEWAY, BOTH, OUTSIDE, LOCAL, LOCAL_CANDIDATE, ONPREM_SOON)
+#: Groups drawn but not yet reachable.
+NOT_YET = (ONPREM_SOON,)
 
 # --------------------------------------------------------- local cost model --
 
@@ -512,6 +519,14 @@ OUTSIDE_FLEET = (
 )
 
 
+#: Announced, not yet served. Move a row to GATEWAY_FLEET when
+#: the server's model list actually carries it. Muse Spark Open is Meta's open-weight
+#: 816B-A42B; AA ran it at xhigh only.
+ONPREM_SOON_FLEET: tuple[tuple[str, str | None], ...] = (
+    ("Muse Spark Open", "Muse Spark Open (Xhigh)"),
+)
+
+
 def gpt_fleet(models: dict) -> tuple[tuple[str, str], ...]:
     """Every OpenAI tier the corpus measures, as (label, flagship row).
 
@@ -802,7 +817,8 @@ def load_fleet(models: dict | None = None, arena: dict | None = None,
 
     # --- paid endpoints: AA gives x and y directly when it ran them
     for group, fleet in ((GATEWAY, GATEWAY_FLEET), (BOTH, BOTH_FLEET),
-                         (OUTSIDE, OUTSIDE_FLEET + gpt_fleet(models))):
+                         (OUTSIDE, OUTSIDE_FLEET + gpt_fleet(models)),
+                         (ONPREM_SOON, ONPREM_SOON_FLEET)):
         for label, aa_name in fleet:
             if aa_name is None:
                 continue                                  # handled separately
@@ -976,6 +992,38 @@ def watched(published: Iterable[Point], fleet: Iterable[Point],
     return sorted(out, key=lambda p: -p.y)
 
 
+SPOTLIGHT = "spotlight"
+
+#: Vendors drawn in their own colour, latest releases only (owner, 2026-11-04: "the
+#: latest DeepSeek models in their own unique color"). "Latest" is DERIVED: every
+#: plottable row released within SPOTLIGHT_WINDOW_DAYS of that vendor's newest row in
+#: the corpus, so it moves with the corpus rather than being a hand-kept list.
+#: Non-reasoning rows are left out (see `spotlit`).
+SPOTLIGHT_PATTERNS = {"DeepSeek": r"^DeepSeek\b"}
+SPOTLIGHT_WINDOW_DAYS = 90
+
+
+def spotlit(published: Iterable[Point], fleet: Iterable[Point],
+            models: dict | None = None) -> dict[str, list[Point]]:
+    """Latest plottable rows per spotlit vendor, tagged SPOTLIGHT, keyed by vendor."""
+    models = models if models is not None else _load(AA_COST)["models"]
+    ours = {p.aa_name for p in fleet if p.aa_name}
+    out: dict[str, list[Point]] = {}
+    for vendor, pat in SPOTLIGHT_PATTERNS.items():
+        rows = [(models.get(p.label, {}).get("releaseDate"), p) for p in published
+                if re.search(pat, p.label) and p.label not in ours
+                # Reasoning rows only: a "Non-reasoning" row is a mode, not a release,
+                # and drawing both doubled the marks in the crowded local corner.
+                and "Non-reasoning" not in p.label]
+        dated = [(datetime.date.fromisoformat(d), p) for d, p in rows if d]
+        if not dated:
+            continue
+        cut = max(d for d, _ in dated) - datetime.timedelta(days=SPOTLIGHT_WINDOW_DAYS)
+        out[vendor] = sorted((dataclasses.replace(p, group=SPOTLIGHT)
+                              for d, p in dated if d >= cut), key=lambda p: -p.y)
+    return out
+
+
 def pareto(pts: Iterable[Point]) -> list[Point]:
     """Models no other model beats on BOTH axes -- cheaper AND smarter.
 
@@ -1017,6 +1065,7 @@ def fleet_summary(pts: Iterable[Point]) -> dict:
     here.
     """
     pts = list(pts)
+    n_reachable = sum(1 for p in pts if p.group not in NOT_YET)
     by_group = {g: [p for p in pts if p.group == g] for g in GROUPS}
     by_tier = {t: [p for p in pts if p.tier == t] for t in TIERS}
     paid = [p for p in pts if p.group in (GATEWAY, OUTSIDE)]
@@ -1027,7 +1076,7 @@ def fleet_summary(pts: Iterable[Point]) -> dict:
     # states an estimate as a fact.
     paid_measured = [p for p in paid if not p.has_x_range]
     return {
-        "n_fleet": len(pts),
+        "n_fleet": n_reachable,
         "n_by_group": {g: len(v) for g, v in by_group.items()},
         "n_by_tier": {t: len(v) for t, v in by_tier.items()},
         "n_haircut_pairs": sum(1 for p in pts if p.y_haircut is not None),
